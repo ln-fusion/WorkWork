@@ -1,0 +1,589 @@
+[Menu_text]
+Language_English="English"
+Language_ChineseS="简体中文"
+Language_ChineseT="繁體中文"
+Menu_titlescreen="Titlescreen"
+Menu_fullscreen="Fullscreen"
+Menu_borderless="Windowed fullscreen"
+Menu_resolution="Resolution"
+Menu_language="Language"
+Menu_Key_select="Select"
+Menu_Key_examine="Examine"
+Menu_Key_movedice="Move dice"
+Menu_Key_pause="Pause/exit"
+Menu_volmaster="Master vol."
+Menu_volsfx="SFX vol."
+Menu_volmusic="Music vol."
+
+
+[Tutorial_text]
+Proceed_body="(Click to proceed."
+Progress1_body="Place the dice in the square slots and press Play to get a score."
+Progress2_body="Pressing SPACEBAR while hovering over a dice will send it to the first available slot."
+Progress3_body="Certain combination of dice will grant additional points, check the Bonus button here for more information."
+Progress4_body="Whenever you press Reroll, dice that are placed in slots will be locked and only those in the tray will be rerolled."
+Progress5_body="Keep in mind you only have a certain number of Play and Reroll each round. They will not be replenished until the next round."
+Progress6_body="If you fail to reach the required score and have no Play left, it will be GAMEOVER."
+Progress7_body="Cats are essential for a successful run. Every Cat comes with its own unique ability and dice."
+Progress8_body="Right-click on a Cat for more information regarding its dice effects."
+Progress9_body="Place a Cat in position and the standard dice created at the start of a round will be replaced by the Cat's unique dice."
+Progress10_body="Cats can also be equipped with Items to gain additional effects. Different Cats can have different available item slots."
+Progress11_body="Check the item description for more information."
+Progress12_body="Tickets provide various benefits. It countdowns to a new ticket whenever you reroll or enter the shop."
+Progress13_body="Lastly, you can reroll the shop to refresh the available Cats and Items. However, the cost will double with each reroll."
+Progress14_body="But not to worry, the cost will be reset to its original value on your next Shop visit."
+
+
+[Base_text]
+Bonus_title="Bonus"
+Boonbane_title="Boon & Bane"
+Boonbane_body1="Select a boon & bane to proceed."
+Boonbane_body2="This will stay with you for the entire run so choose carefully!"
+Score_title="Play : "
+Reroll_title="Reroll"
+Exit_title="Leave"
+Sell_title="Sell: +$"
+Round_title="Round: "
+Current_title="Current:"
+Reward_title="Reward:"
+Roundreward_title="Round Reward"
+Payout_title="Payout"
+Victory_title="Victory!!"
+Hide_title="Hide"
+Show_title="Show"
+RemainPlay_title="Remaining Plays"
+Interest_title="Interest ($1 per $10 owned. Capped at $10.)"
+Totalwinnings_title="Total Winnings"
+Atleast_title="Score at least:"
+Nextround_title="Next round:"
+Total_title="Total: "
+Play_title="Play"
+Continue_title="Continue"
+Newgame_title="New game"
+Options_title="Settings"
+Quit_title="Quit"
+Infobox_body="Welcome to the demo!Everything you see here is a work in progress and potentially subject to change. There are certain planned features yet to be implemented but it is otherwise fully playable. Any feedback will be appreciated so please leave them in the Steam forum or in Discord!##Music credits to Ozzed - https://ozzed.net/"
+
+Demo_body1="Thank you for playing! You've reached the end of the demo. Bring up the pause menu to return to the titlescreen and you can go for a new run.##There will be more Cats, Items, dice effects and other mechanics in the full game. If you enjoyed the demo, a wishlist on Steam will be greatly appreciated! :)"
+Steam_title="Wishlist on Steam!"
+Discord_title="Discord"
+
+
+[Mechanics_text]
+Points_text="Points"
+Mult_text="Mult"
+Pair_title="PAIR"
+Triple_title="TRIPLE"
+4kind_title="4 OF A KIND"
+5kind_title="5 OF A KIND"
+6kind_title="6 OF A KIND"
+Alldif_title="DISTINCT"
+Blackjack_title="BLACKJACK"
+Bust_title="BUST!"
+Lowroll_title="LOW-ROLL"
+Highroll_title="HIGH-ROLL"
+Straight_title="STRAIGHT"
+Empty_title="THE EMPTY SPECIAL"
+Pair_body=" : 2 dice of the same value."
+Triple_body=" : 3 dice of the same value."
+4kind_body=" : 4 dice of the same value."
+5kind_body=" : 5 dice of the same value."
+6kind_body=" : 6 dice of the same value."
+Alldif_body=" : all 6 dice have different values."
+Blackjack_body=" : x2 score if combined value of played dice is 21. If more than 21, x0.5 score."
+Lowroll_body=" : all played dice must be THREE or lower."
+Highroll_body=" : all played dice must be FOUR or higher."
+Straight_body=" : have at least 4 dice in sequence (position does not matter)."
+Empty_body=" : if no other bonus is active."
+
+Cantrip_effect="*! CANTRIP: triggers effect upon rolling onto dice face. Only affects the effect it's attached to."
+Bling_effect="*Bl BLING: +20 *Points when scored."
+Mark_effect="*El MARK: +*Mult equal to value of dice when scored."
+Dollar_effect="*l DOLLAR: +$1 when scored."
+Reroll_effect="*R REROLL: +1 Reroll when scored."
+Add_effect="*A ADDITION: +1 *Mult when scored."
+Spade_effect="*S SPADE: +*Points value of all other played dice with Spade."
+Heart_effect="*H HEART: +*Points value of all other played dice with Heart"
+Boost_effect="*Tl BOOST: doubles the value of this dice face when scored."
+Duplicate_effect="*D DUPLICATE: create an exact copy of dice and place it in the tray when scored."
+Support_effect="*P SUPPORT: +1 to passive effects of Cat when scored. Reset to original value once scoring ends."
+SS_effect="*2l SAME-SAME: dice gets scored again if it has the same value as the last scored dice."
+Double_effect="*Xl DOUBLE: x2 *Mult when scored."
+
+
+[Cat_text]
+None_passive="None."
+
+SIC_title="Standard Issue Cat"
+SIC_passive="+*Points equal to total *Points value of all played dice."
+
+GoldCat_title="Gold Cat"
+GoldCat_passive="+$[num] at the end of round."
+
+Highroller_title="The High Roller"
+Highroller_passive="Gain +[chips] *Points this round whenever a SIX is scored. (Current: +[r_chips] *Points)"
+
+Bookie_title="Bookie"
+Bookie_passive="Gain +[mult] *Mult this round whenever a dice gets scored here. (Current: +[r_mult] *Mult)"
+
+Ace_title="Ace"
+Ace_passive="ONE gives +[chips] *Points and +[mult] *Mult when scored."
+
+Oldhand_title="Old Hand"
+Oldhand_passive="Dice played here will roll into face 6 on its next roll."
+
+OddTodd_title="Odd Todd"
+OddTodd_passive="x[mult] *Mult if all played dice are odd value."
+
+EvenSteven_title="Even Steven"
+EvenSteven_passive="Gain +[mult] *Mult this round whenever an even value dice gets scored. (Current: +[r_mult] *Mult)"
+
+SnowWhite_title="Snow White"
+
+Quatro_title="Quatro"
+Quatro_passive="FOUR gives +[mult] *Mult when scored."
+
+Cinco_title="Cinco"
+Cinco_passive="FIVE gives +[mult] *Mult when scored."
+
+Landlord_title="The Landlord"
+Landlord_passive="+*Points equal to total *Points value of all dice in tray."
+
+Baller_title="Baller"
+Baller_passive="Gain +[chips] *Points this round on every 3rd roll of a THREE. Dice played here will roll into face 3 on its next roll. (Current: +[r_chips] *Points)"
+
+PrataCat_title="Prata Cat"
+PrataCat_passive="All dice played here and to the right will be flipped to their opposite sides."
+
+SmolKitten_title="Smol Kitten"
+SmolKitten_passive="If all played dice are THREE or lower, +[chips] *Points."
+
+LazyCat_title="Sleepy Cat"
+LazyCat_passive="If less than [num] dice have been played, x[mult] *Mult."
+
+Chubby_title="Mr Chubs"
+Chubby_passive="+[chips] *Points if there is [num] Reroll remaining."
+
+Slim_title="Ms Slim"
+Slim_passive="+[chips] *Points for each remaining Reroll."
+
+Nix_title="Nix"
+Nix_passive="x[mult] *Mult if there is [num] Play remaining."
+
+OnePunchCat_title="One Punch Cat"
+OnePunchCat_passive="If you win with exactly [num] Play, permanently gain +[chips] *Points. (Current: +[r_chips] *Points)"
+
+Goalie_title="Goalie"
+Goalie_passive="+[chips] *Points for each remaining Play."
+
+Striker_title="Striker"
+Striker_passive="Gain +[chips] *Points this round after pressing Play. (Current: +[r_chips] *Points)"
+
+SunflowerCat_title="Sunflower Cat"
+SunflowerCat_passive="Grant the dice played here +[num] value to all dice faces."
+
+Ragdoll_title="Ragdoll"
+Ragdoll_passive="If position of Cat is the same as value of dice played here, +*Points and +*Mult equal to position x dice value."
+
+BoxCat_title="Cat in a Box"
+BoxCat_passive="If this Cat is in position [num], x[mult] *Mult."
+
+FortuneTeller_title="Fortune Teller"
+FortuneTeller_passive="At start of round, created dice will always roll on face equal to position of this Cat."
+
+WitchFamiliar_title="Witch Familiar"
+WitchFamiliar_passive="When Reroll is used, grant +[num] value to the dice face placed here."
+
+Sphynx_title="Psychic Cat"
+Sphynx_passive="Any dice played here will roll into the same face on its next roll."
+
+Giant_title="The Giant"
+Giant_passive="Only dice with a value of [num] or higher can be placed here."
+
+Jeweller_title="Jeweller"
+Jeweller_passive="Grant *Bl to the dice face played here."
+
+Mathematician_title="Mathematician"
+Mathematician_passive="Grant *El to the dice face played here."
+
+CoinMaster_title="Coin Master"
+CoinMaster_passive="Grant *l to the dice face played here."
+
+KingSpade_title="King of Spade"
+KingSpade_passive="Grant *S to the dice face played here."
+
+QueenHeart_title="Queen of Heart"
+QueenHeart_passive="Grant *H to the dice face played here."
+
+Tycoon_title="The Tycoon"
+Tycoon_passive="+[mult] *Mult for every $[num] you have."
+
+PamperedCat_title="Pampered Cat"
+PamperedCat_passive="+*Points equal to [num] times the amount of $ you have."
+
+TheCheat_title="The Cheat"
+TheCheat_passive="Flip the dice played here to the dice face equal to the position this Cat is in."
+
+RegularJoe_title="Regular Joe"
+RegularJoe_passive="Dice face with no effect gives +[chips] *Points when scored."
+
+PlainJane_title="Plain Jane"
+PlainJane_passive="Dice face with no effect gives +[mult] *Mult when scored."
+
+Glutton_title="Glutton"
+Glutton_passive="Whenever a dice is scored, gain +[mult] *Mult this round. (Current: +[r_mult] *Mult)"
+
+
+Twins_title="Twins"
+Twins_passive="x[mult] *Mult. For each PAIR played, +[num] to multiplier."
+
+Triplets_title="Triplets"
+Triplets_passive="x[mult] *Mult. For each TRIPLE played, +[num] to multiplier."
+
+Quadruplets_title="Quadruplets"
+Quadruplets_passive="If [num] or more dice played have the same value, x[mult] *Mult."
+
+TheOne_title="The One"
+TheOne_passive="Gain +[mult] *Mult this round whenever a ONE is rolled or scored. (Current: +[r_mult] *Mult)"
+
+Student_title="The Student"
+Student_passive="+*Mult equal to [mult] times the value of dice played here."
+
+Professor_title="The Professor"
+Professor_passive="x*Mult equal to value of dice played. Only dice with a value of [num] or lower can be placed here."
+
+Sixer_title="Sixer"
+Sixer_passive="Whenever a SIX is scored here, permanently gain +[mult] *Mult. (Current: +[r_mult] *Mult)"
+
+OldTraditional_title="The Old Traditional"
+OldTraditional_passive="+*Mult equal to total value of all dice in tray."
+
+Auctioneer_title="Auctioneer"
+Auctioneer_passive="All dice played here and to the right will be rolled to its higher face by [num]."
+
+CubanCat_title="Cuban Cat"
+CubanCat_passive="All dice in tray will be rolled to a higher face by [num]. Permanently gain +[mult] Mult for each dice that over-rolls. (Current: +[r_mult] *Mult)"
+
+Prisoner_title="The Prisoner"
+Prisoner_passive="When Reroll is used, the dice locked here will be rolled to its higher face by [num]."
+
+Shieldmaiden_title="Shield-maiden"
+Shieldmaiden_passive="+[num] to passive effects (only affects colored numeral) for adjacent Cats."
+
+JugglingCat_title="Juggling Cat"
+JugglingCat_passive="Gain +[chips] *Points this round for each roll of dice. (Current: +[r_chips] *Points)"
+
+CatonBall_title="Cat on a Ball"
+CatonBall_passive="Reroll all dice in tray and +[num] Reroll."
+
+MiddleChild_title="Middle Child"
+MiddleChild_passive="x*Mult equal to value of dice played here if dice to the left has a lower value by [num] and dice to the right has a higher value by [num]."
+
+NinjaCat_title="Ninja Cat"
+NinjaCat_passive="Permanently gain +[mult] *Mult whenever a dice gets copied. (current: +[r_mult] *Mult)"
+
+RocketCat_title="Rocket Cat"
+RocketCat_passive="Grant *Tl to the dice face played here."
+
+ParentChild_title="Mini-me"
+ParentChild_passive="Grant *2l to the dice face played here."
+
+Gogetter_title="Go-getter"
+Gogetter_passive="Permanently gain +[mult] *Mult after pressing Play. Gain -[mult] *Mult whenever Reroll is used. (Current: +[r_mult] *Mult)"
+
+Gargoyle_title="Cat Gargoyle"
+Gargoyle_passive="Stone dice in tray or played to the left of this Cat has +[num]% chance to reroll. Stone dice played to the right has -[num]% chance to reroll."
+
+
+Yinyang_title="Yin-yang"
+Yinyang_passive="Any dice played here will be scored [num] additional time."
+
+Counterfeiter_title="Counterfeiter"
+Counterfeiter_passive="Create [num] exact copies of the dice played here and place them in the dice tray."
+
+Monopoly_title="Monopoly Cat"
+Monopoly_passive="If all 6 played dice have different values, permanently gain x[mult]/2 *Mult. (Current: x[r_mult] *Mult)"
+
+Xcat_title="X-Cat"
+Xcat_passive="Grant *Xl to the dice face played here."
+
+Banker_title="The Banker"
+Banker_passive="Interest payout at end of round gets times [num] (calculated after interest cap)."
+
+King_title="The King"
+King_passive="Whenever the dice played here triggers its dice effect, x[mult] *Mult."
+
+
+[Item_text]
+MouseKeychain_title="Mouse Keychain"
+MouseKeychain_passive="+[mult] *Mult."
+
+WhaleKeychain_title="Whale Keychain"
+WhaleKeychain_passive="+[mult] *Mult if the dice played here has the highest value among all played dice."
+
+ParrotKeychain_title="Parrot Keychain"
+ParrotKeychain_passive="If the dice played here has the same value as the previous scored dice, +*Mult equal to value of dice."
+
+AcornKeychain_title="Acorn Keychain"
+AcornKeychain_passive="+[mult] *Mult if total value of all played dice is less than or equal to [num]."
+
+CoconutKeychain_title="Coconut Keychain"
+CoconutKeychain_passive="+[mult] *Mult if total value of all played dice is more than or equal to [num]."
+
+BlobKeychain_title="Blob Keychain"
+BlobKeychain_passive="+*Mult equal to dice value of any random dice."
+
+DeerKeychain_title="Deer Keychain"
+DeerKeychain_passive="+[mult] *Mult for each dice played with the same value as the dice played here."
+
+WolfKeychain_title="Wolf Keychain"
+WolfKeychain_passive="+[mult] *Mult for each dice played that has a different value to the dice played here."
+
+TriangleKeychain_title="Triangle Keychain"
+TriangleKeychain_passive="+[mult] *Mult if all played dice are odd value."
+
+SquareKeychain_title="Square Keychain"
+SquareKeychain_passive="+[mult] *Mult if all played dice are even value."
+
+DogSticker_title="Dog Sticker"
+DogSticker_passive="+[chips] *Points."
+
+DeerSticker_title="Deer Sticker"
+DeerSticker_passive="+[chips] *Points for each dice played with the same value as the dice played here."
+
+WolfSticker_title="Wolf Sticker"
+WolfSticker_passive="+[chips] *Points for each dice played that has a different value to the dice played here."
+
+TriangleSticker_title="Triangle Sticker"
+TriangleSticker_passive="+[chips] *Points if all played dice are odd value."
+
+SquareSticker_title="Square Sticker"
+SquareSticker_passive="+[chips] *Points if all played dice are even value."
+
+CrowSticker_title="Crow Sticker"
+CrowSticker_passive="Gain +*Points this round equal to value of dice played here. (current: +[r_chips] *Points)"
+
+HawkSticker_title="Hawk Sticker"
+HawkSticker_passive="+[chips] *Points if you have less than or equal to [chips] *Points."
+
+Purse_title="Purse"
+Purse_passive="If you have exactly [num] Play remaining at the end of round, +$[num]."
+
+Wallet_title="Wallet"
+Wallet_passive="If you have used Reroll a total of [num] times or fewer at the end of round, +$[num]."
+
+RightJab_title="Right Jab"
+RightJab_passive="+[num] to value of dice face on the adjacent right."
+
+YarnBall_title="Yarn Ball"
+YarnBall_passive="+[num] Reroll whenever you score a dice here."
+
+Whetstone_title="Whetstone"
+Whetstone_passive="If dice played here has an odd value, roll to a higher face by [num]."
+
+Sandpaper_title="Sandpaper"
+Sandpaper_passive="If dice played here has an even value, roll to a lower face by [num]."
+
+CloverONE_title="1-Leaf Clover"
+CloverONE_passive="Dice will always roll onto face 1 upon creation."
+CloverTWO_title="2-Leaf Clover"
+CloverTWO_passive="Dice will always roll onto face 2 upon creation."
+CloverTHREE_title="3-Leaf Clover"
+CloverTHREE_passive="Dice will always roll onto face 3 upon creation."
+CloverFOUR_title="4-Leaf Clover"
+CloverFOUR_passive="Dice will always roll onto face 4 upon creation."
+CloverFIVE_title="5-Leaf Clover"
+CloverFIVE_passive="Dice will always roll onto face 5 upon creation."
+CloverSIX_title="6-Leaf Clover"
+CloverSIX_passive="Dice will always roll onto face 6 upon creation."
+
+BlingONE_title="Bling-1"
+BlingONE_passive="On equip, dice face 1 gains *Bl."
+BlingTWO_title="Bling-2"
+BlingTWO_passive="On equip, dice face 2 gains *Bl."
+BlingTHREE_title="Bling-3"
+BlingTHREE_passive="On equip, dice face 3 gains *Bl."
+BlingFOUR_title="Bling-4"
+BlingFOUR_passive="On equip, dice face 4 gains *Bl."
+BlingFIVE_title="Bling-5"
+BlingFIVE_passive="On equip, dice face 5 gains *Bl."
+BlingSIX_title="Bling-6"
+BlingSIX_passive="On equip, dice face 6 gains *Bl."
+
+CrossONE_title="Cross-1"
+CrossONE_passive="On equip, dice face 1 gains *El."
+CrossTWO_title="Cross-2"
+CrossTWO_passive="On equip, dice face 2 gains *El."
+CrossTHREE_title="Cross-3"
+CrossTHREE_passive="On equip, dice face 3 gains *El."
+CrossFOUR_title="Cross-4"
+CrossFOUR_passive="On equip, dice face 4 gains *El."
+CrossFIVE_title="Cross-5"
+CrossFIVE_passive="On equip, dice face 5 gains *El."
+CrossSIX_title="Cross-6"
+CrossSIX_passive="On equip, dice face 6 gains *El."
+
+CoinONE_title="Coin-1"
+CoinONE_passive="On equip, dice face 1 gains *l."
+CoinTWO_title="Coin-2"
+CoinTWO_passive="On equip, dice face 2 gains *l."
+CoinTHREE_title="Coin-3"
+CoinTHREE_passive="On equip, dice face 3 gains *l."
+CoinFOUR_title="Coin-4"
+CoinFOUR_passive="On equip, dice face 4 gains *l."
+CoinFIVE_title="Coin-5"
+CoinFIVE_passive="On equip, dice face 5 gains *l."
+CoinSIX_title="Coin-6"
+CoinSIX_passive="On equip, dice face 6 gains *l."
+
+
+GiraffeKeychain_title="Giraffe Keychain"
+GiraffeKeychain_passive="+[mult] *Mult if value of dice played here is higher than or equal to [num]."
+
+NeedletailKeychain_title="Needletail Keychain"
+NeedletailKeychain_passive="If this is the first passive effect to trigger after pressing Play, +[mult] *Mult."
+
+NailKeychain_title="Nail Keychain"
+NailKeychain_passive="If this Cat has not changed position since the round began, +[mult] *Mult."
+
+ElephantSticker_title="Elephant Sticker"
+ElephantSticker_passive="+*Points equal to greatest *Points value among all played dice."
+
+AntSticker_title="Ant Sticker"
+AntSticker_passive="+[chips] *Points if total value of all played dice is less than or equal to [num]."
+
+TortoiseSticker_title="Tortoise Sticker"
+TortoiseSticker_passive="If equipped on the last Cat in position, +[chips] *Points."
+
+ONESticker_title="ONE Sticker"
+ONESticker_passive="Gain +[chips] *Points this round whenever a ONE is rolled. (current: +[r_chips] *Points)"
+TWOSticker_title="TWO Sticker"
+TWOSticker_passive="Gain +[chips] *Points this round whenever a TWO is rolled. (current: +[r_chips] *Points)"
+THREESticker_title="THREE Sticker"
+THREESticker_passive="Gain +[chips] *Points this round whenever a THREE is rolled. (current: +[r_chips] *Points)"
+FOURSticker_title="FOUR Sticker"
+FOURSticker_passive="Gain +[chips] *Points this round whenever a FOUR is rolled. (current: +[r_chips] *Points)"
+FIVESticker_title="FIVE Sticker"
+FIVESticker_passive="Gain +[chips] *Points this round whenever a FIVE is rolled. (current: +[r_chips] *Points)"
+SIXSticker_title="SIX Sticker"
+SIXSticker_passive="Gain +[chips] *Points this round whenever a SIX is rolled. (current: +[r_chips] *Points)"
+ZEROSticker_title="ZERO Sticker"
+ZEROSticker_passive="Gain +[chips] *Points this round whenever a ZERO is rolled. (current: +[r_chips] *Points)"
+
+Magnet_title="Magnet"
+Magnet_passive="The dice on the adjacent right will be flipped onto the same face as the dice played here."
+
+ClawMachine_title="Claw Machine"
+ClawMachine_passive="Swap the dice played here with another random dice that has already been scored, if any."
+
+
+Fertilizer_title="Fertilizer"
+Fertilizer_passive="Grant dice GROW."
+
+MarbleBall_title="Marble Ball"
+MarbleBall_passive="On equip, all dice faces gain *R."
+
+RocketONE_title="Rocket-1"
+RocketONE_passive="On equip, dice face 1 gains *Tl."
+RocketTWO_title="Rocket-2"
+RocketTWO_passive="On equip, dice face 2 gains *Tl."
+RocketTHREE_title="Rocket-3"
+RocketTHREE_passive="On equip, dice face 3 gains *Tl."
+RocketFOUR_title="Rocket-4"
+RocketFOUR_passive="On equip, dice face 4 gains *Tl."
+RocketFIVE_title="Rocket-5"
+RocketFIVE_passive="On equip, dice face 5 gains *Tl."
+RocketSIX_title="Rocket-6"
+RocketSIX_passive="On equip, dice face 6 gains *Tl."
+
+BlackCard_title="Black Card"
+BlackCard_passive="On equip, dice face 1, 3 and 5 gain *S."
+
+RedCard_title="Red Card"
+RedCard_passive="On equip, dice face 2, 4 and 6 gain *H."
+
+
+GeckoKeychain_title="Gecko Keychain"
+GeckoKeychain_passive="Whenever this Cat triggers its passive effect, +[mult] *Mult."
+
+GeckoSticker_title="Gecko Sticker"
+GeckoSticker_passive="Whenever this Cat triggers its passive effect, +[chips] *Points."
+
+DiamondRing_title="Diamond Ring"
+DiamondRing_passive="x[mult] *Mult."
+
+ShinyMedal_title="Shiny Medal"
+ShinyMedal_passive="If the dice played here is the first to be scored, its dice effects gets x[num] effectiveness."
+
+Sunstone_title="Sunstone"
+Sunstone_passive="+[num] to all prior passive effects (only affects colored numeral) on this Cat."
+
+Goat_title="Sign of the Goat"
+Goat_passive="+[chips] *Points, +[mult] *Mult and +$[num] if exactly three SIX have been played."
+
+
+SpinningTop_title="Spinning Top"
+SpinningTop_passive="On equip, dice face 4 gains *^R."
+
+Matryoshka_title="Matryoshka Doll"
+Matryoshka_passive="On equip, all dice faces without any effect gain *2l."
+
+BifoldONE_title="Bifold-1"
+BifoldONE_passive="On equip, dice face 1 gains *Xl."
+BifoldTWO_title="Bifold-2"
+BifoldTWO_passive="On equip, dice face 2 gains *Xl."
+BifoldTHREE_title="Bifold-3"
+BifoldTHREE_passive="On equip, dice face 3 gains *Xl."
+BifoldFOUR_title="Bifold-4"
+BifoldFOUR_passive="On equip, dice face 4 gains *Xl."
+BifoldFIVE_title="Bifold-5"
+BifoldFIVE_passive="On equip, dice face 5 gains *Xl."
+BifoldSIX_title="Bifold-6"
+BifoldSIX_passive="On equip, dice face 6 gains *Xl."
+
+
+[Boonbane_text]
+Boon_bonus="Get bonus"
+Boon0="+1 Play."
+Boon1="+2 Reroll."
+Boon2="+$2 to payout at the end of round."
+Boon3="All existing Bonuses get +5 *Points +1 *Mult."
+Boon4="Start each play with +4 *Mult."
+Boon5="Double your current $."
+
+Bane0="Cats can no longer change positions during a round."
+Bane1="You can only reroll up to a max of 5 times per round."
+Bane2="-$1 to end of round payout and you can no longer earn any interest."
+Bane3="Start each play with -20 *Points."
+Bane4="Every round, a random Bonus gets nullified."
+Bane5="-2 *Mult whenever 4 or more dice gets rerolled at the same time."
+Bane6="When you reroll, you can only lock up to 3 dice."
+
+
+[Ticket_text]
+Bonus_valueup_title="Bonus Up"
+Bonus_valueup_body="+6 *Points, +2 *Mult to a chosen bonus."
+Bonus_valuetransfer_title="Bonus Transfer"
+Bonus_valuetransfer_body="+8 *Points +2 *Mult to a chosen bonus. All other existing bonuses get -2 *Points, -1 *Mult."
+Bonus_percentageup_title="Bonus Up"
+Bonus_percentageup_body="+15% to a chosen bonus, rounded up (capped at +20 *Points, +5 *Mult)."
+Remove_bonus_title="Bonus Cash In"
+Remove_bonus_body="Remove a bonus to gain $."
+
+Bonus_reducepoints_title="Points Sacrifice"
+Bonus_reducepoints_body="Start each play with -10 *Points. Gain $."
+Bonus_reducemult_title="Mult Sacrifice"
+Bonus_reducemult_body="Start each play with -2 *Mult. Gain $."
+
+Discount_reroll_title="Reroll Discount:"
+Discount_reroll_body="Shop reroll starts at $0 instead of $1."
+Bonus_lowroll_body=" (+40 *Points, +7 *Mult)"
+Bonus_highroll_body=" (+40 *Points, +7 *Mult)"
+Bonus_straight_body=" (+40 *Points, +8 *Mult)"
+Bonus_empty_body=" (+100 *Points, +10 *Mult)"
+Add_play1_title="Play+"
+Add_play1_body="+1 Play."
+Add_reroll1_title="Reroll+"
+Add_reroll1_body="+1 Reroll."
+Remove_bane_title="Bane Removal"
+Remove_bane_body="Remove a bane (removed bane will return as an option)."

@@ -1,0 +1,586 @@
+[Menu_text]
+Language_English="English"
+Language_ChineseS="简体中文"
+Language_ChineseT="繁體中文"
+Menu_titlescreen="標題畫面"
+Menu_fullscreen="全屏"
+Menu_borderless="窗口化全屏"
+Menu_resolution="螢幕解析度"
+Menu_language="語言"
+Menu_Key_select="選擇"
+Menu_Key_examine="查看"
+Menu_Key_movedice="移動骰子"
+Menu_Key_pause="暫停/退出"
+Menu_volmaster="主音量"
+Menu_volsfx="音效音量"
+Menu_volmusic="音樂音量"
+
+[Tutorial_text]
+Proceed_body="（點擊繼續。"
+Progress1_body="將骰子放入方形槽中並按下計分按鈕以獲得分數。"
+Progress2_body="當滑鼠懸停在骰子上時，按下空白鍵可以將其放入第一個可用槽位。"
+Progress3_body="某些骰子組合會帶來額外的積分，點擊此處的骰型按鈕了解更多資訊。"
+Progress4_body="每當你按下重擲按鈕，已放入槽位的骰子將被鎖定，只有托盤中的骰子會重新滾動。"
+Progress5_body="請記住，每回合你只有一定次數的計分和重擲，它們直到下回合才會補充。"
+Progress6_body="如果你未能達到所需的分數且沒有剩餘的計分次數，遊戲將結束。"
+Progress7_body="貓咪對於順利進行至關重要。每隻貓都有自己獨特的能力和骰子。"
+Progress8_body="右鍵點擊貓咪可以查看其骰子效果的詳細資訊。"
+Progress9_body="將貓放置到位後，回合開始時創建的普通骰子將被該貓咪的獨特骰子替代。"
+Progress10_body="貓咪還可以裝備物品以獲得額外效果。不同的貓咪可以擁有不同的物品槽位。"
+Progress11_body="查看物品描述以了解更多資訊。"
+Progress12_body="票券提供各種好處。每當你重擲或進入商店時，它將計時倒數。倒數完畢將獲得新的票券。"
+Progress13_body="最後，你可以重擲商店中可用的貓咪和物品。但每次重擲費用將翻倍。"
+Progress14_body="不過不必擔心，費用將在下次進入商店時恢復到原始值。"
+
+
+[Base_text]
+Bonus_title="骰型"
+Boonbane_title="恩與禍"
+Boonbane_body1="請選擇一個恩與禍來繼續。"
+Boonbane_body2="這將伴隨你整個流程，所以請謹慎選擇！"
+Score_title="計分 : "
+Reroll_title="重擲"
+Exit_title="離店"
+Sell_title="賣: +$"
+Round_title="回合: "
+Current_title="現金額:"
+Reward_title="獎金:"
+Roundreward_title="回合獎金"
+Payout_title="支付"
+Victory_title="勝利!!"
+Hide_title="隱藏"
+Show_title="顯示"
+RemainPlay_title="剩餘計分"
+Interest_title="利息 (每 $10 賺 $1。 上限為 $10。)"
+Totalwinnings_title="總金額"
+Atleast_title="得分至少:"
+Nextround_title="下回合:"
+Total_title="總計: "
+Play_title="開始"
+Continue_title="繼續"
+Newgame_title="新遊戲"
+Options_title="設置"
+Quit_title="退出"
+Infobox_body="歡迎！你現在看到的一切都在開發中，並有可能進行更改。還有一些計劃中的功能尚未實現，但遊戲已可正常遊玩。任何反饋都將不勝感激，請在 Steam 論壇或 Discord 上留下你的意見！##音樂鳴謝 Ozzed - https://ozzed.net/"
+
+Demo_body1="感謝遊玩！你已完成試玩版。打開暫停選單返回標題畫面，開始新的遊戲吧。##完整版將包含更多的貓咪、物品、骰子效果以及其他機制。如果你喜歡試玩版，在#Steam 上的願望單會受到極大的感謝！:)"
+Steam_title="在 Steam 上添加願望單！"
+Discord_title="Discord"
+
+
+[Mechanics_text]
+Points_text="分"
+Mult_text="倍數"
+Pair_title="對子"
+Triple_title="三重"
+4kind_title="四重"
+5kind_title="五重"
+6kind_title="全同"
+Alldif_title="全異"
+Blackjack_title="二十一點"
+Bust_title="爆!"
+Lowroll_title="低"
+Highroll_title="高"
+Straight_title="順"
+Empty_title="無"
+Pair_body=" : 2顆骰子點數相同。"
+Triple_body=" : 3顆骰子點數相同。"
+4kind_body=" : 4顆骰子點數相同。"
+5kind_body=" : 5顆骰子點數相同。"
+6kind_body=" : 6顆骰子點數相同。"
+Alldif_body=" : 6顆骰子的點數都不同。"
+Blackjack_body=" : 如果骰子點數總和為 21，得分 x2。如果超過 21，得分 x0.5。"
+Lowroll_body=" : 所有使用的骰子點數必須為三或以下。"
+Highroll_body=" : 所有使用的骰子點數必須為四或以上。"
+Straight_body=" : 至少有 4 顆骰子連續（順序無關）。"
+Empty_body=" : 如果沒有符合任何其他的骰型。"
+
+Cantrip_effect="*! 神諭：滾到該骰面時立即觸發骰效果。只影響所隨附的效果。"
+Bling_effect="*Bl 閃耀：得分時 +20*Points。"
+Mark_effect="*El 標記：得分時 +*Mult等於該骰子的點數。"
+Dollar_effect="*l 貨幣：得分時 +$1。"
+Reroll_effect="*R 重擲：得分時 +1 個重擲。"
+Add_effect="*A 加成：得分時 +1*Mult。"
+Spade_effect="*S 黑桃：+所有其他已使用黑桃骰子的*Points總值。"
+Heart_effect="*H 紅心：+所有其他已使用紅心骰子的*Points總值。"
+Boost_effect="*Tl 升值：得分時該骰子面值翻倍。"
+Duplicate_effect="*D 複製：得分時複製該骰子並將其放入托盤。"
+Support_effect="*P 支援：得分時給貓所有的被動效果 +1。得分結束後重置為原始值。"
+SS_effect="*2l 一樣樣：如果該骰子的點數與上次得分的骰子一樣，則再次得分。"
+Double_effect="*Xl 雙倍：得分時 x2*Mult。"
+
+
+[Cat_text]
+None_passive="無。"
+
+SIC_title="標準發行貓"
+SIC_passive="+*Points等於所有已放置骰子的*Points總值。"
+
+GoldCat_title="金貓"
+GoldCat_passive="回合結束時獲得 +$[num]。"
+
+Highroller_title="大賭客"
+Highroller_passive="本回合每當六點骰子得分時，獲得 +[chips]*Points。（當前：+[r_chips]*Points）"
+
+Bookie_title="莊家"
+Bookie_passive="本回合每當骰子在此得分時，獲得 +[mult]*Mult。（當前：+[r_mult]*Mult）"
+
+Ace_title="廬點"
+Ace_passive="每當一點骰子得分時，給予 +[chips]*Points和 +[mult]*Mult。"
+
+Oldhand_title="老手"
+Oldhand_passive="此處放置的骰子在下次擲骰時必滾到骰面6。"
+
+OddTodd_title="奇數托德"
+OddTodd_passive="如果所有已放置的骰子都是奇數值，x[mult]*Mult。"
+
+EvenSteven_title="偶數史蒂文"
+EvenSteven_passive="本回合每當偶數值骰子得分時，獲得 +[mult]*Mult。（當前：+[r_mult]*Mult）"
+
+SnowWhite_title="白雪公主"
+
+Quatro_title="老四"
+Quatro_passive="每當四點骰子得分時，給予 +[mult]*Mult。"
+
+Cinco_title="老五"
+Cinco_passive="每當五點骰子得分時，給予 +[mult]*Mult。"
+
+Landlord_title="房東"
+Landlord_passive="+*Points等於托盤中所有骰子的*Points總值。"
+
+Baller_title="投球手"
+Baller_passive="本回合每第3次擲出三點骰時，獲得 +[chips]*Points。此處放置的骰子在下次擲骰時必滾到骰面3。（當前：+[r_chips]*Points）"
+
+PrataCat_title="煎餅貓"
+PrataCat_passive="此處及其右側所有放置的骰子都會翻到其相對的面。"
+
+SmolKitten_title="小貓咪"
+SmolKitten_passive="如果所有已放置的骰子點數為三或以下，+[chips]*Points。"
+
+LazyCat_title="瞌睡貓"
+LazyCat_passive="如果使用的骰子少於[num]個，x[mult]*Mult。"
+
+Chubby_title="胖胖先生"
+Chubby_passive="如果剩餘[num]個重擲，+[chips]*Points。"
+
+Slim_title="瘦瘦小姐"
+Slim_passive="每剩餘一個重擲，+[chips]*Points。"
+
+Nix_title="夜貓"
+Nix_passive="如果剩餘[num]個計分，x[mult]*Mult。"
+
+OnePunchCat_title="一拳貓"
+OnePunchCat_passive="如果你正好以 [num] 次計分獲勝，永久獲得 +[chips]*Points。（當前：+[r_chips]*Points）"
+
+Goalie_title="守門員"
+Goalie_passive="每剩餘一個計分，+[chips]*Points。"
+
+Striker_title="前鋒"
+Striker_passive="本回合按下計分後，獲得 +[chips]*Points。（當前：+[r_chips]*Points）"
+
+SunflowerCat_title="向日葵貓"
+SunflowerCat_passive="賦予此處放置的骰子所有骰面 +[num] 點數。"
+
+Ragdoll_title="布偶貓"
+Ragdoll_passive="如果貓的位置與此處放置的骰子點數相同，+*Points並 +*Mult等於位置 x 骰子點數。"
+
+BoxCat_title="盒子貓"
+BoxCat_passive="如果這只貓在第 [num] 位置，x[mult]*Mult。"
+
+FortuneTeller_title="占卜師"
+FortuneTeller_passive="回合開始時，生成的骰子將滾到與這只貓位置相同的骰面。"
+
+WitchFamiliar_title="巫師的貓"
+WitchFamiliar_passive="使用重擲時，賦予放置在此處的骰面 +[num] 點數。"
+
+Sphynx_title="靈貓"
+Sphynx_passive="此處放置的骰子在下次擲骰時必滾到和現在同一樣的骰面。"
+
+Giant_title="巨貓"
+Giant_passive="只允許點數為 [num] 或更高的骰子放置在此。"
+
+Jeweller_title="珠寶匠"
+Jeweller_passive="賦予放置在此處的骰面 *Bl。"
+
+Mathematician_title="數學家"
+Mathematician_passive="賦予放置在此處的骰面 *El。"
+
+CoinMaster_title="金幣師"
+CoinMaster_passive="賦予放置在此處的骰面 *l。"
+
+KingSpade_title="黑桃之王"
+KingSpade_passive="賦予放置在此處的骰面 *S。"
+
+QueenHeart_title="紅心女王"
+QueenHeart_passive="賦予放置在此處的骰面 *H。"
+
+Tycoon_title="大亨"
+Tycoon_passive="每有 $[num]，+[mult]*Mult。"
+
+PamperedCat_title="嬌寵貓"
+PamperedCat_passive="+*Points等於你擁有的 $ 數額乘以 [num]。"
+
+TheCheat_title="老千"
+TheCheat_passive="將放置在此處的骰子翻到與貓所在位置相同的骰面。"
+
+RegularJoe_title="普通貓"
+RegularJoe_passive="每當沒有效果的骰面得分時，給予 +[chips]*Points。"
+
+PlainJane_title="樸素貓"
+PlainJane_passive="每當沒有效果的骰面得分時，給予 +[mult]*Mult。"
+
+Glutton_title="饕餮"
+Glutton_passive="每當一顆骰子得分時，本回合獲得 +[mult] *Mult。（當前：+[r_mult] *Mult）"
+
+
+Twins_title="雙胞胎"
+Twins_passive="x[mult]*Mult。每對擲出的對子骰型，乘數增加 +[num]。"
+
+Triplets_title="三胞胎"
+Triplets_passive="x[mult]*Mult。每擲出的三重骰型，乘數增加 +[num]。"
+
+Quadruplets_title="四胞胎"
+Quadruplets_passive="如果擲出的骰子中有 [num] 個或更多點數相同，x[mult]*Mult。"
+
+TheOne_title="獨一"
+TheOne_passive="本回合每擲出一點骰子或用一點骰子得分時，獲得 +[mult]*Mult。（當前：+[r_mult]*Mult）"
+
+Student_title="學生"
+Student_passive="+*Mult等於此處擲出的骰子點數乘以 [mult]。"
+
+Professor_title="教授"
+Professor_passive="x*Mult等於擲出的骰子點數。只允許點數為 [num] 或以下的骰子放置在此。"
+
+Sixer_title="啊六"
+Sixer_passive="每當六點骰子在此處得分，永久獲得 +[mult]*Mult。（當前：+[r_mult]*Mult）"
+
+OldTraditional_title="古典派"
+OldTraditional_passive="+*Mult等於托盤中所有骰子的點數總值。"
+
+Auctioneer_title="拍賣師"
+Auctioneer_passive="此處及其右側放置的所有骰子都會被滾到現在骰面數加 [num] 的較大面。"
+
+CubanCat_title="古巴貓"
+CubanCat_passive="托盤中的所有骰子將被滾到現在骰面數加 [num] 的較大面。每當骰面超數時，永久獲得 +[mult]*Mult。（當前：+[r_mult]*Mult）"
+
+Prisoner_title="囚徒貓"
+Prisoner_passive="使用重擲時，放置在此處的骰子將被滾到骰面數加 [num] 的較大面。"
+
+Shieldmaiden_title="盾女貓"
+Shieldmaiden_passive="相鄰貓的被動效果增加 +[num] （只影響彩色數字）。"
+
+JugglingCat_title="拋球貓"
+JugglingCat_passive="本回合每當骰子滾動，獲得 +[chips]*Points。（當前：+[r_chips]*Points）"
+
+CatonBall_title="滾球貓"
+CatonBall_passive="重擲托盤中的所有骰子，並 +[num] 重擲次數。"
+
+MiddleChild_title="中間孩"
+MiddleChild_passive="如果左邊的骰子點數比此處放置的骰子點數低 [num] 點，而右邊的骰子點數比它高 [num] 點，x*Mult等於此處放置骰子的點數。"
+
+NinjaCat_title="忍者貓"
+NinjaCat_passive="每當骰子被複製時，永久獲得 +[mult]*Mult。（當前：+[r_mult]*Mult）"
+
+RocketCat_title="火箭貓"
+RocketCat_passive="賦予放置在此處的骰面 *Tl。"
+
+ParentChild_title="迷你咪"
+ParentChild_passive="賦予放置在此處的骰面 *2l。"
+
+Gogetter_title="實幹家"
+Gogetter_passive="按下計分後永久獲得 +[mult]*Mult。每次使用重擲時則失去 -[mult]*Mult。(當前: +[r_mult] *Mult)"
+
+Gargoyle_title="石像貓"
+Gargoyle_passive="托盤中或放置在此貓左邊的石骰子有 +[num]% 機會重擲。放置在右邊的石骰子則有 -[num]% 機會重擲。"
+
+
+Yinyang_title="陰陽"
+Yinyang_passive="此處放置的骰子將額外得分 [num] 次。"
+
+Counterfeiter_title="造假者"
+Counterfeiter_passive="創建 [num] 個此處放置骰子的複製品，並將它們放入骰子托盤。"
+
+Monopoly_title="大富翁"
+Monopoly_passive="如果所有6顆被放置的骰子點數都不同，永久獲得 x[mult]/2*Mult。（當前：x[r_mult]*Mult）"
+
+Xcat_title="X-貓"
+Xcat_passive="賦予放置在此處的骰面 *Xl。"
+
+Banker_title="銀行家"
+Banker_passive="回合結束後的利息收益倍增 [num] 倍（利息上限之後計算）。"
+
+King_title="王"
+King_passive="每當此處放置的骰子觸發效果時，x[mult]*Mult。"
+
+
+[Item_text]
+MouseKeychain_title="鼠掛件"
+MouseKeychain_passive="+[mult]*Mult。"
+
+WhaleKeychain_title="鯨魚掛件"
+WhaleKeychain_passive="如果此處放置的骰子是所有已放置骰子中點數最高的，+[mult]*Mult。"
+
+ParrotKeychain_title="鸚鵡掛件"
+ParrotKeychain_passive="如果此處放置的骰子與上一個得分骰子的點數相同，+*Mult等於骰子的點數。"
+
+AcornKeychain_title="橡果掛件"
+AcornKeychain_passive="如果所有放置骰子的總點數小於或等於 [num]，+[mult]*Mult。"
+
+CoconutKeychain_title="椰子掛件"
+CoconutKeychain_passive="如果所有放置骰子的總點數大於或等於 [num]，+[mult]*Mult。"
+
+BlobKeychain_title="黏液掛件"
+BlobKeychain_passive="+*Mult等於任意隨機骰子的點數。"
+
+DeerKeychain_title="鹿掛件"
+DeerKeychain_passive="在所有放置的骰子中，每與此處骰子點數相同的骰子，+[mult]*Mult。"
+
+WolfKeychain_title="狼掛件"
+WolfKeychain_passive="在所有放置的骰子中，每與此處骰子點數不同的骰子，+[mult]*Mult。"
+
+TriangleKeychain_title="三角掛件"
+TriangleKeychain_passive="如果所有放置的骰子都是奇數值，+[mult]*Mult。"
+
+SquareKeychain_title="正方形掛件"
+SquareKeychain_passive="如果所有放置的骰子都是偶數值，+[mult]*Mult。"
+
+DogSticker_title="狗貼紙"
+DogSticker_passive="+[chips]*Points。"
+
+DeerSticker_title="鹿貼紙"
+DeerSticker_passive="在所有放置的骰子中，每與此處骰子點數相同的骰子，+[chips]*Points。"
+
+WolfSticker_title="狼貼紙"
+WolfSticker_passive="在所有放置的骰子中，每與此處骰子點數不同的骰子，+[chips]*Points。"
+
+TriangleSticker_title="三角貼紙"
+TriangleSticker_passive="如果所有放置的骰子都是奇數值，+[chips]*Points。"
+
+SquareSticker_title="正方形貼紙"
+SquareSticker_passive="如果所有放置的骰子都是偶數值，+[chips]*Points。"
+
+CrowSticker_title="烏鴉貼紙"
+CrowSticker_passive="本回合獲得+*Points等於此處放置骰子的點數。（當前：+[r_chips]*Points）"
+
+HawkSticker_title="鷹貼紙"
+HawkSticker_passive="如果你擁有的*Points少於或等於 [chips]，+[chips]*Points。"
+
+Purse_title="手提包"
+Purse_passive="如果回合結束時你恰好剩餘 [num] 個計分，+$[num]。"
+
+Wallet_title="錢包"
+Wallet_passive="如果回合結束時你使用了 [num] 次或更少的重擲，+$[num]。"
+
+RightJab_title="右勾拳"
+RightJab_passive="給右側相鄰放置的骰子點數增加 [num] 點。"
+
+YarnBall_title="毛線球"
+YarnBall_passive="每當骰子在此處得分時，+[num] 個重擲。"
+
+Whetstone_title="磨刀石"
+Whetstone_passive="如果此處放置的骰子是奇數值，把骰子滾到骰面數加 [num] 的較大面。"
+
+Sandpaper_title="砂紙"
+Sandpaper_passive="如果此處放置的骰子是偶數值，把骰子滾到骰面減 [num] 的較小面。"
+
+CloverONE_title="一葉幸運草"
+CloverONE_passive="骰子生成時必滾到骰面1。"
+CloverTWO_title="二葉幸運草"
+CloverTWO_passive="骰子生成時必滾到骰面2。"
+CloverTHREE_title="三葉幸運草"
+CloverTHREE_passive="骰子生成時必滾到骰面3。"
+CloverFOUR_title="四葉幸運草"
+CloverFOUR_passive="骰子生成時必滾到骰面4。"
+CloverFIVE_title="五葉幸運草"
+CloverFIVE_passive="骰子生成時必滾到骰面5。"
+CloverSIX_title="六葉幸運草"
+CloverSIX_passive="骰子生成時必滾到骰面6。"
+
+
+BlingONE_title="閃亮-1"
+BlingONE_passive="裝備後，給骰面 1 *Bl。"
+BlingTWO_title="閃亮-2"
+BlingTWO_passive="裝備後，給骰面 2 *Bl。"
+BlingTHREE_title="閃亮-3"
+BlingTHREE_passive="裝備後，給骰面 3 *Bl."
+BlingFOUR_title="閃亮-4"
+BlingFOUR_passive="裝備後，給骰面 4 *Bl."
+BlingFIVE_title="閃亮-5"
+BlingFIVE_passive="裝備後，給骰面 5 *Bl."
+BlingSIX_title="閃亮-6"
+BlingSIX_passive="裝備後，給骰面 6 *Bl."
+
+CrossONE_title="十字架-1"
+CrossONE_passive="裝備後，給骰面 1 *El。"
+CrossTWO_title="十字架-2"
+CrossTWO_passive="裝備後，給骰面 2 *El."
+CrossTHREE_title="十字架-3"
+CrossTHREE_passive="裝備後，給骰面 3 *El."
+CrossFOUR_title="十字架-4"
+CrossFOUR_passive="裝備後，給骰面 4 *El."
+CrossFIVE_title="十字架-5"
+CrossFIVE_passive="裝備後，給骰面 5 *El."
+CrossSIX_title="十字架-6"
+CrossSIX_passive="裝備後，給骰面 6 *El."
+
+CoinONE_title="硬幣-1"
+CoinONE_passive="裝備後，給骰面 1 *l。"
+CoinTWO_title="硬幣-2"
+CoinTWO_passive="裝備後，給骰面 2 *l."
+CoinTHREE_title="硬幣-3"
+CoinTHREE_passive="裝備後，給骰面 3 *l."
+CoinFOUR_title="硬幣-4"
+CoinFOUR_passive="裝備後，給骰面 4 *l."
+CoinFIVE_title="硬幣-5"
+CoinFIVE_passive="裝備後，給骰面 5 *l."
+CoinSIX_title="硬幣-6"
+CoinSIX_passive="裝備後，給骰面 6 *l."
+
+
+GiraffeKeychain_title="長頸鹿掛件"
+GiraffeKeychain_passive="如果此處放置的骰子數值大於或等於 [num]，+[mult]*Mult。"
+
+NeedletailKeychain_title="針尾雨燕掛件"
+NeedletailKeychain_passive="如果這是按下計分後第一個觸發的被動效果，+[mult]*Mult。"
+
+NailKeychain_title="釘子掛件"
+NailKeychain_passive="如果這隻貓自回合開始以來未改變位置，+[mult]*Mult。"
+
+ElephantSticker_title="大象貼紙"
+ElephantSticker_passive="+*Points等於所有放置骰子中最高的*Points數值。"
+
+AntSticker_title="螞蟻貼紙"
+AntSticker_passive="如果所有放置骰子的總數值小於或等於 [num]，+[chips]*Points。"
+
+TortoiseSticker_title="烏龜貼紙"
+TortoiseSticker_passive="如果裝備在最後一個位置的貓身上，+[chips]*Points。"
+
+ONESticker_title="一號貼紙"
+ONESticker_passive="本回合每當擲出一點骰時，獲得 +[chips]*Points。（當前：+[r_chips]*Points）"
+TWOSticker_title="二號貼紙"
+TWOSticker_passive="本回合每當擲出二點骰時，獲得 +[chips]*Points。（當前：+[r_chips]*Points）"
+THREESticker_title="三號貼紙"
+THREESticker_passive="本回合每當擲出三點骰時，獲得 +[chips]*Points。（當前：+[r_chips]*Points）"
+FOURSticker_title="四號貼紙"
+FOURSticker_passive="本回合每當擲出四點骰時，獲得 +[chips]*Points。（當前：+[r_chips]*Points）"
+FIVESticker_title="五號貼紙"
+FIVESticker_passive="本回合每當擲出五點骰時，獲得 +[chips]*Points。（當前：+[r_chips]*Points）"
+SIXSticker_title="六號貼紙"
+SIXSticker_passive="本回合每當擲出六點骰時，獲得 +[chips]*Points。（當前：+[r_chips]*Points）"
+ZEROSticker_title="零號貼紙"
+ZEROSticker_passive="本回合每當擲出零點骰時，獲得 +[chips]*Points。（當前：+[r_chips]*Points）"
+
+Magnet_title="磁鐵"
+Magnet_passive="右側相鄰放置的骰子將翻轉至與放置在此處的骰子相同的面。"
+
+ClawMachine_title="抓娃娃機"
+ClawMachine_passive="將放置在此處的骰子與已經得分的骰子交換位置（如果有）。"
+
+
+MarbleBall_title="彈珠球"
+MarbleBall_passive="裝備後，給所有骰面 *R。"
+
+RocketONE_title="火箭-1"
+RocketONE_passive="裝備後，給骰面 1 *Tl。"
+RocketTWO_title="火箭-2"
+RocketTWO_passive="裝備後，給骰面 2 *Tl。"
+RocketTHREE_title="火箭-3"
+RocketTHREE_passive="裝備後，給骰面 3 *Tl。"
+RocketFOUR_title="火箭-4"
+RocketFOUR_passive="裝備後，給骰面 4 *Tl。"
+RocketFIVE_title="火箭-5"
+RocketFIVE_passive="裝備後，給骰面 5 *Tl。"
+RocketSIX_title="火箭-6"
+RocketSIX_passive="裝備後，給骰面 6 *Tl。"
+
+BlackCard_title="黑卡"
+BlackCard_passive="裝備後，給骰面 1、3 和 5 *S。"
+
+RedCard_title="紅卡"
+RedCard_passive="裝備後，給骰面 2、4 和 6 *H。"
+
+
+GeckoKeychain_title="壁虎掛件"
+GeckoKeychain_passive="每當該貓觸發其被動效果時，+[mult]*Mult。"
+
+GeckoSticker_title="壁虎貼紙"
+GeckoSticker_passive="每當該貓觸發其被動效果時，+[chips]*Points。"
+
+DiamondRing_title="鑽戒"
+DiamondRing_passive="x[mult]*Mult。"
+
+ShinyMedal_title="閃亮獎牌"
+ShinyMedal_passive="如果放置在此處的骰子是第一個得分的，骰子效果的效力 x[num]。"
+
+Sunstone_title="太陽石"
+Sunstone_passive="給這隻貓的所有先前被動效果增加 +[num] （只影響彩色數字）。"
+
+Goat_title="山羊符號"
+Goat_passive="如果恰好放置3個六點骰子，+[chips]*Points，+[mult]*Mult 和 +$[num]。"
+
+
+SpinningTop_title="陀螺"
+SpinningTop_passive="裝備後，給骰面4 *^R。"
+
+Matryoshka_title="俄羅斯套娃"
+Matryoshka_passive="裝備後，給所有沒有任何效果的骰面 *2l。"
+
+BifoldONE_title="雙折-1"
+BifoldONE_passive="裝備後，給骰面 1 *Xl。"
+BifoldTWO_title="雙折-2"
+BifoldTWO_passive="裝備後，給骰面 2 *Xl。"
+BifoldTHREE_title="雙折-3"
+BifoldTHREE_passive="裝備後，給骰面 3 *Xl。"
+BifoldFOUR_title="雙折-4"
+BifoldFOUR_passive="裝備後，給骰面 4 *Xl。"
+BifoldFIVE_title="雙折-5"
+BifoldFIVE_passive="裝備後，給骰面 5 *Xl。"
+BifoldSIX_title="雙折-6"
+BifoldSIX_passive="裝備後，給骰面 6 *Xl。"
+
+
+
+[Boonbane_text]
+Boon_bonus="獲得骰型"
+Boon0="+1 計分。"
+Boon1="+2 重擲。"
+Boon2="回合結束時，獎金 +2$。"
+Boon3="所有現有骰型 +5*Points，+1*Mult。"
+Boon4="每計分 +4*Mult。"
+Boon5="給現金額 $ 翻倍。"
+
+Bane0="在回合中貓不再能改變位置。"
+Bane1="每回合最多只能重擲 5 次。"
+Bane2="回合結束後，獎金 -$1，且不再能獲得任何利息。"
+Bane3="每計分 -20*Points。"
+Bane4="每回合隨機一個骰型被作廢。"
+Bane5="每當同時重擲 4 個或更多骰子時，-2*Mult。"
+Bane6="重擲時最多只能鎖定 3 個骰子。"
+
+[Ticket_text]
+Bonus_valueup_title="骰型提升"
+Bonus_valueup_body="選擇一個骰型，賦予 +6*Points +2*Mult。"
+Bonus_valuetransfer_title="骰型轉移"
+Bonus_valuetransfer_body="選擇一個骰型，+8*Points，+2*Mult。所有其他現有骰型 -2*Points，-1*Mult。"
+Bonus_percentageup_title="骰型提升"
+Bonus_percentageup_body="選擇一個骰型，+15%（向上取整，上限為 +20*Points，+5*Mult）。"
+Remove_bonus_title="骰型兌現"
+Remove_bonus_body="移除一個骰型以獲得 $。"
+
+Bonus_reducepoints_title="分數犧牲"
+Bonus_reducepoints_body="每計分 -10*Points。獲得 $。"
+Bonus_reducemult_title="倍數犧牲"
+Bonus_reducemult_body="每計分 -2*Mult。獲得 $。"
+
+Discount_reroll_title="重擲折扣："
+Discount_reroll_body="商店重擲從 $0 開始。"
+Bonus_lowroll_body="(+40*Points, +7*Mult)"
+Bonus_highroll_body="(+40*Points, +7*Mult)"
+Bonus_straight_body="(+40*Points, +8*Mult)"
+Bonus_empty_body="(+100*Points, +10*Mult)"
+Add_play1_title="計分+"
+Add_play1_body="+1 計分。"
+Add_reroll1_title="重擲+"
+Add_reroll1_body="+1 重擲。"
+Remove_bane_title="消除禍根"
+Remove_bane_body="移除一個禍（移除的禍將重新作為選項出現）。"
