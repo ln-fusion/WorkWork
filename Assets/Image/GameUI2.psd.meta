@@ -107,7 +107,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 3839
+      y: 8445
       width: 7068
       height: 1081
     spriteID: d5474fbf36282ee41a6852db4f452e23
@@ -118,7 +118,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 3839}
+    uvTransform: {x: 4, y: 8445}
     spritePosition: {x: 180, y: 3436}
   - name: "\u7EC4\u5408\u63D0\u793A"
     originalName: 
@@ -128,7 +128,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 7080
-      y: 3839
+      y: 8445
       width: 674
       height: 589
     spriteID: cee907749b6a3ef478ee036a214ca8af
@@ -139,7 +139,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 7080, y: 3839}
+    uvTransform: {x: 7080, y: 8445}
     spritePosition: {x: 2178, y: 3853}
   - name: Setting
     originalName: 
@@ -148,8 +148,8 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 7636
-      y: 4
+      x: 4
+      y: 11334
       width: 493
       height: 508
     spriteID: bf1df5858861c6c4e9d930b23edc9157
@@ -160,7 +160,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 7636, y: 4}
+    uvTransform: {x: 4, y: 11334}
     spritePosition: {x: 7246, y: 3890}
   - name: PannelUp
     originalName: 
@@ -170,7 +170,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 4928
+      y: 9534
       width: 7710
       height: 628
     spriteID: 1c0863ff772c9fc43abcfa76ca1f9dfc
@@ -181,7 +181,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 4928}
+    uvTransform: {x: 4, y: 9534}
     spritePosition: {x: 176, y: 3827}
   - name: Done
     originalName: 
@@ -191,7 +191,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 908
-      y: 5564
+      y: 10170
       width: 1115
       height: 416
     spriteID: 0925d8c284ba3ec41805fe4487d561e6
@@ -202,7 +202,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 908, y: 5564}
+    uvTransform: {x: 908, y: 10170}
     spritePosition: {x: 6444, y: 584}
   - name: Roll
     originalName: 
@@ -212,7 +212,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 2031
-      y: 5564
+      y: 10170
       width: 1115
       height: 416
     spriteID: c38cd0387bdba754a949fa31c9d3ec16
@@ -223,9 +223,9 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 2031, y: 5564}
+    uvTransform: {x: 2031, y: 10170}
     spritePosition: {x: 6444, y: 137}
-  - name: Fans
+  - name: "\u67E5\u770B \u4EFB\u52A1"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -233,10 +233,10 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 5564
-      width: 896
-      height: 1156
-    spriteID: 36c3164db17b8c94f8edf1b8069eb90a
+      y: 10170
+      width: 140
+      height: 150
+    spriteID: 7d7d7d59473ab1a42bbfb7386e5f111f
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -244,7 +244,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 5564}
+    uvTransform: {x: 4, y: 10170}
     spritePosition: {x: 52, y: 0}
   - name: PanelDown
     originalName: 
@@ -254,7 +254,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 2605
+      y: 7211
       width: 7710
       height: 1226
     spriteID: d55f415f9a25d284eaf2dff0e588319c
@@ -265,9 +265,30 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 2605}
+    uvTransform: {x: 4, y: 7211}
     spritePosition: {x: 166, y: 45}
-  - name: Tool
+  - name: "projector_screen \u62F7\u8D1D 6"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4529
+      width: 7986
+      height: 2674
+    spriteID: 197da61b37332a644945540027386ad6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4529}
+    spritePosition: {x: 52, y: 1156}
+  - name: "Back \u62F7\u8D1D"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -276,9 +297,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 7624
-      height: 2593
-    spriteID: 7a2a845435718e9479bafce4be2f7980
+      width: 8090
+      height: 4517
+    spriteID: dacbfd7223372f346b7aed82134296aa
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -287,7 +308,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-    spritePosition: {x: 195, y: 1605}
+    spritePosition: {x: 0, y: 0}
   characterData:
     bones: []
     parts: []
@@ -354,7 +375,7 @@ ScriptedImporter:
     parentIndex: -1
     spriteID: d5474fbf36282ee41a6852db4f452e23
     layerID: 164
-    mosaicPosition: {x: 4, y: 3839}
+    mosaicPosition: {x: 4, y: 8445}
     flatten: 0
     isImported: 1
     isVisible: 1
@@ -364,7 +385,7 @@ ScriptedImporter:
     parentIndex: -1
     spriteID: cee907749b6a3ef478ee036a214ca8af
     layerID: 127
-    mosaicPosition: {x: 7080, y: 3839}
+    mosaicPosition: {x: 7080, y: 8445}
     flatten: 0
     isImported: 1
     isVisible: 1
@@ -374,7 +395,7 @@ ScriptedImporter:
     parentIndex: -1
     spriteID: bf1df5858861c6c4e9d930b23edc9157
     layerID: 254
-    mosaicPosition: {x: 7636, y: 4}
+    mosaicPosition: {x: 4, y: 11334}
     flatten: 0
     isImported: 1
     isVisible: 1
@@ -384,7 +405,7 @@ ScriptedImporter:
     parentIndex: -1
     spriteID: 1c0863ff772c9fc43abcfa76ca1f9dfc
     layerID: 82
-    mosaicPosition: {x: 4, y: 4928}
+    mosaicPosition: {x: 4, y: 9534}
     flatten: 0
     isImported: 1
     isVisible: 1
@@ -394,7 +415,7 @@ ScriptedImporter:
     parentIndex: -1
     spriteID: 0925d8c284ba3ec41805fe4487d561e6
     layerID: 144
-    mosaicPosition: {x: 908, y: 5564}
+    mosaicPosition: {x: 908, y: 10170}
     flatten: 0
     isImported: 1
     isVisible: 1
@@ -404,17 +425,17 @@ ScriptedImporter:
     parentIndex: -1
     spriteID: c38cd0387bdba754a949fa31c9d3ec16
     layerID: 113
-    mosaicPosition: {x: 2031, y: 5564}
+    mosaicPosition: {x: 2031, y: 10170}
     flatten: 0
     isImported: 1
     isVisible: 1
-  - name: Fans
-    spriteName: Fans
+  - name: "\u67E5\u770B \u4EFB\u52A1"
+    spriteName: "\u67E5\u770B \u4EFB\u52A1"
     isGroup: 0
     parentIndex: -1
-    spriteID: 36c3164db17b8c94f8edf1b8069eb90a
-    layerID: 116
-    mosaicPosition: {x: 4, y: 5564}
+    spriteID: 7d7d7d59473ab1a42bbfb7386e5f111f
+    layerID: 294
+    mosaicPosition: {x: 4, y: 10170}
     flatten: 0
     isImported: 1
     isVisible: 1
@@ -424,16 +445,26 @@ ScriptedImporter:
     parentIndex: -1
     spriteID: d55f415f9a25d284eaf2dff0e588319c
     layerID: 201
-    mosaicPosition: {x: 4, y: 2605}
+    mosaicPosition: {x: 4, y: 7211}
     flatten: 0
     isImported: 1
     isVisible: 1
-  - name: Tool
-    spriteName: Tool
+  - name: "projector_screen \u62F7\u8D1D 6"
+    spriteName: "projector_screen \u62F7\u8D1D 6"
     isGroup: 0
     parentIndex: -1
-    spriteID: 7a2a845435718e9479bafce4be2f7980
-    layerID: 271
+    spriteID: 197da61b37332a644945540027386ad6
+    layerID: 314
+    mosaicPosition: {x: 4, y: 4529}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "Back \u62F7\u8D1D"
+    spriteName: "Back \u62F7\u8D1D"
+    isGroup: 0
+    parentIndex: -1
+    spriteID: dacbfd7223372f346b7aed82134296aa
+    layerID: 322
     mosaicPosition: {x: 4, y: 4}
     flatten: 0
     isImported: 1

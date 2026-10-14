@@ -1,0 +1,6 @@
+
+Algorithm : SHA256
+Hash      : AB2F11A0DD37601B04885BD183151210010396F6D739721A29C6391B0924B0ED
+Path      : E:\Git1\WorkWork\Reference\cat\data.win
+
+

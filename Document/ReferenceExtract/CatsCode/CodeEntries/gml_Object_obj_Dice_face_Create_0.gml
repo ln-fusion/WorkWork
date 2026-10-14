@@ -1,0 +1,14 @@
+Master = -4;
+Skip = 1;
+Moused_over = 0;
+Shop_cat = 0;
+Dice_face = 0;
+Dice_value = 0;
+Dice_effect = [];
+Selected = 0;
+depth = layer_get_depth("Dice") - 2;
+currentspr = spr_Dice_value;
+subimg = 0;
+subimg_outline = 0;
+rotate = 0;
+alpha = 1;

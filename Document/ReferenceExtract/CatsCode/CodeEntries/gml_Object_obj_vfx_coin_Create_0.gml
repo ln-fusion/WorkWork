@@ -1,0 +1,11 @@
+fric = 0.0128;
+grav = 0.2;
+grav_max = 6.8;
+vx = 0;
+vy = 0;
+depth = layer_get_depth("UI") - 1;
+currentspr = spr_vfx_coin;
+subimg = 0;
+xscale = choose(-1, 1);
+yscale = 1;
+alpha = 1;

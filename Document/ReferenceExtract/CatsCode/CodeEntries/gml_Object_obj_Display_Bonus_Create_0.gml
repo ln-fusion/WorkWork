@@ -1,0 +1,10 @@
+Master = -4;
+Bonus_type = -4;
+Bonus_num = 0;
+Open_by = obj_Button_Bonus.Open_by;
+Open_num = obj_Button_Bonus.Open_num;
+Nullified = 0;
+Text = "";
+Text2 = "";
+currentspr = spr_Bonus_display;
+subimg = 0;

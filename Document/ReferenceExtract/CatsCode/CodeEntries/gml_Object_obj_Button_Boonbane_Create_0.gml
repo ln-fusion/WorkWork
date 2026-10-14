@@ -1,0 +1,12 @@
+x = 42;
+y = 64;
+Selected = 0;
+Open_list = 0;
+Open_by = -4;
+Open_num = -4;
+ini_open(global.lang_file);
+Text = ini_read_string("Base_text", "Boonbane_title", "");
+ini_close();
+currentspr = spr_Button_Boonbane;
+subimg = 0;
+shift_y = 0;

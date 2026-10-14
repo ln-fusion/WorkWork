@@ -1,0 +1,10 @@
+Show = 1;
+ini_open(global.lang_file);
+Text_hide = ini_read_string("Base_text", "Hide_title", "");
+Text_show = ini_read_string("Base_text", "Show_title", "");
+ini_close();
+Text = Text_hide;
+depth = layer_get_depth("UI") - 1;
+currentspr = spr_Button_Score;
+subimg = 0;
+shift_y = 0;

@@ -1,0 +1,18 @@
+Master = -4;
+counter = 0;
+counter_max = 2;
+Sound_create = 0;
+scoreboard_system = part_system_create();
+scoreboard_emitter = part_emitter_create(scoreboard_system);
+scoreboard_type = part_type_create();
+part_type_shape(scoreboard_type, 0);
+part_system_layer(scoreboard_system, "UI");
+part_type_color2(scoreboard_type, 8830955, 2708155);
+part_type_alpha3(scoreboard_type, 1, 0.6, 0);
+part_type_life(scoreboard_type, global.deltaTime * 18, global.deltaTime * 28);
+part_type_size(scoreboard_type, 2.4, 4.2, -0.002, 0.04);
+part_type_speed(scoreboard_type, 4, 8, -0.004, 0);
+part_type_direction(scoreboard_type, 20, 160, 0, 2);
+part_type_gravity(scoreboard_type, 0.48, 270);
+part_emitter_region(scoreboard_system, scoreboard_emitter, 166, 450, 18, 18, 3, 0);
+part_emitter_burst(scoreboard_system, scoreboard_emitter, scoreboard_type, floor(global.Sparks_spd));

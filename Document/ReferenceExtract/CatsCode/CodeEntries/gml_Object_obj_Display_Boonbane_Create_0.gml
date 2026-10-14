@@ -1,0 +1,12 @@
+Master = -4;
+BoonBane_type = 0;
+List_num = 0;
+Open_by = obj_Button_Boonbane.Open_by;
+Open_num = obj_Button_Boonbane.Open_num;
+Text = "";
+ini_open(global.lang_file);
+Text_Points = ini_read_string("Mechanics_text", "Points_text", "");
+Text_Mult = ini_read_string("Mechanics_text", "Mult_text", "");
+ini_close();
+currentspr = spr_Boon_display;
+subimg = 0;

@@ -1,0 +1,18 @@
+Master = -4;
+counter = 0;
+counter_max = 4;
+Sound_create = 0;
+pluspoints_system = part_system_create();
+pluspoints_emitter = part_emitter_create(pluspoints_system);
+pluspoints_type = part_type_create();
+part_type_sprite(pluspoints_type, spr_vfx_pluspoints, true, true, false);
+part_system_layer(pluspoints_system, "UI");
+part_type_alpha3(pluspoints_type, 1, 0.7, 0);
+part_type_life(pluspoints_type, global.deltaTime * 36, global.deltaTime * 48);
+part_type_size(pluspoints_type, 1, 1, 0, 0);
+part_type_speed(pluspoints_type, 0.5, 0.8, -0.005, 0);
+part_type_direction(pluspoints_type, 90, 90, 0, 0);
+part_emitter_region(pluspoints_system, pluspoints_emitter, 40, 100, 80, 132, 1, 1);
+part_emitter_stream(pluspoints_system, pluspoints_emitter, pluspoints_type, 2);
+part_system_automatic_draw(pluspoints_system, false);
+surf = surface_create(140, 140);

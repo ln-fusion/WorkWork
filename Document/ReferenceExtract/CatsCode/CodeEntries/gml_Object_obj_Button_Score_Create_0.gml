@@ -1,0 +1,10 @@
+x = room_width - 47;
+y = 209;
+ini_open(global.lang_file);
+Text_score = ini_read_string("Base_text", "Score_title", "");
+Text_exit = ini_read_string("Base_text", "Exit_title", "");
+ini_close();
+Text = Text_score;
+currentspr = spr_Button_Score;
+subimg = 2;
+shift_y = 0;

@@ -1,0 +1,12 @@
+Change = 0;
+x_spd = 0.128;
+y_spd = -0.128;
+x_offset = 0;
+y_offset = 0;
+depth = 2000;
+sprite_size = 256;
+currentspr = spr_bg_set0;
+subimg = 1;
+previous_spr = spr_bg_set0;
+previous_subimg = 1;
+alpha = 1;

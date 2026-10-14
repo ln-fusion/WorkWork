@@ -1,0 +1,13 @@
+Progress = 0;
+Setup = 0;
+counter = 0;
+counter_max = 70;
+depth = layer_get_depth("UI") - 1;
+ini_open(global.lang_file);
+Text_proceed = ini_read_string("Tutorial_text", "Proceed_body", "");
+ini_close();
+Text1 = "";
+Text2 = "";
+Show = 0;
+currentspr = spr_UI_Cat_body3;
+subimg = 0;

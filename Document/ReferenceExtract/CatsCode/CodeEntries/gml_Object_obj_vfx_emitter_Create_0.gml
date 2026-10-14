@@ -1,0 +1,10 @@
+Master = -4;
+sprite_emit = 0;
+x_side = choose(-1, 1);
+random_x = 0;
+random_y = 0;
+random_scale = choose(0.3, 0.4, 0.5, 0.6, 0.8);
+emit = 0;
+counter = 0;
+counter_max = irandom_range(9, 12);
+Sound_create = 0;

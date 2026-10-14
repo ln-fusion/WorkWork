@@ -1,0 +1,13 @@
+Moused_over = 0;
+Boon_type = -4;
+Bane_type = -4;
+Text_boon = "";
+Text_bane = "";
+Text = "";
+depth = layer_get_depth("Base") - 1;
+ini_open(global.lang_file);
+Text_Points = ini_read_string("Mechanics_text", "Points_text", "");
+Text_Mult = ini_read_string("Mechanics_text", "Mult_text", "");
+ini_close();
+currentspr = spr_Boonbane_choose;
+subimg = 0;

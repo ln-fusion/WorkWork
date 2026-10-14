@@ -1,0 +1,14 @@
+x = 47;
+y = 237;
+Dice_total = 0;
+Set_item_x = 202;
+Set_item_gap = 48;
+Set_item_y = 46;
+Set_ticket_x = 412;
+Set_ticket_y = 60;
+Create_cover = 0;
+ini_open(global.lang_file);
+Text_body1 = ini_read_string("Base_text", "Boonbane_body1", "");
+Text_body2 = ini_read_string("Base_text", "Boonbane_body2", "");
+ini_close();
+Text = Text_body1;

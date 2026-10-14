@@ -1,0 +1,10 @@
+Ready = 0;
+Proceed = 0;
+wait_counter = 0;
+ini_open(global.lang_file);
+Text = ini_read_string("Base_text", "Newgame_title", "");
+ini_close();
+currentspr = spr_Titlescreen_start_ready;
+subimg = 0;
+shift_y = 0;
+alpha = 0;

@@ -1,0 +1,12 @@
+Master = -4;
+Creation_num = 0;
+Setup = 0;
+Box_width = 142;
+Box_height = 0;
+Text_body = "";
+ini_open(global.lang_file);
+Text_Points = ini_read_string("Mechanics_text", "Points_text", "");
+Text_Mult = ini_read_string("Mechanics_text", "Mult_text", "");
+ini_close();
+currentspr = spr_UI_Dice_body;
+subimg = 0;

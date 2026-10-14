@@ -1,0 +1,12 @@
+x = (room_width / 2) + 14;
+y += 16;
+counter = 0;
+counter_max = 48;
+Anim_state = -1;
+target_scale = 1;
+scale_spdMax = 0.034;
+scale_spd = scale_spdMax;
+currentspr = spr_Title;
+subimg = 0;
+xscale = 1;
+yscale = 1;

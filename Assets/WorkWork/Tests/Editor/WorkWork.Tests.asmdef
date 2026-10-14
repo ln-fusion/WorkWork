@@ -1,0 +1,1 @@
+{"name":"WorkWork.Tests","references":["WorkWork.Core","WorkWork.Runtime"],"includePlatforms":["Editor"],"optionalUnityReferences":["TestAssemblies"]}

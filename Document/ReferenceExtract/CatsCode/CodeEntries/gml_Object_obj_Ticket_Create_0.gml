@@ -1,0 +1,11 @@
+Ticket_type = -4;
+Ticket_cost = 0;
+Ticket_buy = 0;
+Text_head = "";
+Text_body = "";
+ini_open(global.lang_file);
+Text_Points = ini_read_string("Mechanics_text", "Points_text", "");
+Text_Mult = ini_read_string("Mechanics_text", "Mult_text", "");
+ini_close();
+currentspr = spr_Ticket;
+subimg = 0;
