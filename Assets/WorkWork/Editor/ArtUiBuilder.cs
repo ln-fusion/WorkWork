@@ -34,8 +34,6 @@ namespace WorkWork.Editor
                 Move(g.employeeButtons[i].transform,board.transform,x,255,246,194,true);
                 g.employeeButtons[i].GetComponent<Image>().color=Color.clear;
                 Move(g.employeeIcons[i].transform,g.employeeButtons[i].transform,0,0,246,194,false);
-                Move(g.employeeTexts[i].transform,g.employeeButtons[i].transform,5,167,236,23,true);
-                g.employeeTexts[i].fontSize=15; g.employeeTexts[i].color=Brown;
                 Move(g.slotButtons[i].transform,board.transform,x+50,475,146,183,true);
                 g.slotButtons[i].GetComponent<Image>().color=Color.clear;
                 g.slotButtons[i].GetComponentInChildren<TMP_Text>().text="";
@@ -56,8 +54,8 @@ namespace WorkWork.Editor
             shell.plays=Text(board.transform,"Remaining Weeks","4",1453,713,60,72,45);
             shell.redraws=Text(board.transform,"Redraw Count","4",1453,805,60,58,45);
             shell.dateNumbers=new[]{Text(board.transform,"Year","1",162,40,35,44,30),Text(board.transform,"Month","1",218,40,35,44,30),Text(board.transform,"Week","1",200,91,35,40,30)};
-            // Tiny imported task layer is retained in the art; this separate hit area is reserved.
-            var tasks=Button(board.transform,"Tasks Reserved","查看\n任务",18,703,164,177,Paper); tasks.interactable=false;
+            var tasks=Button(board.transform,"Task","查看\n任务",18,703,164,177,Paper);
+            UnityEventTools.AddPersistentListener(tasks.onClick,shell.OpenTasks);
             var settingsButton=Button(board.transform,"Settings Button","",1420,18,105,100,Color.clear);
             UnityEventTools.AddPersistentListener(settingsButton.onClick,shell.OpenSettings);
             BindArt(g);
@@ -89,6 +87,7 @@ namespace WorkWork.Editor
             ConfigureAllButtons(g);
             EditorUtility.SetDirty(g); EditorUtility.SetDirty(shell); if(g.theme!=null) EditorUtility.SetDirty(g.theme);
             AssetDatabase.SaveAssets(); EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+            MusicSetup.Configure();CurrencyIconSetup.Configure();TaskPanelBuilder.Configure();TaskChoiceBuilder.Configure();
             Debug.Log("WORKWORK_ART_UI_READY");
         }
         static void BindArt(GameController g)

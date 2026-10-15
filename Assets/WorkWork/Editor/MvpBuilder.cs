@@ -66,14 +66,14 @@ namespace WorkWork.Editor
             Label(canvasObj.transform,"Board Help","从左到右结算 / 拖动员工交换工位",1030,135,520,30,17,Muted);
             game.slotRoots = new RectTransform[6]; game.handRoots = new RectTransform[6];
             game.slotButtons = new Button[6]; game.employeeButtons = new Button[6]; game.itemButtons = new Button[18];
-            game.employeeTexts = new TMP_Text[6]; game.itemTexts = new TMP_Text[18]; game.employeeIcons = new Image[6]; game.itemIcons = new Image[18];
+            game.itemTexts = new TMP_Text[18]; game.employeeIcons = new Image[6]; game.itemIcons = new Image[18];
             for (int i = 0; i < 6; i++)
             {
                 float x = 376 + i * 198;
                 var workstation = Box(canvasObj.transform,"Workstation " + (i+1),x,180,184,290,Panel);
                 var drop = workstation.AddComponent<DropZone>(); drop.controller = game; drop.slot = i;
                 game.employeeButtons[i] = Button(workstation.transform,"Employee","",8,10,168,46,new Color(.17f,.22f,.29f));
-                game.employeeTexts[i] = game.employeeButtons[i].GetComponentInChildren<TMP_Text>(); game.employeeTexts[i].fontSize = 18;
+                UnityEngine.Object.DestroyImmediate(game.employeeButtons[i].GetComponentInChildren<TMP_Text>().gameObject);
                 game.employeeButtons[i].gameObject.AddComponent<DragToken>(); AddDrop(game.employeeButtons[i].gameObject,game,i);
                 game.employeeIcons[i] = Icon(game.employeeButtons[i].transform,"Portrait",3,4,32,36);
                 for(int j=0;j<3;j++)

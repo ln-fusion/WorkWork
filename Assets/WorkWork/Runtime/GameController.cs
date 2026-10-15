@@ -30,7 +30,7 @@ namespace WorkWork
         public TMP_Text header, totals, preview, status, history, resultText, shopTitle;
         public RectTransform[] handRoots, slotRoots;
         public Button[] slotButtons, employeeButtons, itemButtons, offerButtons;
-        public TMP_Text[] employeeTexts, itemTexts, offerTexts, offerPrices;
+        public TMP_Text[] itemTexts, offerTexts, offerPrices;
         public Image[] employeeIcons, itemIcons, offerIcons;
         public GameObject shopPanel, resultPanel;
         public Button redrawButton, scoreButton, refreshButton, nextMonthButton, resultButton;
@@ -178,8 +178,7 @@ namespace WorkWork
                 foreach (Transform child in slotRoots[i]) Destroy(child.gameObject);
                 if (i < s.hand.Count) AddCard(s.hand[i], handRoots[i], TokenKind.HandCard, s.hand[i].id);
                 if (s.slots[i] != null) AddCard(s.slots[i], slotRoots[i], TokenKind.SlotCard, i);
-                // 工位 Label 已移除，停用名称/编号更新，继续更新员工图片。
-                // BindContent(s.employees[i], employeeTexts[i], employeeIcons[i], "空工位", i);
+                // 工位名称在右键详情中显示。
                 BindContent(s.employees[i], null, employeeIcons[i], "空工位", i);
 
                 SetToken(employeeButtons[i], TokenKind.Employee, i, s.employees[i]);
