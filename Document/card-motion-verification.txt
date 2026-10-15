@@ -1,0 +1,1 @@
+PASS: draw/discard, rotated card-bottom bound, Landing Lift 0/50, copy sends independent snapshot upward while original stays visible, cleanup and restore

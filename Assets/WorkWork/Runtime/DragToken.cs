@@ -21,7 +21,7 @@ namespace WorkWork
         public GameObject Preview => ghost;
         bool CanDrag()
         {
-            if(controller==null || controller.Session==null) return false;
+            if(controller==null || controller.Session==null || controller.IsBusy) return false;
             var state=controller.Session.State;
             if(kind==TokenKind.HandCard || kind==TokenKind.SlotCard) return state.phase==Phase.Playing && GetComponent<CardView>()?.BoundCard!=null;
             if(string.IsNullOrEmpty(contentId)) return false;
@@ -69,6 +69,8 @@ namespace WorkWork
             sourceGroup=GetComponent<CanvasGroup>();if(sourceGroup==null) sourceGroup=gameObject.AddComponent<CanvasGroup>();
             sourceAlpha=sourceGroup.alpha;sourceBlocksRaycasts=sourceGroup.blocksRaycasts;
             sourceGroup.alpha=0;sourceGroup.blocksRaycasts=false;
+            controller.ShowDropHints(this);
+            controller.BeginDeploymentTilt(this);
             OnDrag(e);
         }
         public void OnPointerClick(PointerEventData e)
@@ -86,7 +88,7 @@ namespace WorkWork
         public void OnEndDrag(PointerEventData e) {e.eligibleForClick=false;FinishDrag();}
         void FinishDrag()
         {
-            if(Current==this) Current=null;
+            if(Current==this) {controller?.HideDropHints();controller?.EndDeploymentTilt();Current=null;}
             if(sourceGroup!=null) {sourceGroup.alpha=sourceAlpha;sourceGroup.blocksRaycasts=sourceBlocksRaycasts;sourceGroup=null;}
             if(ghost!=null) {ghost.SetActive(false);Destroy(ghost);ghost=null;}
         }

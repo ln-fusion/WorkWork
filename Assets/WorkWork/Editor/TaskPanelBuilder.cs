@@ -45,6 +45,7 @@ namespace WorkWork.Editor
                 var close=Image(root.transform,"Close",730,610,140,42,new Color(1,.91f,.72f));Button(close,shell.CloseTasks);Text(close.transform,game,"Label","关闭",0,0,140,42,24).alignment=TextAlignmentOptions.Center;
                 root.SetActive(false);EditorUtility.SetDirty(panel);
             }
+            AddCurrentCash(game);
             // Bind the existing hand-adjusted task hit area without moving it.
             shell.taskPanel.empty.SetActive(game.catalog.rules.tasks==null || game.catalog.rules.tasks.Count==0);
             var trigger=game.GetComponentsInChildren<Transform>(true).FirstOrDefault(t=>t.name=="Task" || t.name=="Tasks Reserved");
@@ -55,6 +56,29 @@ namespace WorkWork.Editor
             EditorUtility.SetDirty(button);EditorUtility.SetDirty(graphic);EditorUtility.SetDirty(shell);
             EditorSceneManager.MarkSceneDirty(game.gameObject.scene);EditorSceneManager.SaveScene(game.gameObject.scene);AssetDatabase.SaveAssets();
             Debug.Log("WORKWORK_TASK_PANEL_READY");
+        }
+        [MenuItem("WorkWork/Add Task Panel Current Cash")]
+        public static void AddCurrentCash()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode) return;
+            var g=Object.FindObjectOfType<GameController>();AddCurrentCash(g);
+            EditorSceneManager.MarkSceneDirty(g.gameObject.scene);EditorSceneManager.SaveScene(g.gameObject.scene);
+        }
+        static void AddCurrentCash(GameController game)
+        {
+            var panel=game.GetComponent<GameShell>().taskPanel;
+            if(panel.currentCash==null)
+            {
+                var row=(RectTransform)panel.rows[0].transform;
+                var label=Text(panel.transform,game,"Current Cash","目前资金 "+VisualTheme.CurrencyIcon+game.catalog.rules.initialCash,0,0,row.rect.width,32,24);
+                var rect=(RectTransform)label.transform;
+                rect.anchorMin=row.anchorMin;rect.anchorMax=row.anchorMax;rect.pivot=row.pivot;
+                rect.anchoredPosition=row.anchoredPosition+new Vector2(0,42);
+                rect.sizeDelta=new Vector2(row.rect.width,32);
+                panel.currentCash=label;
+            }
+            panel.currentCash.spriteAsset=game.theme.currencySprites;
+            EditorUtility.SetDirty(panel);EditorUtility.SetDirty(panel.currentCash);
         }
         [MenuItem("WorkWork/Preview/Task Panel")]
         public static void Preview()

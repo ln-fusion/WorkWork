@@ -1,0 +1,1 @@
+PASS: reveal and retract, interaction lock, hides after retract, reopen and cancellation restore original layout

@@ -18,6 +18,17 @@ namespace WorkWork
         public GameObject winGroup, loseGroup;
         public TMP_Text[] winNumbers;
         public TMP_Text[] loseNumbers;
+        [Min(.01f)] public float resultRollDuration=.45f;
+        [Min(0)] public float resultRevealDelay=.15f;
+        [Min(.01f)] public float resultRollInterval=.035f;
+        [Min(.1f)] public float shopHintPulsePeriod=1.6f;
+        [Range(0,1)] public float shopHintMinAlpha=.35f;
+        CanvasGroup shopHintGroup;
+        float shopHintElapsed;
+        public bool IsResultRevealing {get;private set;}
+        Coroutine resultRoutine;
+        int revealedMonth=-1;
+        readonly System.Random resultRandom=new System.Random();
         public Button restart;
         public GameObject patternHelp;
         public TMP_Text[] patternNames, patternChips, patternMultipliers;
@@ -58,6 +69,8 @@ namespace WorkWork
         public void BeginPlay() { CloseTasks();ClosePatternHelp();game.detailsTooltip?.Hide(); CloseSettings(); welcome.SetActive(false); board.SetActive(true); PlayMusic(true); }
         public void ShowWelcome()
         {
+            if(IsResultRevealing || game.IsEntering)return;
+            game.CancelScoring();
             CloseTasks();
             ClosePatternHelp();game.detailsTooltip?.Hide();CloseSettings(); board.SetActive(false); welcome.SetActive(true);
             continueButton.interactable=game.HasSave;
@@ -72,18 +85,40 @@ namespace WorkWork
         }
         public void OpenSettings()
         {
+            if(IsResultRevealing || game.IsEntering)return;
             CloseTasks();
             game.detailsTooltip?.Hide();
             ClosePatternHelp();previousTimeScale=Time.timeScale; Time.timeScale=0;
             settings.SetActive(true); settings.transform.SetAsLastSibling();
         }
         public void CloseSettings() { settings.SetActive(false); Time.timeScale=previousTimeScale; }
-        void OnDisable() { if(settings!=null && settings.activeSelf) Time.timeScale=previousTimeScale; }
+        void OnDisable() { if(settings!=null && settings.activeSelf) Time.timeScale=previousTimeScale; CancelResultReveal();revealedMonth=-1;ResetShopHint(); }
+        void ResetShopHint()
+        {
+            shopHintElapsed=0;
+            if(shopHintGroup!=null)shopHintGroup.alpha=1;
+        }
+        void PulseShopHint()
+        {
+            if(game==null || game.resultButton==null || !game.resultButton.gameObject.activeInHierarchy || !game.resultButton.interactable || IsResultRevealing)
+            {ResetShopHint();return;}
+            if(shopHintGroup==null)
+            {
+                var label=game.resultButton.GetComponentInChildren<TMP_Text>(true);
+                if(label==null)return;
+                shopHintGroup=label.GetComponent<CanvasGroup>();
+                if(shopHintGroup==null)shopHintGroup=label.gameObject.AddComponent<CanvasGroup>();
+            }
+            shopHintElapsed+=Time.deltaTime;
+            float wave=(1+Mathf.Cos(shopHintElapsed*Mathf.PI*2/Mathf.Max(.1f,shopHintPulsePeriod)))*.5f;
+            shopHintGroup.alpha=Mathf.Lerp(shopHintMinAlpha,1,wave);
+        }
         void Update()
         {
+            PulseShopHint();
             if(initialized && taskChoicePanel!=null)
             {
-                bool show=game.Session.State.phase==Phase.TaskChoice && !welcome.activeSelf && !settings.activeSelf;
+                bool show=!game.IsBusy && game.Session.State.phase==Phase.TaskChoice && !welcome.activeSelf && !settings.activeSelf;
                 if(taskChoicePanel.gameObject.activeSelf!=show) taskChoicePanel.gameObject.SetActive(show);
             }
             if(initialized && Input.GetKeyDown(KeyCode.Escape)) { if(taskPanel!=null && taskPanel.gameObject.activeSelf) {CloseTasks();return;} if(patternHelp!=null && patternHelp.activeSelf) {ClosePatternHelp();return;} if(game.detailsTooltip!=null && game.detailsTooltip.IsVisible) {game.detailsTooltip.Hide();return;} if(settings.activeSelf) CloseSettings(); else OpenSettings(); }
@@ -122,14 +157,59 @@ namespace WorkWork
             loseGroup.SetActive(state.phase==Phase.Failed);
             if(won)
             {
-                // Summary freezes reward components before money is credited.
-                winNumbers[0].text=state.target.ToString("N0");
-                winNumbers[1].text=Math.Max(0,state.monthScore-state.target).ToString("N0");
-                winNumbers[2].text=state.lastInterest.ToString(); winNumbers[3].text=state.lastStaffIncome.ToString();
-                winNumbers[4].text=state.lastIncome.ToString();
+                if(game.IsEntering)
+                {
+                    foreach(var label in winNumbers)label.text="";
+                    game.resultButton.gameObject.SetActive(false);game.resultButton.interactable=false;return;
+                }
+                int bonus=GameSession.ExcessReward(state.monthScore,state.target);
+                long[] values={state.lastIncome-bonus-state.lastInterest-state.lastStaffIncome,bonus,state.lastInterest,state.lastStaffIncome,state.lastIncome};
+                if(Application.isPlaying && revealedMonth!=state.month)
+                {
+                    CancelResultReveal();revealedMonth=state.month;
+                    resultRoutine=StartCoroutine(RevealResult(values));
+                }
+                else if(!IsResultRevealing)for(int i=0;i<5;i++)winNumbers[i].text=values[i].ToString("N0");
+                game.resultButton.gameObject.SetActive(!IsResultRevealing);
+                game.resultButton.interactable=!IsResultRevealing;
             }
-            else { loseNumbers[0].text=state.target.ToString("N0"); loseNumbers[1].text=state.monthScore.ToString("N0"); }
+            else { CancelResultReveal();revealedMonth=-1;loseNumbers[0].text=state.target.ToString("N0"); loseNumbers[1].text=state.monthScore.ToString("N0"); }
         }
+        void CancelResultReveal()
+        {
+            if(resultRoutine!=null)StopCoroutine(resultRoutine);
+            resultRoutine=null;IsResultRevealing=false;
+        }
+        System.Collections.IEnumerator RevealResult(long[] values)
+        {
+            IsResultRevealing=true;
+            game.resultButton.interactable=false;game.resultButton.gameObject.SetActive(false);
+            foreach(var label in winNumbers)label.text="";
+            var entrance=winGroup!=null?winGroup.GetComponent<FailureReveal>():null;
+            while(entrance!=null && entrance.IsPlaying)yield return null;
+            for(int i=0;i<values.Length;i++)
+            {
+                if(resultRevealDelay>0)yield return new WaitForSeconds(resultRevealDelay);
+                string targetValue=values[i].ToString("N0");float nextTick=0;
+                float duration=Mathf.Max(.01f,resultRollDuration);
+                for(float elapsed=0;elapsed<duration;elapsed+=Time.deltaTime)
+                {
+                    if(elapsed>=nextTick)
+                    {
+                        var digits=targetValue.ToCharArray();
+                        for(int j=0;j<digits.Length;j++)if(char.IsDigit(digits[j]))digits[j]=(char)('0'+resultRandom.Next(10));
+                        winNumbers[i].text=new string(digits);
+                        nextTick=elapsed+Mathf.Max(.01f,resultRollInterval)*(1+elapsed/duration*2);
+                    }
+                    yield return null;
+                }
+                winNumbers[i].text=targetValue;
+            }
+            IsResultRevealing=false;resultRoutine=null;
+            game.resultButton.gameObject.SetActive(true);game.resultButton.interactable=true;
+        }
+        public void ShowScoreStep(ScoreStep step)
+        {chips.text=step.chips.ToString("N0");multiplier.text=step.multiplier.ToString("0.##");}
     }
 }
 

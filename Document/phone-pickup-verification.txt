@@ -1,0 +1,1 @@
+PASS: both phone panels lift/scale/tilt, restore layout and interaction, reopen and cancel safely

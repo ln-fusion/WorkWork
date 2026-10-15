@@ -12,9 +12,11 @@ namespace WorkWork
         public TMP_Text[] names, counts, rewards;
         public Image[] fills;
         public GameObject empty;
+        public TMP_Text currentCash;
         public void Refresh()
         {
             if(game==null || game.Session==null) return;
+            if(currentCash!=null) currentCash.text="目前资金 "+VisualTheme.CurrencyIcon+game.Session.State.cash;
             var tasks=game.Session.ActiveTasks.ToArray();
             int count=tasks?.Length??0;
             empty.SetActive(count==0);

@@ -60,6 +60,7 @@ namespace WorkWork.Core
     {
         public long firstTarget = 800;
         public int initialCash = 5, redraws = 4;
+        public int deckCopies = 2;
         public List<Content> content = new List<Content>();
         public List<TaskDefinition> tasks = new List<TaskDefinition>();
     }
@@ -105,6 +106,22 @@ namespace WorkWork.Core
         public int extraRedraws;
         public List<Card> copies = new List<Card>();
         public List<string> events = new List<string>();
+        public List<ScoreStep> steps = new List<ScoreStep>();
+    }
+    public enum ScoreSource { Pattern, Card, Employee, Item }
+    [Serializable] public class ScoreStep
+    {
+        public int slot;
+        public string label;
+        public long chips;
+        public double multiplier;
+        public ScoreSource source;
+        public int sourceSlot, equipmentSlot;
+        public long chipsDelta;
+        public double multiplierDelta, multiplierOperand;
+        public bool multipliesMultiplier;
+        public int extraRedrawDelta;
+        public Card copiedCard;
     }
     public struct Pattern
     {

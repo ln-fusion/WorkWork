@@ -1,0 +1,1 @@
+PASS: correct empty staff/tool slots, FFEFD1 pulse, no raycast blocking, reuse, phase/card exclusions, real drag end/disable cleanup

@@ -56,7 +56,8 @@ namespace WorkWork.Core
             State.week = 1; State.redraws = Config.redraws; State.monthScore = 0;
             State.phase = Phase.Playing; State.deck.Clear(); State.discard.Clear(); State.hand.Clear();
             Array.Clear(State.slots, 0, 6);
-            // Provisional monthly reset: restore the 24 basic cards. Persistent copies are not specified.
+            // Each copy contains 24 faces; every physical card has an independent ID.
+            for(int copy=0;copy<Math.Max(1,Config.deckCopies);copy++)
             for (int suit = 0; suit < 4; suit++) for (int rank = 1; rank <= 6; rank++)
                 State.deck.Add(new Card { id = ++State.nextCardId, suit = (Suit)suit, rank = rank });
             Shuffle(State.deck);
@@ -170,7 +171,7 @@ namespace WorkWork.Core
                     {card.enchantments.RemoveAt(i);card.enchantmentSources.RemoveAt(i);}
             }
             var owned=State.employees.Concat(State.items).Where(id=>!string.IsNullOrEmpty(id)).Distinct().ToArray();
-            // Acquisition order keeps the five available slots stable when employees move.
+            // Acquisition order keeps the four available enchantment slots stable when employees move.
             var ordered=State.acquired.Where(id=>owned.Contains(id)).Concat(owned).Distinct();
             foreach(string id in ordered)
                 {

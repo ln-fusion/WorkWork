@@ -30,6 +30,29 @@ namespace WorkWork.Editor
                 }
                 var shell=g.GetComponent<GameShell>();
                 if(shell==null || shell.taskPanel==null || shell.taskChoicePanel==null || shell.menuMusic==null || shell.gameMusic==null) issues.Add("GameShell feature reference missing");
+                foreach(var name in new[]{"scoreFeedback","cardMotion","shopReveal","actionFeedback","dropHints","deploymentTilt","loadingTransition"})
+                    if((Object)typeof(GameController).GetField(name).GetValue(g)==null)issues.Add("Presentation reference missing: "+name);
+                if(g.actionFeedback!=null && g.actionFeedback.taskPhone==null)issues.Add("Action feedback phone missing");
+                if(g.dropHints!=null && g.dropHints.game!=g)issues.Add("Drop hints controller mismatch");
+                if(g.deploymentTilt!=null && (g.deploymentTilt.game!=g || g.deploymentTilt.board==null))issues.Add("Deployment tilt reference missing/mismatch");
+                if(g.loadingTransition!=null)
+                {
+                    var entry=g.loadingTransition;
+                    if(entry.front==null || entry.back==null || entry.face==null || entry.group==null)issues.Add("Loading transition art/face/group missing");
+                    var blocker=entry.transform.Find("Input Blocker")?.GetComponent<UnityEngine.UI.Image>();
+                    if(blocker==null || blocker.color.a!=0)issues.Add("Loading blocker must be transparent");
+                }
+                if(shell!=null)
+                {
+                    foreach(var panel in new[]{shell.taskPanel?.gameObject,shell.taskChoicePanel?.gameObject})
+                    {
+                        var pickup=panel!=null?panel.GetComponent<PhonePickup>():null;
+                        if(pickup==null || pickup.sourcePhone==null || pickup.phoneGraphic==null || pickup.backdrop==null)issues.Add("Phone pickup reference missing");
+                    }
+                    if(shell.winGroup==null || shell.winGroup.GetComponent<FailureReveal>()==null || shell.loseGroup==null || shell.loseGroup.GetComponent<FailureReveal>()==null)issues.Add("Result entrance missing");
+                    var flowers=shell.winGroup!=null?shell.winGroup.GetComponent<VictoryFlowers>():null;
+                    if(flowers==null || flowers.flower==null)issues.Add("Victory flower sprite/component missing");
+                }
                 var pool=g.catalog.rules.tasks;
                 if(pool.Count(t=>t.reward==1)<1 || pool.Count(t=>t.reward==2)<2 || pool.Count(t=>t.reward==3)<1)issues.Add("Task pool cannot supply 1/2/2/3 rewards");
             }

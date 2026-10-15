@@ -42,3 +42,5 @@ GameCatalog → Rules → Tasks现在是候选池，不自动成为玩家任务�
 选择界面使用独立Task Choice组、独立Phone Background Image（PhonePanel），四条可点击选项均用原生Button变色。奖金仍用ShopPoint。可在WorkWork/Preview/Task Choice编辑模式预览，在Hierarchy的Task Choice下手调布局；Configure Task Choice仅首次创建不重置已有布局。
 
 验证：72项EditMode测试通过，含4月首次、7/10月周期、1/2/2/3奖金配比、读档不重抽、选一个只领一次、满3条跳过及到16月恢复发放。控制台无错误。
+
+2026-10-15：Task Panel新增独立Current Cash文字，位于Task 1上方，显示目前资金+ShopPoint+实际现金；Refresh和打开面板时更新，无任务也显示。在Hierarchy Task Panel/Current Cash可手调位置和字号，不受任务行隐藏影响。

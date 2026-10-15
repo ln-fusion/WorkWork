@@ -16,6 +16,7 @@ MonoBehaviour:
     firstTarget: 100
     initialCash: 5
     redraws: 4
+    deckCopies: 2
     content:
     - id: employee.chips
       name: "\u6D4B\u8BD5\u5458\u5DE5\xB7\u4E1A\u52A1\u5458"

@@ -1,0 +1,1 @@
+PASS: falls from above, bounces, restores original position and interaction, cancellation restores layout

@@ -135,20 +135,30 @@ namespace WorkWork.Tests
             Assert.AreEqual(6,Scoring.Evaluate(s,new Settings()).total);
             Assert.AreEqual(1,Scoring.Evaluate(s,new Settings()).multiplier);
         }
-        [Test] public void RedrawNeverMovesPlacedCardAndPreservesAll24Cards()
+        [TestCase(1,24)] [TestCase(2,48)] [TestCase(3,72)] [TestCase(0,24)]
+        public void DeckCopiesCreateIndependentCardsAndResetOnlyAtNextMonth(int copies,int expected)
+        {
+            var config=new Settings{deckCopies=copies};var game=new GameSession(config,19);
+            var all=AllCards(game.State).ToArray();Assert.AreEqual(expected,all.Length);Assert.AreEqual(expected,all.Select(c=>c.id).Distinct().Count());
+            Assert.IsTrue(all.GroupBy(c=>new{c.rank,c.suit}).All(group=>group.Count()==System.Math.Max(1,copies)));
+            var restored=new GameSession(new Settings{deckCopies=2},1,WorkWork.SaveCodec.Deserialize(WorkWork.SaveCodec.Serialize(game.State)));
+            Assert.AreEqual(expected,AllCards(restored.State).Count());
+            restored.State.phase=Phase.Shop;Assert.IsTrue(restored.NextMonth());Assert.AreEqual(48,AllCards(restored.State).Count());
+        }
+        [Test] public void RedrawNeverMovesPlacedCardAndPreservesAll48Cards()
         {
             var game=new GameSession(new Settings(),71); int id=game.State.hand[0].id; game.Place(id,0);
             for(int i=0;i<4;i++) Assert.IsTrue(game.Redraw());
             Assert.IsFalse(game.Redraw()); Assert.AreEqual(id,game.State.slots[0].id);
             var all=game.State.deck.Concat(game.State.discard).Concat(game.State.hand).Concat(game.State.slots.Where(c=>c!=null)).ToArray();
-            Assert.AreEqual(24,all.Length); Assert.AreEqual(24,all.Select(c=>c.id).Distinct().Count());
+            Assert.AreEqual(48,all.Length); Assert.AreEqual(48,all.Select(c=>c.id).Distinct().Count());
         }
         [Test] public void EmptyDeckReshufflesDiscardWithoutDuplicatingHand()
         {
             var game=new GameSession(new Settings(),12); var s=game.State;
             s.discard.AddRange(s.deck); s.deck.Clear(); int[] ids=s.hand.Select(c=>c.id).ToArray();
             Assert.IsTrue(game.Redraw()); Assert.AreEqual(6,s.hand.Count); Assert.AreEqual(0,s.discard.Count);
-            Assert.AreEqual(24,s.deck.Concat(s.hand).Select(c=>c.id).Distinct().Count());
+            Assert.AreEqual(48,s.deck.Concat(s.hand).Select(c=>c.id).Distinct().Count());
         }
         [Test] public void MonthlySuccessWaitsUntilFourthWeek()
         {
@@ -190,7 +200,34 @@ namespace WorkWork.Tests
         {
             var config=new Settings(); config.content.Add(new Content { id="test",effects=new System.Collections.Generic.List<Effect>{new Effect {kind=EffectKind.MultiplyMultiplier,amount=2,trigger=Trigger.CardScored},new Effect {kind=EffectKind.AddMultiplier,amount=3,trigger=Trigger.CardScored}} });
             var s=new GameState(); s.slots[0]=new Card {rank=2}; s.slots[1]=new Card {rank=2}; s.employees[0]="test";
-            var score=Scoring.Evaluate(s,config); Assert.AreEqual(10,score.multiplier); Assert.AreEqual(90,score.total);
+            var score=Scoring.Evaluate(s,config); Assert.AreEqual(7,score.multiplier); Assert.AreEqual(63,score.total);
+        }
+        [Test] public void PreviewContainsOnlyPatternAndTraceAddsEachCardInOrder()
+        {
+            var s=new GameState();s.slots[0]=new Card{rank=2,suit=Suit.Hearts};s.slots[1]=new Card{rank=3,suit=Suit.Spades};s.slots[2]=new Card{rank=3,suit=Suit.Diamonds};
+            var preview=Scoring.Preview(s,new Settings());Assert.AreEqual(5,preview.chips);Assert.AreEqual(2,preview.multiplier);
+            var score=Scoring.Evaluate(s,new Settings());CollectionAssert.AreEqual(new long[]{5,7,10,13},score.steps.Select(t=>t.chips));Assert.AreEqual(26,score.total);
+        }
+        [Test] public void ScoreStepsIdentifyActualSourceAndMultiplierOperation()
+        {
+            var config=new Settings();config.content.Add(new Content{id="global",effects=new System.Collections.Generic.List<Effect>{new Effect{kind=EffectKind.AddChips,amount=20,local=false,trigger=Trigger.CardScored}}});
+            config.content.Add(new Content{id="gear",effects=new System.Collections.Generic.List<Effect>{new Effect{kind=EffectKind.MultiplyMultiplier,amount=2,trigger=Trigger.CardScored}}});
+            var s=new GameState();s.slots[0]=new Card{rank=2};s.slots[1]=new Card{rank=3};s.employees[0]="global";s.items[5]="gear";
+            var steps=Scoring.Evaluate(s,config).steps;
+            var remote=steps.Single(t=>t.slot==1 && t.source==ScoreSource.Employee);
+            Assert.AreEqual(0,remote.sourceSlot);Assert.AreEqual(20,remote.chipsDelta);
+            var gear=steps.Single(t=>t.source==ScoreSource.Item);Assert.AreEqual(1,gear.sourceSlot);Assert.AreEqual(2,gear.equipmentSlot);
+            Assert.IsTrue(gear.multipliesMultiplier);Assert.AreEqual(2,gear.multiplierOperand);
+            Assert.AreEqual(2,steps.Single(t=>t.slot==0 && t.source==ScoreSource.Card).chipsDelta);
+        }
+        [Test] public void MultiplierAdditionBeforeAndAfterProductProduceDifferentScores()
+        {
+            var config=new Settings();config.content.Add(new Content{id="plus",effects=new System.Collections.Generic.List<Effect>{new Effect{kind=EffectKind.AddMultiplier,amount=3,trigger=Trigger.CardScored}}});
+            config.content.Add(new Content{id="times",effects=new System.Collections.Generic.List<Effect>{new Effect{kind=EffectKind.MultiplyMultiplier,amount=2,trigger=Trigger.CardScored}}});
+            var s=new GameState();s.slots[0]=new Card{rank=2};s.slots[1]=new Card{rank=2};s.employees[0]="plus";s.employees[1]="times";
+            Assert.AreEqual(10,Scoring.Evaluate(s,config).multiplier);
+            s.employees[0]="times";s.employees[1]="plus";Assert.AreEqual(7,Scoring.Evaluate(s,config).multiplier);
+            s.employees[0]=null;s.employees[1]=null;s.items[0]="times";s.items[1]="plus";Assert.AreEqual(7,Scoring.Evaluate(s,config).multiplier);
         }
         [Test] public void ThreeEquipmentSlotsScoreAndFollowEmployeeWithoutCompacting()
         {
@@ -273,6 +310,19 @@ namespace WorkWork.Tests
             Assert.AreEqual(7,restored.hand[0].rank);Assert.AreEqual(Suit.Diamonds,restored.hand[0].suit);CollectionAssert.AreEqual(card.enchantments,restored.hand[0].enchantments);
             Assert.IsTrue(g.RemoveCardEnchantment(card.id,2));Assert.IsTrue(g.AddCardEnchantment(card.id,Enchantment.Copy));
         }
+        [Test] public void UtilityEnchantmentsProduceIndependentVisualStepsWithoutMutatingCards()
+        {
+            var s=new GameState();var card=new Card{id=7,rank=3,suit=Suit.Hearts};s.slots[2]=card;
+            card.AddEnchantment(Enchantment.Retry);card.AddEnchantment(Enchantment.Copy);card.AddEnchantment(Enchantment.Retry);
+            int redrawsBefore=s.redraws;
+            var score=Scoring.Evaluate(s,new Settings());
+            Assert.AreEqual(2,score.extraRedraws);Assert.AreEqual(2,score.steps.Count(t=>t.extraRedrawDelta==1));
+            Assert.IsTrue(score.steps.Where(t=>t.extraRedrawDelta!=0 || t.copiedCard!=null).All(t=>t.slot==2 && t.sourceSlot==2 && t.source==ScoreSource.Card));
+            var copy=score.steps.Single(t=>t.copiedCard!=null).copiedCard;
+            Assert.AreEqual(card.rank,copy.rank);Assert.AreEqual(card.suit,copy.suit);CollectionAssert.AreEqual(card.enchantments,copy.enchantments);
+            Assert.AreNotSame(card.enchantments,copy.enchantments);Assert.AreEqual(1,score.copies.Count);
+            Assert.AreEqual(redrawsBefore,s.redraws);Assert.AreEqual(7,card.id);
+        }
         [Test] public void CopyRetryAndDeletedCardsLastOnlyUntilMonthlyReset()
         {
             var g=new GameSession(new Settings{firstTarget=1},7);var s=g.State;s.monthScore=1000;
@@ -280,11 +330,11 @@ namespace WorkWork.Tests
             int redraws=s.redraws;Assert.IsTrue(g.ScoreWeek());Assert.AreEqual(redraws+1,s.redraws);
             var copied=s.deck.Concat(s.hand).Single(c=>c.id!=card.id && c.enchantments.Contains(Enchantment.Copy));
             CollectionAssert.AreEqual(card.enchantments,copied.enchantments);Assert.AreNotSame(card.enchantments,copied.enchantments);
-            Assert.AreEqual(25,s.deck.Count+s.discard.Count+s.hand.Count);
-            Assert.IsTrue(g.DeleteCard(copied.id));Assert.IsTrue(g.DeleteCard(card.id));Assert.AreEqual(23,s.deck.Count+s.discard.Count+s.hand.Count);
+            Assert.AreEqual(49,s.deck.Count+s.discard.Count+s.hand.Count);
+            Assert.IsTrue(g.DeleteCard(copied.id));Assert.IsTrue(g.DeleteCard(card.id));Assert.AreEqual(47,s.deck.Count+s.discard.Count+s.hand.Count);
             for(int i=0;i<3;i++) {g.Place(s.hand[0].id,0);Assert.IsTrue(g.ScoreWeek());}
             Assert.IsTrue(g.OpenShop());Assert.IsTrue(g.NextMonth());
-            var all=s.deck.Concat(s.hand).ToArray();Assert.AreEqual(24,all.Length);Assert.AreEqual(24,all.Select(c=>c.id).Distinct().Count());Assert.IsTrue(all.All(c=>c.enchantments.Count==0));Assert.IsTrue(all.All(c=>c.rank>=1 && c.rank<=6));
+            var all=s.deck.Concat(s.hand).ToArray();Assert.AreEqual(48,all.Length);Assert.AreEqual(48,all.Select(c=>c.id).Distinct().Count());Assert.IsTrue(all.All(c=>c.enchantments.Count==0));Assert.IsTrue(all.All(c=>c.rank>=1 && c.rank<=6));
         }
         [Test] public void ChangedFaceRanksAboveSixParticipateInStraight()
         {
@@ -363,7 +413,7 @@ namespace WorkWork.Tests
         }
         static System.Collections.Generic.IEnumerable<Card> AllCards(GameState s)
             => s.hand.Concat(s.deck).Concat(s.discard).Concat(s.slots.Where(c=>c!=null));
-        [TestCase(6,-1,4)] [TestCase(-1,2,6)] [TestCase(6,2,1)]
+        [TestCase(6,-1,8)] [TestCase(-1,2,12)] [TestCase(6,2,2)]
         public void BoughtEmployeeEnchantsMatchingCardsAcrossEveryPile(int rank,int suit,int expected)
         {
             var g=new GameSession(EnchanterConfig(Enchantment.Coin,rank,suit),19);var s=g.State;
@@ -402,8 +452,8 @@ namespace WorkWork.Tests
             sold.State.phase=Phase.Shop;Assert.IsTrue(sold.Sell(0,false));
             Assert.IsTrue(AllCards(sold.State).All(c=>c.enchantments.Count==0),"Sale must remove inherited enchantments from copies too");
             restored.State.phase=Phase.Shop;Assert.IsTrue(restored.NextMonth());
-            Assert.AreEqual(24,AllCards(restored.State).Count());
-            Assert.AreEqual(4,AllCards(restored.State).Count(c=>c.enchantments.Contains(enchantment)));
+            Assert.AreEqual(48,AllCards(restored.State).Count());
+            Assert.AreEqual(8,AllCards(restored.State).Count(c=>c.enchantments.Contains(enchantment)));
             restored.State.phase=Phase.Shop;Assert.IsTrue(restored.Sell(0,false));
             Assert.IsTrue(AllCards(restored.State).All(c=>c.enchantments.Count==0));
         }

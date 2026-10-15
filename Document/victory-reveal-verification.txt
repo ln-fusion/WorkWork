@@ -1,0 +1,1 @@
+PASS: entrance then rewards, continuous bilateral flowers, collisions, bounded pool reuse, disable recycling and reuse on reopen

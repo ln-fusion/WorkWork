@@ -1,0 +1,1 @@
+PASS: landing pulse, phone vibration, ASCII-minus cost stays near right-edge funds, reason popups, changed-pattern pulse without repeats, completion/cancellation restore layout

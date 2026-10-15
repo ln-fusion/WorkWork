@@ -1,0 +1,1 @@
+PASS: sequential reveal, accurate amounts, total last, continuation locked until completion

@@ -1,0 +1,1 @@
+PASS: actual shop drop buys staff/equipment, two cost popups, insufficient funds fails without purchase and displays reason

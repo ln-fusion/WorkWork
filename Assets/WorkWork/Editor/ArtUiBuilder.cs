@@ -88,6 +88,9 @@ namespace WorkWork.Editor
             EditorUtility.SetDirty(g); EditorUtility.SetDirty(shell); if(g.theme!=null) EditorUtility.SetDirty(g.theme);
             AssetDatabase.SaveAssets(); EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
             MusicSetup.Configure();CurrencyIconSetup.Configure();TaskPanelBuilder.Configure();TaskChoiceBuilder.Configure();
+            ScoreFeedbackSetup.Configure();CardMotionSetup.Configure();ShopRevealSetup.Configure();
+            FailureRevealSetup.Configure();VictoryRevealSetup.Configure();PhonePickupSetup.Configure();
+            ActionFeedbackSetup.Configure();DropHintsSetup.Configure();DeploymentTiltSetup.Configure();LoadingTransitionSetup.Configure();
             Debug.Log("WORKWORK_ART_UI_READY");
         }
         static void BindArt(GameController g)

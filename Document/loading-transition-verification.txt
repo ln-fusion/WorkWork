@@ -1,0 +1,1 @@
+PASS: transparent blocker/fullscreen aspect fit, waits on front for readiness, game reveal before flip begins, duplicate/input lock, finish after flip/fade, failure and cancellation cleanup

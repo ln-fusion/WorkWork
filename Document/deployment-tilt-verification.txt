@@ -1,0 +1,1 @@
+PASS: staff/offer tilt, preview stays upright, smooth return, tool/card exclusions, cancel/disable restore, actual tilted workstation raycast hits
