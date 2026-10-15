@@ -8,6 +8,107 @@ namespace WorkWork.Tests
     public class RulesTests
     {
         static Card[] Cards(int[] ranks, Suit suit = Suit.Spades) => ranks.Select((r,i) => new Card {id=i+1,rank=r,suit=suit}).ToArray();
+        static GameSession TaskSession(Settings config,uint seed)
+        {var game=new GameSession(config,seed);game.State.acceptedTasks=config.tasks.Take(3).Select(GameSession.CopyTask).ToList();return game;}
+        static Settings TaskPool()
+        {
+            var config=new Settings{firstTarget=1};
+            for(int reward=1;reward<=3;reward++)for(int i=0;i<2;i++)config.tasks.Add(new TaskDefinition{id="pool"+reward+"_"+i,name="测试任务",reward=reward,target=2,deadlineMonths=2,patternPriorities=new System.Collections.Generic.List<int>{1}});
+            return config;
+        }
+        [Test] public void TaskOffersStartInFourthMonthAndRestoreWithoutRerolling()
+        {
+            var config=TaskPool();var g=new GameSession(config,19);Assert.IsEmpty(g.ActiveTasks);Assert.IsEmpty(g.State.taskOffers);
+            for(int month=2;month<=4;month++) {g.State.phase=Phase.Shop;Assert.IsTrue(g.NextMonth());Assert.AreEqual(month==4?Phase.TaskChoice:Phase.Playing,g.State.phase);}
+            CollectionAssert.AreEqual(new[]{1,2,2,3},g.State.taskOffers.Select(t=>t.reward));Assert.AreEqual(4,g.State.taskOffers.Select(t=>t.id).Distinct().Count());
+            string snapshot=WorkWork.SaveCodec.Serialize(g.State);var restored=new GameSession(config,1,WorkWork.SaveCodec.Deserialize(snapshot));
+            Assert.AreEqual(snapshot,WorkWork.SaveCodec.Serialize(restored.State));
+            Assert.IsFalse(restored.Redraw());Assert.IsFalse(restored.ScoreWeek());Assert.IsFalse(restored.ChooseTask(-1));
+            Assert.IsTrue(restored.ChooseTask(2));Assert.IsFalse(restored.ChooseTask(0));Assert.AreEqual(1,restored.ActiveTasks.Count());Assert.IsEmpty(restored.State.taskOffers);
+            Assert.IsEmpty(restored.State.tasks);Assert.AreEqual(2,restored.ActiveTasks.Single().reward);
+            restored=new GameSession(config,1,WorkWork.SaveCodec.Deserialize(WorkWork.SaveCodec.Serialize(restored.State)));
+            Assert.AreEqual(Phase.Playing,restored.State.phase);Assert.AreEqual(1,restored.ActiveTasks.Count());
+        }
+        [Test] public void TaskCycleSkipsWhenFullAndWaitsForNextScheduledMonth()
+        {
+            var g=new GameSession(TaskPool(),19);
+            foreach(int month in new[]{4,7,10}) {g.State.month=month-1;g.State.phase=Phase.Shop;g.NextMonth();Assert.AreEqual(Phase.TaskChoice,g.State.phase);Assert.IsTrue(g.ChooseTask(0));}
+            Assert.AreEqual(3,g.ActiveTasks.Count());
+            g.State.month=12;g.State.phase=Phase.Shop;g.NextMonth();Assert.AreEqual(Phase.Playing,g.State.phase);Assert.IsEmpty(g.State.taskOffers);
+            g.State.tasks.Add(new TaskProgress{id=g.ActiveTasks.First().id,expired=true});Assert.AreEqual(2,g.ActiveTasks.Count());
+            for(int month=14;month<=16;month++) {g.State.phase=Phase.Shop;g.NextMonth();Assert.AreEqual(month==16?Phase.TaskChoice:Phase.Playing,g.State.phase);}
+            Assert.IsTrue(g.ChooseTask(3));Assert.AreEqual(3,g.ActiveTasks.Count());
+        }
+        static void ScoreTaskBoard(GameSession game,params int[] ranks)
+        {
+            game.State.slots=new Card[6];
+            for(int i=0;i<ranks.Length;i++) game.State.slots[i]=new Card{id=100+i,rank=ranks[i],suit=(Suit)(i%4)};
+            Assert.IsTrue(game.ScoreWeek());
+        }
+        [Test] public void TasksPersistAcrossMonthsAndSavesAndPayOnlyOnce()
+        {
+            var config=new Settings{firstTarget=1};
+            config.tasks.Add(new TaskDefinition{id="pair",name="结算2次一对",reward=1,patternPriorities=new System.Collections.Generic.List<int>{1}});
+            config.tasks.Add(new TaskDefinition{id="bomb",name="结算2次炸弹",reward=3,patternPriorities=new System.Collections.Generic.List<int>{10,11}});
+            var g=TaskSession(config,19);int initial=g.State.cash;
+            ScoreTaskBoard(g,2,2);Assert.AreEqual(1,g.State.tasks.Single().current);Assert.AreEqual(initial,g.State.cash);
+            Scoring.Evaluate(g.State,config);Assert.AreEqual(1,g.State.tasks.Single().current);
+            g=new GameSession(config,1,WorkWork.SaveCodec.Deserialize(WorkWork.SaveCodec.Serialize(g.State)));
+            ScoreTaskBoard(g,3,3);Assert.AreEqual(initial+1,g.State.cash);Assert.IsTrue(g.State.tasks.Single().rewarded);
+            ScoreTaskBoard(g,4,4);Assert.AreEqual(initial+1,g.State.cash);Assert.AreEqual(2,g.State.tasks.Single().current);
+            ScoreTaskBoard(g,2,2,2,2,3,3);Assert.AreEqual(1,g.State.tasks.Single(t=>t.id=="bomb").current);
+            Assert.IsTrue(g.OpenShop());Assert.IsTrue(g.NextMonth());
+            Assert.AreEqual(2,g.State.tasks.Single(t=>t.id=="pair").current);Assert.AreEqual(1,g.State.tasks.Single(t=>t.id=="bomb").current);
+            int cash=g.State.cash;ScoreTaskBoard(g,4,4,4,4);Assert.AreEqual(cash+3,g.State.cash);
+            var restored=new GameSession(config,1,WorkWork.SaveCodec.Deserialize(WorkWork.SaveCodec.Serialize(g.State)));
+            ScoreTaskBoard(restored,4,4,4,4);Assert.AreEqual(cash+3,restored.State.cash);
+            Assert.IsEmpty(new GameSession(config,1).State.tasks);
+        }
+        [Test] public void MonthlyDeadlineCanFinishOnLastSettlementAndPaysOnce()
+        {
+            var config=new Settings{firstTarget=1};config.tasks.Add(new TaskDefinition{id="timed",target=2,deadlineMonths=2,reward=2,patternPriorities=new System.Collections.Generic.List<int>{1}});
+            var g=TaskSession(config,19);
+            ScoreTaskBoard(g,2,2);for(int i=0;i<3;i++) ScoreTaskBoard(g,2,3);
+            Assert.AreEqual(1,g.State.tasks[0].elapsedMonths);Assert.IsFalse(g.State.tasks[0].expired);
+            g=new GameSession(config,1,WorkWork.SaveCodec.Deserialize(WorkWork.SaveCodec.Serialize(g.State)));
+            Assert.IsTrue(g.OpenShop());Assert.IsTrue(g.NextMonth());
+            for(int i=0;i<3;i++) ScoreTaskBoard(g,2,3);
+            Assert.AreEqual(1,g.State.tasks[0].elapsedMonths);int cash=g.State.cash;
+            ScoreTaskBoard(g,3,3);Assert.IsTrue(g.State.tasks[0].rewarded);Assert.IsFalse(g.State.tasks[0].expired);
+            Assert.AreEqual(cash+2+g.State.lastIncome,g.State.cash);
+            Assert.IsTrue(g.OpenShop());Assert.IsTrue(g.NextMonth());cash=g.State.cash;
+            ScoreTaskBoard(g,4,4);Assert.AreEqual(cash,g.State.cash);
+        }
+        [Test] public void MonthlyDeadlineExpiresAndCannotReviveAfterSaveOrNewMonth()
+        {
+            var config=new Settings{firstTarget=1};config.tasks.Add(new TaskDefinition{id="timed",deadlineMonths=2,patternPriorities=new System.Collections.Generic.List<int>{1}});
+            var g=TaskSession(config,19);
+            for(int month=0;month<2;month++)
+            {
+                for(int week=0;week<4;week++)ScoreTaskBoard(g,2,3);
+                Assert.AreEqual(month+1,g.State.tasks[0].elapsedMonths);
+                Assert.AreEqual(month==1,g.State.tasks[0].expired);
+                Assert.IsTrue(g.OpenShop());Assert.IsTrue(g.NextMonth());
+            }
+            g=new GameSession(config,1,WorkWork.SaveCodec.Deserialize(WorkWork.SaveCodec.Serialize(g.State)));
+            int cash=g.State.cash;ScoreTaskBoard(g,4,4);
+            Assert.IsTrue(g.State.tasks[0].expired);Assert.AreEqual(0,g.State.tasks[0].current);
+            Assert.IsFalse(g.State.tasks[0].rewarded);Assert.AreEqual(cash,g.State.cash);
+        }
+        [Test] public void MonthlyDeadlineDoesNotTickOnPreviewOrNonfinalWeeks()
+        {
+            var config=new Settings{firstTarget=1};config.tasks.Add(new TaskDefinition{id="timed",deadlineMonths=1,patternPriorities=new System.Collections.Generic.List<int>{1}});
+            var g=TaskSession(config,19);Assert.IsFalse(g.ScoreWeek());
+            for(int i=0;i<3;i++) {ScoreTaskBoard(g,2,3);Scoring.Evaluate(g.State,config);Assert.AreEqual(0,g.State.tasks[0].elapsedMonths);Assert.IsFalse(g.State.tasks[0].expired);}
+            ScoreTaskBoard(g,2,3);Assert.IsTrue(g.State.tasks[0].expired);Assert.AreEqual(1,g.State.tasks[0].elapsedMonths);
+        }
+        [Test] public void TaskRewardsClampToOneThroughThreeAndOnlyThreeTasksAreActive()
+        {
+            var config=new Settings();
+            for(int i=0;i<4;i++) config.tasks.Add(new TaskDefinition{id="task"+i,target=1,reward=i==0?0:100,patternPriorities=new System.Collections.Generic.List<int>{1}});
+            var g=TaskSession(config,19);int cash=g.State.cash;ScoreTaskBoard(g,2,2);
+            Assert.AreEqual(3,g.State.tasks.Count);Assert.AreEqual(cash+7,g.State.cash);
+        }
         [TestCase("112346",1)] [TestCase("112234",2)] [TestCase("111234",3)]
         [TestCase("112233",4)] [TestCase("112345",5)] [TestCase("123456",6)]
         [TestCase("111224",8)] [TestCase("111222",9)] [TestCase("111123",10)] [TestCase("111122",11)]
@@ -161,13 +262,13 @@ namespace WorkWork.Tests
             s.slots[0].AddEnchantment(Enchantment.Wild);s.slots[0].AddEnchantment(Enchantment.Fans);s.slots[0].AddEnchantment(Enchantment.X2);
             var score=Scoring.Evaluate(s,new Settings());Assert.AreEqual(19,score.chips);Assert.AreEqual(7,score.multiplier);Assert.AreEqual(133,score.total);
         }
-        [Test] public void FiveEnchantmentLimitAndCopiesHaveIndependentSavedLists()
+        [Test] public void FourEnchantmentLimitAndCopiesHaveIndependentSavedLists()
         {
             var g=new GameSession(new Settings(),1);var card=g.State.hand[0];
-            foreach(var e in new[]{Enchantment.Coin,Enchantment.Fans,Enchantment.Wild,Enchantment.Arrow,Enchantment.X2}) Assert.IsTrue(g.AddCardEnchantment(card.id,e));
+            foreach(var e in new[]{Enchantment.Coin,Enchantment.Fans,Enchantment.Wild,Enchantment.Arrow}) Assert.IsTrue(g.AddCardEnchantment(card.id,e));
             Assert.IsFalse(g.AddCardEnchantment(card.id,Enchantment.Copy));
             Assert.IsTrue(g.SetCardRank(card.id,7));Assert.IsTrue(g.SetCardSuit(card.id,Suit.Diamonds));
-            var copy=card.Copy();copy.enchantments.RemoveAt(0);Assert.AreEqual(5,card.enchantments.Count);
+            var copy=card.Copy();copy.enchantments.RemoveAt(0);Assert.AreEqual(4,card.enchantments.Count);
             var restored=WorkWork.SaveCodec.Deserialize(WorkWork.SaveCodec.Serialize(g.State));
             Assert.AreEqual(7,restored.hand[0].rank);Assert.AreEqual(Suit.Diamonds,restored.hand[0].suit);CollectionAssert.AreEqual(card.enchantments,restored.hand[0].enchantments);
             Assert.IsTrue(g.RemoveCardEnchantment(card.id,2));Assert.IsTrue(g.AddCardEnchantment(card.id,Enchantment.Copy));
@@ -239,15 +340,107 @@ namespace WorkWork.Tests
             Assert.AreEqual(0,g.State.monthScore);Assert.AreEqual(20,g.State.cash);
             Assert.IsTrue(g.NextMonth());Assert.AreEqual(month+1,g.State.month);Assert.AreEqual(target,g.State.target);
         }
+        [TestCase(false,0)] [TestCase(true,0)] [TestCase(true,1)] [TestCase(true,2)]
+        public void SoldContentReentersPoolAfterSaveAndCanBeBoughtAgain(bool item,int equipmentSlot)
+        {
+            var config=new Settings();config.content.Add(new Content{id="staff",price=5});config.content.Add(new Content{id="gear",item=true,price=5});
+            var g=new GameSession(config,7);var s=g.State;s.phase=Phase.MonthResult;s.cash=100;g.OpenShop();
+            Assert.IsTrue(g.Buy("staff",5));if(item) Assert.IsTrue(g.Buy("gear",5,equipmentSlot));
+            string id=item?"gear":"staff";g.RefreshShop();CollectionAssert.DoesNotContain(s.offers,id);
+            var offers=s.offers.ToArray();int cash=s.cash,slot=item?15+equipmentSlot:5;
+            Assert.IsTrue(g.Sell(slot,item));Assert.AreEqual(cash+3,s.cash);CollectionAssert.DoesNotContain(s.acquired,id);
+            CollectionAssert.AreEqual(offers,s.offers);Assert.IsFalse(g.Sell(slot,item));Assert.AreEqual(cash+3,s.cash);
+            var restored=new GameSession(config,1,WorkWork.SaveCodec.Deserialize(WorkWork.SaveCodec.Serialize(s)));
+            Assert.IsTrue(restored.RefreshShop());CollectionAssert.Contains(restored.State.offers,id);
+            Assert.IsTrue(restored.Buy(id,5,item?equipmentSlot:-1));Assert.IsTrue(restored.RefreshShop());CollectionAssert.DoesNotContain(restored.State.offers,id);
+        }
+        static Settings EnchanterConfig(Enchantment enchantment,int rank=-1,int suit=-1)
+        {
+            var config=new Settings{firstTarget=1};
+            config.content.Add(new Content{id="enchanter",price=4,effects=new System.Collections.Generic.List<Effect>{
+                new Effect{trigger=Trigger.WhileOwned,kind=EffectKind.AddEnchantment,enchantment=enchantment,rankFilter=rank,suitFilter=suit}}});
+            return config;
+        }
+        static System.Collections.Generic.IEnumerable<Card> AllCards(GameState s)
+            => s.hand.Concat(s.deck).Concat(s.discard).Concat(s.slots.Where(c=>c!=null));
+        [TestCase(6,-1,4)] [TestCase(-1,2,6)] [TestCase(6,2,1)]
+        public void BoughtEmployeeEnchantsMatchingCardsAcrossEveryPile(int rank,int suit,int expected)
+        {
+            var g=new GameSession(EnchanterConfig(Enchantment.Coin,rank,suit),19);var s=g.State;
+            // Put matching cards into every zone to verify ownership is independent of placement.
+            var all=AllCards(s).ToList();s.hand.Clear();s.deck.Clear();s.discard.Clear();
+            for(int i=0;i<all.Count;i++)
+            {if(i<6)s.hand.Add(all[i]);else if(i<12)s.discard.Add(all[i]);else if(i<18)s.slots[i-12]=all[i];else s.deck.Add(all[i]);}
+            s.phase=Phase.MonthResult;s.cash=10;Assert.IsTrue(g.OpenShop());Assert.IsTrue(g.Buy("enchanter",0));
+            Assert.AreEqual(expected,AllCards(s).Count(c=>c.enchantments.Contains(Enchantment.Coin)));
+            foreach(var card in AllCards(s))
+                Assert.AreEqual((rank<0 || card.rank==rank) && (suit<0 || (int)card.suit==suit),card.enchantments.Contains(Enchantment.Coin));
+            var restored=new GameSession(g.Config,1,WorkWork.SaveCodec.Deserialize(WorkWork.SaveCodec.Serialize(s)));
+            Assert.AreEqual(expected,AllCards(restored.State).Count(c=>c.enchantments.Contains(Enchantment.Coin)));
+            Assert.IsTrue(restored.Sell(0,false));Assert.IsTrue(AllCards(restored.State).All(c=>c.enchantments.Count==0));
+        }
+        [TestCase(Enchantment.Coin)] [TestCase(Enchantment.Fans)] [TestCase(Enchantment.Wild)]
+        [TestCase(Enchantment.Copy)] [TestCase(Enchantment.Retry)] [TestCase(Enchantment.Arrow)] [TestCase(Enchantment.X2)]
+        public void OwnedEnchantmentsSurviveSaveAndReapplyAfterMonthReset(Enchantment enchantment)
+        {
+            var g=new GameSession(EnchanterConfig(enchantment,6),19);var s=g.State;s.phase=Phase.MonthResult;s.cash=10;
+            Assert.IsTrue(g.OpenShop());Assert.IsTrue(g.Buy("enchanter",0));Assert.IsTrue(g.NextMonth());
+            var card=AllCards(s).First(c=>c.rank==6);s.deck.Remove(card);s.hand.Remove(card);s.hand.Add(card);
+            Assert.IsTrue(g.Place(card.id,0));Assert.IsTrue(g.ReturnCard(0));Assert.IsTrue(g.Place(card.id,1));
+            CollectionAssert.AreEqual(new[]{enchantment},card.enchantments);
+            string before=WorkWork.SaveCodec.Serialize(s);Scoring.Evaluate(s,g.Config);Scoring.Evaluate(s,g.Config);
+            Assert.AreEqual(before,WorkWork.SaveCodec.Serialize(s));
+            var restored=new GameSession(g.Config,1,WorkWork.SaveCodec.Deserialize(before));
+            Assert.IsTrue(restored.ScoreWeek());
+            if(enchantment==Enchantment.Retry) Assert.AreEqual(5,restored.State.redraws);
+            if(enchantment==Enchantment.Copy)
+            {
+                var copy=AllCards(restored.State).Single(c=>c.id!=card.id && c.rank==6 && c.enchantmentSources.SequenceEqual(card.enchantmentSources) && c.enchantments.Contains(Enchantment.Copy) && !s.deck.Any(x=>x.id==c.id) && !s.hand.Any(x=>x.id==c.id));
+                Assert.AreNotEqual(card.id,copy.id);
+            }
+            var sold=new GameSession(g.Config,1,WorkWork.SaveCodec.Deserialize(WorkWork.SaveCodec.Serialize(restored.State)));
+            sold.State.phase=Phase.Shop;Assert.IsTrue(sold.Sell(0,false));
+            Assert.IsTrue(AllCards(sold.State).All(c=>c.enchantments.Count==0),"Sale must remove inherited enchantments from copies too");
+            restored.State.phase=Phase.Shop;Assert.IsTrue(restored.NextMonth());
+            Assert.AreEqual(24,AllCards(restored.State).Count());
+            Assert.AreEqual(4,AllCards(restored.State).Count(c=>c.enchantments.Contains(enchantment)));
+            restored.State.phase=Phase.Shop;Assert.IsTrue(restored.Sell(0,false));
+            Assert.IsTrue(AllCards(restored.State).All(c=>c.enchantments.Count==0));
+        }
+        [Test] public void SellingRemovesOnlyItsOwnSourceAndPreservesOtherIdenticalEnchantments()
+        {
+            var config=EnchanterConfig(Enchantment.Coin);
+            config.content.Add(new Content{id="second",price=4,effects=new System.Collections.Generic.List<Effect>{
+                new Effect{trigger=Trigger.WhileOwned,kind=EffectKind.AddEnchantment,enchantment=Enchantment.Coin}}});
+            var g=new GameSession(config,19);var s=g.State;var card=s.hand[0];card.AddEnchantment(Enchantment.Coin);
+            s.phase=Phase.MonthResult;s.cash=30;g.OpenShop();g.Buy("enchanter",0);g.Buy("second",1);
+            Assert.AreEqual(3,card.enchantments.Count);
+            var restored=new GameSession(config,1,WorkWork.SaveCodec.Deserialize(WorkWork.SaveCodec.Serialize(s)));
+            var savedCard=AllCards(restored.State).Single(c=>c.id==card.id);
+            restored.Sell(0,false);Assert.AreEqual(2,savedCard.enchantments.Count);
+            restored.Sell(1,false);CollectionAssert.AreEqual(new[]{Enchantment.Coin},savedCard.enchantments);
+            Assert.AreEqual("",savedCard.enchantmentSources[0]);
+        }
+        [Test] public void OwnedEnchantmentsRespectCapacityAndFollowChangedFaces()
+        {
+            var g=new GameSession(EnchanterConfig(Enchantment.Coin,6,2),19);var s=g.State;
+            var full=s.hand[0];full.rank=6;full.suit=Suit.Clubs;for(int i=0;i<Card.MaxEnchantments;i++)full.AddEnchantment(Enchantment.Arrow);
+            s.phase=Phase.MonthResult;s.cash=10;g.OpenShop();g.Buy("enchanter",0);
+            Assert.AreEqual(4,full.enchantments.Count);CollectionAssert.DoesNotContain(full.enchantments,Enchantment.Coin);
+            s.phase=Phase.Playing;var card=s.hand[1];g.SetCardRank(card.id,6);g.SetCardSuit(card.id,Suit.Clubs);
+            CollectionAssert.Contains(card.enchantments,Enchantment.Coin);
+            g.SetCardSuit(card.id,Suit.Hearts);CollectionAssert.DoesNotContain(card.enchantments,Enchantment.Coin);
+        }
         [Test] public void ShopEnforcesUniqueContentAndEquipmentRequiresEmployee()
         {
             var config=new Settings(); config.content.Add(new Content{id="staff",price=4}); config.content.Add(new Content{id="item",item=true,price=4});
             var game=new GameSession(config,9); var s=game.State; s.phase=Phase.MonthResult; s.cash=100; game.OpenShop();
             Assert.IsFalse(game.Buy("item",0)); Assert.IsTrue(game.Buy("staff",0)); Assert.IsTrue(game.Buy("item",0));
             Assert.IsFalse(game.Sell(0,false)); Assert.IsTrue(game.Sell(0,true)); Assert.IsTrue(game.Sell(0,false));
-            game.RefreshShop(); CollectionAssert.Contains(s.offers,"staff"); CollectionAssert.DoesNotContain(s.offers,"item");
+            game.RefreshShop(); CollectionAssert.Contains(s.offers,"staff"); CollectionAssert.Contains(s.offers,"item");
             Assert.IsTrue(game.Buy("staff",0)); game.RefreshShop(); CollectionAssert.DoesNotContain(s.offers,"staff");
         }
     }
 }
+
 

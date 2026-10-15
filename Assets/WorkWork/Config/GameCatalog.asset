@@ -86,3 +86,135 @@ MonoBehaviour:
         amount: 2
         local: 1
         suitFilter: -1
+    - id: employee.enchant.coin
+      name: 测试员工·财务
+      description: 持有时，给所有6牌添加金币附魔；售出即移除，每月重新附魔，每牌最多4个。
+      item: 0
+      price: 4
+      effects:
+      - trigger: 4
+        kind: 7
+        amount: 1
+        local: 0
+        suitFilter: -1
+        rankFilter: 6
+        enchantment: 0
+    - id: employee.enchant.fans
+      name: 测试员工·运营
+      description: 持有时，给所有梅花牌添加粉丝附魔；售出即移除，每月重新附魔，每牌最多4个。
+      item: 0
+      price: 4
+      effects:
+      - trigger: 4
+        kind: 7
+        amount: 1
+        local: 0
+        suitFilter: 2
+        rankFilter: -1
+        enchantment: 1
+    - id: employee.enchant.wild
+      name: 测试员工·策划
+      description: 持有时，给所有梅花6牌添加同花加分附魔；售出即移除，每月重新附魔，每牌最多4个。
+      item: 0
+      price: 4
+      effects:
+      - trigger: 4
+        kind: 7
+        amount: 1
+        local: 0
+        suitFilter: 2
+        rankFilter: 6
+        enchantment: 2
+    - id: employee.enchant.copy
+      name: 测试员工·程序
+      description: 持有时，给所有6牌添加复制附魔；售出即移除，每月重新附魔，每牌最多4个。
+      item: 0
+      price: 4
+      effects:
+      - trigger: 4
+        kind: 7
+        amount: 1
+        local: 0
+        suitFilter: -1
+        rankFilter: 6
+        enchantment: 3
+    - id: employee.enchant.retry
+      name: 测试员工·QA
+      description: 持有时，给所有梅花牌添加重抽附魔；售出即移除，每月重新附魔，每牌最多4个。
+      item: 0
+      price: 4
+      effects:
+      - trigger: 4
+        kind: 7
+        amount: 1
+        local: 0
+        suitFilter: 2
+        rankFilter: -1
+        enchantment: 4
+    - id: employee.enchant.arrow
+      name: 测试员工·特效师
+      description: 持有时，给所有6牌添加点数翻倍附魔；售出即移除，每月重新附魔，每牌最多4个。
+      item: 0
+      price: 4
+      effects:
+      - trigger: 4
+        kind: 7
+        amount: 1
+        local: 0
+        suitFilter: -1
+        rankFilter: 6
+        enchantment: 5
+    - id: employee.enchant.x2
+      name: 测试员工·音效师
+      description: 持有时，给所有梅花6牌添加附加倍率翻倍附魔；售出即移除，每月重新附魔，每牌最多4个。
+      item: 0
+      price: 4
+      effects:
+      - trigger: 4
+        kind: 7
+        amount: 1
+        local: 0
+        suitFilter: 2
+        rankFilter: 6
+        enchantment: 6
+    tasks:
+    - id: task.pair
+      name: 结算2次一对
+      target: 2
+      reward: 1
+      patternPriorities: 01000000
+    - id: task.bomb
+      name: 结算2次炸弹
+      target: 2
+      reward: 3
+      patternPriorities: 0a0000000b000000
+    - id: task.timed_triple
+      name: 2个月内结算1次三条
+      target: 1
+      reward: 2
+      deadlineMonths: 2
+      patternPriorities: 03000000
+    - id: task.two_pairs
+      name: 结算2次两对
+      target: 2
+      reward: 2
+      deadlineMonths: 0
+      patternPriorities: 02000000
+    - id: task.flush
+      name: 结算2次同花
+      target: 2
+      reward: 2
+      deadlineMonths: 0
+      patternPriorities: 07000000
+    - id: task.straight
+      name: 结算2次顺子
+      target: 2
+      reward: 1
+      deadlineMonths: 0
+      patternPriorities: 05000000
+    - id: task.full_house
+      name: 结算2次葫芦
+      target: 2
+      reward: 3
+      deadlineMonths: 0
+      patternPriorities: 08000000

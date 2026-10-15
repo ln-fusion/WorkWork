@@ -1,6 +1,6 @@
 # 卡牌 UI 与附魔（2026-10-15）
 
-卡面采用 Assets/Image/Effect/Card.png，花色独立 Image（Spades、Heart、Club、Diamonds），点数使用统一 LXGWMarkerGothic-Regular SDF，右侧独立附魔 Image 从上到下最多 5 个。Card.prefab 可独立编辑布局；VisualTheme.asset 集中配置素材。卡牌按原图比例适配手牌与工位，不拉伸。CardView 会在点数、花色、附魔列表变化时更新显示。
+卡面采用 Assets/Image/Effect/Card.png，花色独立 Image（Spades、Heart、Club、Diamonds），点数使用统一 LXGWMarkerGothic-Regular SDF，右侧独立附魔 Image 从上到下最多 4 个。Card.prefab 可独立编辑布局；VisualTheme.asset 集中配置素材。卡牌按原图比例适配手牌与工位，不拉伸。CardView 会在点数、花色、附魔列表变化时更新显示。
 
 图标按名称映射：coin、fans、wild、copy、retry、arrow、x2。
 
@@ -12,7 +12,7 @@
 - arrow：这张牌的基础点数计分翻倍，不改变面值与牌型。
 - x2：这张牌贡献的额外倍率乘 2，不翻倍已经累计的全局倍率。
 
-附魔按添加顺序展示；结算时先算该牌点数与额外倍率，再处理员工/道具效果。当前接口允许重复附魔，每一项都占一个槽并生效，最多 5 项；正式获得附魔的触发方式留给后续具体员工/道具设计。
+附魔按添加顺序展示；结算时先算该牌点数与额外倍率，再处理员工/道具效果。当前接口允许重复附魔，每一项都占一个槽并生效，最多 4 项；员工按持有状态和点数/花色筛选附魔，详见 enchanting-employees.md。
 
 GameSession 提供 SetCardRank、SetCardSuit、AddCardEnchantment、RemoveCardEnchantment、DeleteCard 接口，作用于当前月牌库、弃牌、手牌或工位中的牌。点数可大于 6，初始牌仍是四花色各 1–6。复制与删除只影响本月；新月份清空手牌、工位、弃牌、牌库，重新生成 24 张无附魔基础牌，员工与道具保留。读档保留当前月牌的修改。
 
@@ -22,3 +22,5 @@ GameSession 提供 SetCardRank、SetCardSuit、AddCardEnchantment、RemoveCardEn
 
 花色与附魔 PNG 的透明画布只通过 Sprite 导入矩形裁切，原图不改。更新菜单会依据图片 alpha 范围重新计算裁切，可直接换图。运行时验证已确认 5 个图标名称映射，以及无需重新 Render 的花色/点数/附魔显示更新；放牌收牌、月结算、换素材检查通过。
 
+
+2026-10-15：上限改为4。附魔图标宽高放大25%，从卡宽24%/卡高15.6%调整为30%/19.5%，纵向步长22%。仅调整Card.prefab附魔节点，不重建场景或重置其他手调内容。旧存档超过4个的附魔按原顺序保留前4个，并同步裁剪来源。

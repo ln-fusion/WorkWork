@@ -36,8 +36,8 @@ namespace WorkWork
         public Button redrawButton, scoreButton, refreshButton, nextMonthButton, resultButton;
         public Image officeBackground;
         public GameSession Session { get; private set; }
-        int selectedCard = -1, selectedSlot, selectedEmployee = -1;
-        string message = "选择手牌后点击工位，或直接拖入；点击工位上的牌可收回。";
+        int selectedSlot, selectedEmployee = -1;
+        string message = "点击手牌自动放入空工位，也可直接拖入；点击工位上的牌可收回。";
         string SavePath => Path.Combine(Application.persistentDataPath, "workwork-mvp.json");
         public bool HasSave => File.Exists(SavePath);
         void Start()
@@ -45,9 +45,12 @@ namespace WorkWork
             Application.runInBackground=true;
             if (catalog == null || theme == null) { Debug.LogError("Missing MVP catalog/theme"); enabled = false; return; }
             if(tooltipPrefab!=null) {detailsTooltip=Instantiate(tooltipPrefab,canvas.transform);detailsTooltip.Initialize(this);}
-            officeBackground.sprite = theme.officeBackground;
-            if (theme.officeBackground != null) officeBackground.color = Color.white;
-            foreach (var text in GetComponentsInChildren<TMP_Text>(true)) text.font = theme.font;
+            if(officeBackground!=null)
+            {
+                officeBackground.sprite=theme.officeBackground;
+                if(theme.officeBackground!=null) officeBackground.color=Color.white;
+            }
+            foreach (var text in GetComponentsInChildren<TMP_Text>(true)) {text.font = theme.font;text.spriteAsset=theme.currencySprites;}
             for (int i = 0; i < 6; i++)
             {
                 int slot = i;
@@ -59,7 +62,7 @@ namespace WorkWork
             }
             for(int i=0;i<itemButtons.Length;i++) { int owner=i/3; itemButtons[i].onClick.AddListener(()=>{selectedSlot=owner; Render();}); }
             redrawButton.onClick.AddListener(() => Act(Session.Redraw(), "已重抽未放置的手牌。"));
-            scoreButton.onClick.AddListener(() => { if (Session.ScoreWeek()) { selectedCard = -1; SaveCheckpoint(); message = "本周已结算，记录见左侧。"; Render(); } });
+            scoreButton.onClick.AddListener(() => { if (Session.ScoreWeek()) { SaveCheckpoint(); message = "本周已结算，记录见左侧。"; Render(); } });
             refreshButton.onClick.AddListener(() => Act(Session.RefreshShop(), "商店已刷新。"));
             nextMonthButton.onClick.AddListener(() => { if (Session.NextMonth()) { SaveCheckpoint(); message = "新月份开始。"; Render(); } });
             resultButton.onClick.AddListener(() => { if (Session.OpenShop()) { SaveCheckpoint(); Render(); } });
@@ -72,7 +75,7 @@ namespace WorkWork
         public void NewGame()
         {
             Session = new GameSession(catalog.rules, (uint)Environment.TickCount);
-            selectedCard = -1; selectedEmployee = -1; selectedSlot = 0;
+            selectedEmployee = -1; selectedSlot = 0;
             SaveCheckpoint(); Render();
             GetComponent<GameShell>()?.BeginPlay();
         }
@@ -84,7 +87,7 @@ namespace WorkWork
                 var state = SaveCodec.Deserialize(File.ReadAllText(SavePath));
                 if (state == null || state.slots == null || state.slots.Length != 6) throw new InvalidDataException("存档格式不正确");
                 Session = new GameSession(catalog.rules, state.randomState, state);
-                selectedCard = -1; message = "已回到本周或商店开始时。"; Render();
+                message = "已回到本周或商店开始时。"; Render();
                 GetComponent<GameShell>()?.BeginPlay();
             }
             catch (Exception ex) { Debug.LogException(ex); message = "读取存档失败。"; Render(); }
@@ -96,12 +99,22 @@ namespace WorkWork
             try { File.WriteAllText(SavePath, checkpoint); } catch (IOException ex) { Debug.LogWarning(ex.Message); }
         }
         void Act(bool success, string text)
-        { message = success ? text : "当前操作无法完成，请检查阶段、现金或空位。"; selectedCard = -1; Render(); }
+        { message = success ? text : "当前操作无法完成，请检查阶段、现金或空位。"; Render(); }
+        public void ChooseTask(int index)
+        {
+            if(!Session.ChooseTask(index)) return;
+            SaveCheckpoint();Render();
+        }
+        void ClickHandCard(int cardId)
+        {
+            int slot=Array.FindIndex(Session.State.slots,card=>card==null);
+            if(slot<0) {message="工位已满，可拖拽换牌或点击场上卡牌收回。";Render();return;}
+            Act(Session.Place(cardId,slot),"已自动放入空工位。");
+        }
         void ClickSlot(int slot)
         {
             selectedSlot = slot;
-            if (selectedCard >= 0) Act(Session.Place(selectedCard, slot), "已放置卡牌。");
-            else Act(Session.ReturnCard(slot), "已将卡牌收回手牌。");
+            Act(Session.ReturnCard(slot), "已将卡牌收回手牌。");
         }
         void ClickEmployee(int slot)
         {
@@ -153,19 +166,21 @@ namespace WorkWork
         {
             detailsTooltip?.Hide();
             var s = Session.State;
-            header.text = $"第 {s.month:00} 月   /   第 {s.week} 周";
-            totals.text = $"月度指标   {s.target:N0}\n累计绩效   {s.monthScore:N0}\n\n可用资金   ¥ {s.cash}\n剩余重抽   {s.redraws}";
+            if(header!=null) header.text = $"第 {s.month:00} 月   /   第 {s.week} 周";
+            if(totals!=null) totals.text = $"月度指标   {s.target:N0}\n累计绩效   {s.monthScore:N0}\n\n可用资金   {VisualTheme.CurrencyIcon} {s.cash}\n剩余重抽   {s.redraws}";
             var p = Scoring.Evaluate(s, catalog.rules);
-            preview.text = $"{p.pattern}    ·    {p.chips:N0} × {p.multiplier:0.##} = {p.total:N0}";
-            status.text = message;
-            history.text = s.lastScore == null ? "尚未结算\n\n把牌放在员工对应的工位上。\n只有最强牌型获得奖励。\n基础倍率为 1。" : string.Join("\n", s.lastScore.events);
+            if(preview!=null) preview.text = $"{p.pattern}    ·    {p.chips:N0} × {p.multiplier:0.##} = {p.total:N0}";
+            if(status!=null) status.text = message;
+            if(history!=null) history.text = s.lastScore == null ? "尚未结算\n\n把牌放在员工对应的工位上。\n只有最强牌型获得奖励。\n基础倍率为 1。" : string.Join("\n", s.lastScore.events);
             for (int i = 0; i < 6; i++)
             {
                 foreach (Transform child in handRoots[i]) Destroy(child.gameObject);
                 foreach (Transform child in slotRoots[i]) Destroy(child.gameObject);
                 if (i < s.hand.Count) AddCard(s.hand[i], handRoots[i], TokenKind.HandCard, s.hand[i].id);
                 if (s.slots[i] != null) AddCard(s.slots[i], slotRoots[i], TokenKind.SlotCard, i);
-                BindContent(s.employees[i], employeeTexts[i], employeeIcons[i], "空工位", i);
+                // 工位 Label 已移除，停用名称/编号更新，继续更新员工图片。
+                // BindContent(s.employees[i], employeeTexts[i], employeeIcons[i], "空工位", i);
+                BindContent(s.employees[i], null, employeeIcons[i], "空工位", i);
 
                 SetToken(employeeButtons[i], TokenKind.Employee, i, s.employees[i]);
 
@@ -187,7 +202,7 @@ namespace WorkWork
             resultPanel.SetActive(s.phase == Phase.MonthResult || s.phase == Phase.Failed);
             if(resultText!=null) resultText.text = $"{(s.phase == Phase.Failed ? "月度验收未通过" : "月度验收通过")}\n\n{s.monthScore:N0} / {s.target:N0}\n\n{s.monthSummary}";
             resultButton.gameObject.SetActive(s.phase == Phase.MonthResult);
-            shopTitle.text = $"月末商店   ·   ¥{s.cash}   ·   目标工位 {selectedSlot + 1}   ·   拖入工位购入 / 拖入商店出售";
+            if(shopTitle!=null) shopTitle.text = $"月末商店   ·   {VisualTheme.CurrencyIcon}{s.cash}   ·   目标工位 {selectedSlot + 1}   ·   拖入工位购入 / 拖入商店出售";
             refreshButton.GetComponentInChildren<TMP_Text>().text = (3+s.refreshes).ToString();
             refreshButton.interactable = s.refreshes < 5 && s.cash >= 3 + s.refreshes;
             GetComponent<GameShell>()?.Refresh(s,p);
@@ -195,8 +210,11 @@ namespace WorkWork
         void BindContent(string id, TMP_Text text, Image icon, string empty, int slot)
         {
             var def = catalog.rules.content.Find(c => c.id == id);
-            text.text = def == null ? empty : def.name;
-            if (slot >= 0) text.text = $"{slot + 1:00}  {text.text}";
+            if (text != null)
+            {
+                text.text = def == null ? empty : def.name;
+                if (slot >= 0) text.text = $"{slot + 1:00}  {text.text}";
+            }
             icon.sprite = theme.Icon(id); icon.gameObject.SetActive(icon.sprite != null);
         }
         void SetToken(Button button, TokenKind kind, int value, string id)
@@ -206,12 +224,13 @@ namespace WorkWork
             var view = Instantiate(cardPrefab, parent); var rect = (RectTransform)view.transform;
             rect.anchorMin=rect.anchorMax=rect.pivot=new Vector2(.5f,.5f);rect.anchoredPosition=Vector2.zero;
             rect.sizeDelta=CardSize;
-            view.Bind(card, theme, card.id == selectedCard);
+            view.Bind(card, theme, false);
             view.drag.controller = this; view.drag.kind = kind; view.drag.value = value;
-            if (kind == TokenKind.HandCard) view.button.onClick.AddListener(() => { selectedCard = card.id == selectedCard ? -1 : card.id; message = "点击工位放置所选卡牌。"; Render(); });
+            if (kind == TokenKind.HandCard) view.button.onClick.AddListener(() => ClickHandCard(card.id));
             else view.button.onClick.AddListener(() => ClickSlot(value));
             var zone = view.gameObject.AddComponent<DropZone>(); zone.controller = this; zone.slot = kind == TokenKind.SlotCard ? value : -1; zone.hand = kind == TokenKind.HandCard;
         }
     }
 }
+
 

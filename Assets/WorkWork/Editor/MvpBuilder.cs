@@ -175,11 +175,24 @@ namespace WorkWork.Editor
                 Entry("employee.redraw","测试员工·助理","所在工位计分：重抽次数 +1",false,4,EffectKind.ExtraRedraw,1),
                 Entry("item.chips","测试道具·记事本","挂载工位计分：基础分 +10",true,4,EffectKind.AddChips,10),
                 Entry("item.mult","测试道具·计算器","挂载工位计分：倍率 +1",true,4,EffectKind.AddMultiplier,1),
-                Entry("item.double","测试道具·扩音器","挂载工位计分：倍率 ×2",true,8,EffectKind.MultiplyMultiplier,2)
+                Entry("item.double","测试道具·扩音器","挂载工位计分：倍率 ×2",true,8,EffectKind.MultiplyMultiplier,2),
+                Enchanter("coin","财务","金币",Enchantment.Coin,6,-1),
+                Enchanter("fans","运营","粉丝",Enchantment.Fans,-1,2),
+                Enchanter("wild","策划","同花加分",Enchantment.Wild,6,2),
+                Enchanter("copy","程序","复制",Enchantment.Copy,6,-1),
+                Enchanter("retry","QA","重抽",Enchantment.Retry,-1,2),
+                Enchanter("arrow","特效师","点数翻倍",Enchantment.Arrow,6,-1),
+                Enchanter("x2","音效师","附加倍率翻倍",Enchantment.X2,6,2)
             };
         }
         static Content Entry(string id,string name,string description,bool item,int price,EffectKind kind,int amount)
         { return new Content { id=id,name=name,description=description,item=item,price=price,effects=new List<Effect>{new Effect {trigger=Trigger.CardScored,kind=kind,amount=amount}} }; }
+        static Content Enchanter(string id,string name,string enchantmentName,Enchantment enchantment,int rank,int suit)
+        {
+            return new Content {id="employee.enchant."+id,name="测试员工·"+name,price=4,
+                description="持有时，给所有"+(suit==2?"梅花":"")+(rank==6?"6":"")+"牌添加"+enchantmentName+"附魔；售出即移除，每月重新附魔，每牌最多4个。",
+                effects=new List<Effect>{new Effect{trigger=Trigger.WhileOwned,kind=EffectKind.AddEnchantment,amount=1,local=false,enchantment=enchantment,rankFilter=rank,suitFilter=suit}}};
+        }
         public static void BuildAndVerify()
         {
             Build();

@@ -17,7 +17,10 @@ namespace WorkWork
                 slots=s.slots.Select(c=>c?.Copy() ?? new Card()).ToArray(),
                 employees=(string[])s.employees.Clone(),items=(string[])s.items.Clone(),
                 acquired=s.acquired.ToList(),offers=s.offers.ToList(),lastScore=s.lastScore,monthSummary=s.monthSummary,
-                lastIncome=s.lastIncome,lastInterest=s.lastInterest,lastStaffIncome=s.lastStaffIncome
+                lastIncome=s.lastIncome,lastInterest=s.lastInterest,lastStaffIncome=s.lastStaffIncome,
+                tasks=s.tasks==null ? new System.Collections.Generic.List<TaskProgress>() : s.tasks.Select(t=>new TaskProgress{id=t.id,current=t.current,rewarded=t.rewarded,elapsedMonths=t.elapsedMonths,expired=t.expired}).ToList(),
+                acceptedTasks=s.acceptedTasks==null?new System.Collections.Generic.List<TaskDefinition>():s.acceptedTasks.Select(GameSession.CopyTask).ToList(),
+                taskOffers=s.taskOffers==null?new System.Collections.Generic.List<TaskDefinition>():s.taskOffers.Select(GameSession.CopyTask).ToList(),lastTaskOfferMonth=s.lastTaskOfferMonth
             };
             return JsonUtility.ToJson(snapshot);
         }

@@ -50,20 +50,20 @@ namespace WorkWork.Editor
                 view.rankText.font=theme.font;view.rankText.fontSharedMaterial=theme.font.material;view.rankText.fontSize=72;view.rankText.enableAutoSizing=true;view.rankText.fontSizeMin=20;view.rankText.fontSizeMax=72;
                 view.rankText.alignment=TextAlignmentOptions.Center;view.rankText.color=theme.suitColors[0];
                 view.suitText.gameObject.SetActive(false);
-                if(view.enchantmentIcons==null || view.enchantmentIcons.Length!=5)
+                if(view.enchantmentIcons==null || view.enchantmentIcons.Length!=WorkWork.Core.Card.MaxEnchantments)
                 {
                     var old=root.transform.Find("Enchantments");if(old!=null) Object.DestroyImmediate(old.gameObject);
                     var container=new GameObject("Enchantments",typeof(RectTransform));container.transform.SetParent(root.transform,false);
-                    Layout((RectTransform)container.transform,0,0,1,1);view.enchantmentIcons=new Image[5];
-                    for(int i=0;i<5;i++)
+                    Layout((RectTransform)container.transform,0,0,1,1);view.enchantmentIcons=new Image[WorkWork.Core.Card.MaxEnchantments];
+                    for(int i=0;i<view.enchantmentIcons.Length;i++)
                     {
                         var icon=new GameObject("Enchantment "+(i+1),typeof(RectTransform),typeof(Image));icon.transform.SetParent(container.transform,false);
                         view.enchantmentIcons[i]=icon.GetComponent<Image>();
                     }
                 }
-                for(int i=0;i<5;i++)
+                for(int i=0;i<view.enchantmentIcons.Length;i++)
                 {
-                    var icon=view.enchantmentIcons[i];Layout(icon.rectTransform,.76f,.02f+i*.17f,.24f,.156f);icon.preserveAspect=true;icon.raycastTarget=false;icon.color=Color.white;icon.gameObject.SetActive(false);
+                    var icon=view.enchantmentIcons[i];Layout(icon.rectTransform,.70f,.02f+i*.22f,.30f,.195f);icon.preserveAspect=true;icon.raycastTarget=false;icon.color=Color.white;icon.gameObject.SetActive(false);
                 }
                 PrefabUtility.SaveAsPrefabAsset(root,path);
             }
@@ -71,6 +71,23 @@ namespace WorkWork.Editor
             AssetDatabase.SaveAssets();
         }
         static Sprite Sprite(string path) => AssetDatabase.LoadAllAssetsAtPath(path).OfType<Sprite>().FirstOrDefault();
+        [MenuItem("WorkWork/Resize Enchantment Icons")]
+        public static void ResizeEnchantmentIcons()
+        {
+            const string path="Assets/WorkWork/Prefabs/Card.prefab";
+            var root=PrefabUtility.LoadPrefabContents(path);
+            try
+            {
+                var view=root.GetComponent<CardView>();
+                foreach(var extra in view.enchantmentIcons.Skip(WorkWork.Core.Card.MaxEnchantments))
+                    if(extra!=null) Object.DestroyImmediate(extra.gameObject);
+                view.enchantmentIcons=view.enchantmentIcons.Take(WorkWork.Core.Card.MaxEnchantments).ToArray();
+                for(int i=0;i<view.enchantmentIcons.Length;i++)
+                    Layout(view.enchantmentIcons[i].rectTransform,.70f,.02f+i*.22f,.30f,.195f);
+                PrefabUtility.SaveAsPrefabAsset(root,path);
+            }
+            finally {PrefabUtility.UnloadPrefabContents(root);}
+        }
         static void TrimSprite(string path,string name)
         {
             var texture=new Texture2D(2,2,TextureFormat.RGBA32,false);

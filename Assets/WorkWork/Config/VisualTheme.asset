@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: VisualTheme
   m_EditorClassIdentifier: 
   font: {fileID: 11400000, guid: d2ac3bf7b5d624449a9c3e8833023e3d, type: 2}
+  currencySprites: {fileID: 11400000, guid: db53909924a96be43b47e0223d61854a, type: 2}
   cardFace: {fileID: 21300000, guid: c4908183ba64add4fbbdcc5deda3bf9b, type: 3}
   cardBack: {fileID: 0}
   officeBackground: {fileID: 0}
@@ -128,6 +129,20 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: 384b96ffb5d32294eb535ebfc3cdca9e, type: 3}
   - id: item.double
     icon: {fileID: 21300000, guid: 4fe995fe4f9c19843ae67d909f2442eb, type: 3}
+  - id: employee.enchant.coin
+    icon: {fileID: 21300000, guid: 8a349babb67787149a447d7f0a906e5f, type: 3}
+  - id: employee.enchant.fans
+    icon: {fileID: 21300000, guid: 089a397b2c16fe748aa566cd28f187f2, type: 3}
+  - id: employee.enchant.wild
+    icon: {fileID: 21300000, guid: 625ba48bb6b648c4c9fa5e19b7b7e1d8, type: 3}
+  - id: employee.enchant.copy
+    icon: {fileID: 21300000, guid: 6aa6accc21bcda24ba2ecff7219247f6, type: 3}
+  - id: employee.enchant.retry
+    icon: {fileID: 21300000, guid: 8a435411f8a980943b1e60adf2ed9d72, type: 3}
+  - id: employee.enchant.arrow
+    icon: {fileID: 21300000, guid: b9eea84d55263654fb5115336a107b8f, type: 3}
+  - id: employee.enchant.x2
+    icon: {fileID: 21300000, guid: 3b2efd61ce044a344a999ff190f55b9c, type: 3}
   suitColors:
   - {r: 0.16, g: 0.19, b: 0.18, a: 1}
   - {r: 0.81, g: 0.36, b: 0.38, a: 1}

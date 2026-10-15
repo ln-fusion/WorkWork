@@ -7,6 +7,8 @@ namespace WorkWork
     public class VisualTheme : ScriptableObject
     {
         public TMPro.TMP_FontAsset font;
+        public TMPro.TMP_SpriteAsset currencySprites;
+        public const string CurrencyIcon="<sprite name=\"ShopPoint\">";
         public Sprite cardFace, cardBack, officeBackground;
         public Sprite[] suitIcons = new Sprite[4];
         public Sprite[] enchantmentIcons = new Sprite[7];

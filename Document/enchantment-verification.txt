@@ -1,0 +1,4 @@
+Current implementation: ownership-based filtered enchantments (supersedes placement-based implementation).
+Unity MCP EditMode Test Runner: 65 passed, 0 failed, 0 skipped.
+Initial job: a27480c223bb46d797b88b5675d15d71.
+Rules and configuration: Document/enchanting-employees.md.

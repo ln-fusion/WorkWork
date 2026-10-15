@@ -105,6 +105,10 @@ namespace WorkWork.Editor
             entries.Add(new ContentArt{id="employee.chips",icon=SpriteAt("Assets/Image/Staff/员工4-程序.png")});
             entries.Add(new ContentArt{id="employee.mult",icon=SpriteAt("Assets/Image/Staff/员工2-美术设计.png")});
             entries.Add(new ContentArt{id="employee.redraw",icon=SpriteAt("Assets/Image/Staff/员工3-游戏测试QA.png")});
+            string[] enchantIds={"coin","fans","wild","copy","retry","arrow","x2"};
+            string[] enchantPortraits={"员工15-财务","员工7-游戏运营","员工8-文案策划","员工4-程序","员工3-游戏测试QA","员工5-特效师","员工6-音乐音效"};
+            for(int i=0;i<enchantIds.Length;i++)
+                entries.Add(new ContentArt{id="employee.enchant."+enchantIds[i],icon=SpriteAt("Assets/Image/Staff/"+enchantPortraits[i]+".png")});
             entries.Add(new ContentArt{id="item.chips",icon=SpriteAt("Assets/Image/Tools/HotPot.png")});
             entries.Add(new ContentArt{id="item.mult",icon=SpriteAt("Assets/Image/Tools/Clock.png")});
             entries.Add(new ContentArt{id="item.double",icon=SpriteAt("Assets/Image/Tools/TNT.png")});
@@ -201,13 +205,13 @@ namespace WorkWork.Editor
             for(int i=0;i<6;i++)
             {
                 Move(g.offerButtons[i].transform,g.shopPanel.transform,120+i*222,30,180,360,true);
-                Move(g.offerIcons[i].transform,g.offerButtons[i].transform,8,104,164,174,false);
+                Move(g.offerIcons[i].transform,g.offerButtons[i].transform,8,104,164,132,false);
                 Move(g.offerTexts[i].transform,g.offerButtons[i].transform,4,246,172,48,true);
                 g.offerTexts[i].fontSize=20; g.offerTexts[i].text="";
                 if(g.offerPrices[i]==null) g.offerPrices[i]=Text(g.offerButtons[i].transform,"Price","",-12,0,64,65,32);
                 Move(g.offerPrices[i].transform,g.offerButtons[i].transform,-12,0,64,65,true); g.offerPrices[i].color=Color.white;
             }
-            g.shopTitle.gameObject.SetActive(false);
+            if(g.shopTitle!=null) g.shopTitle.gameObject.SetActive(false);
             var refreshLabel=g.refreshButton.GetComponentInChildren<TMP_Text>(true);
             Move(refreshLabel.transform,g.refreshButton.transform,0,78,90,45,true); refreshLabel.fontSize=30; refreshLabel.text="3";
             g.nextMonthButton.GetComponentInChildren<TMP_Text>(true).text="";
@@ -328,6 +332,8 @@ namespace WorkWork.Editor
         }
     }
 }
+
+
 
 
 

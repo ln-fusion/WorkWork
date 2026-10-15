@@ -81,6 +81,7 @@ namespace WorkWork.Core
                         }
             var p = BestPattern(cards);
             result.pattern = p.name;
+            result.patternPriority = p.priority;
             result.chips = p.chips;
             decimal mult = 1 + p.mult;
             result.events.Add("基础倍率：1");

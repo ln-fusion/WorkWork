@@ -21,8 +21,8 @@ namespace WorkWork.Editor
                 try
                 {
                     int id=hand[0].id;
-                    var visible=g.handRoots[0].GetComponentsInChildren<CardView>().First(v=>v.rankText.text==hand[0].rank.ToString());
-                    visible.button.onClick.Invoke(); g.slotButtons[0].onClick.Invoke();
+                    var visible=g.handRoots[0].GetComponentsInChildren<CardView>().First(v=>v.BoundCard.id==id);
+                    visible.button.onClick.Invoke();
                     if(g.Session.State.slots[0]==null || g.Session.State.slots[0].id!=id) throw new Exception("Click-to-place failed");
                     var card=g.slotRoots[0].GetComponentsInChildren<CardView>().Last();
                     g.Drop(card.drag,g.handRoots[0].parent.GetComponent<DropZone>());
