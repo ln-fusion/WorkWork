@@ -36,6 +36,7 @@ namespace WorkWork.Core
                     for(int i=0;i<3;i++) State.offers.Add(i<ids.Length?ids[i]:null);
                 }
             }
+            if(saved!=null && State.phase==Phase.Shop) PrepareShopScore();
             if (saved == null) BeginMonth();
         }
         int Next(int max)
@@ -58,10 +59,20 @@ namespace WorkWork.Core
             for (int suit = 0; suit < 4; suit++) for (int rank = 1; rank <= 6; rank++)
                 State.deck.Add(new Card { id = ++State.nextCardId, suit = (Suit)suit, rank = rank });
             Shuffle(State.deck);
-            decimal target = Config.firstTarget;
-            for (int m = 2; m <= State.month; m++) target *= m <= 12 ? 1.25m : m <= 24 ? 1.4m : m <= 36 ? 1.6m : 2m;
-            State.target = checked((long)(decimal.Ceiling(target / 10m) * 10m));
+            State.target = TargetForMonth(State.month);
             Draw(6);
+        }
+        long TargetForMonth(int month)
+        {
+            decimal target=Config.firstTarget;
+            for(int m=2;m<=month;m++) target*=m<=12?1.25m:m<=24?1.4m:m<=36?1.6m:2m;
+            return checked((long)(decimal.Ceiling(target/10m)*10m));
+        }
+        void PrepareShopScore()
+        {
+            State.target=TargetForMonth(State.month+1);
+            State.monthScore=0;
+            State.lastScore=null;
         }
         void Draw(int count)
         {
@@ -167,6 +178,7 @@ namespace WorkWork.Core
         public bool OpenShop()
         {
             if (State.phase != Phase.MonthResult) return false;
+            PrepareShopScore();
             State.phase = Phase.Shop; State.refreshes = 0; RollOffers(); return true;
         }
         void RollOffers()
@@ -239,3 +251,4 @@ namespace WorkWork.Core
         }
     }
 }
+

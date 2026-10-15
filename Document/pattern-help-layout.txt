@@ -1,0 +1,1 @@
+PASS: preserved all font sizes; row height=58; column widths=313.2689,288.01,288.01; viewport height=559.5. Native ScrollRect/Scrollbar handles overflow; header and close button remain fixed.

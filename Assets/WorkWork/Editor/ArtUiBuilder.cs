@@ -84,6 +84,9 @@ namespace WorkWork.Editor
                 label.font=g.theme.font; label.fontSharedMaterial=g.theme.font.material;
                 EditorUtility.SetDirty(label);
             }
+            ArtButtonBinding.Bind(g);
+            PatternHelpBuilder.Build(g);
+            ConfigureAllButtons(g);
             EditorUtility.SetDirty(g); EditorUtility.SetDirty(shell); if(g.theme!=null) EditorUtility.SetDirty(g.theme);
             AssetDatabase.SaveAssets(); EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
             Debug.Log("WORKWORK_ART_UI_READY");
@@ -217,12 +220,13 @@ namespace WorkWork.Editor
         {
             Move(g.resultPanel.transform,board,330,80,940,740,false); g.resultPanel.GetComponent<Image>().color=Color.clear;
             g.resultText.gameObject.SetActive(false);
-            shell.resultArt=Panel(g.resultPanel.transform,"Result Art",0,0,940,705,Color.white).GetComponent<Image>();
-            shell.resultArt.preserveAspect=true; shell.winArt=SpriteAt("Assets/Image/Win.psd"); shell.loseArt=SpriteAt("Assets/Image/Lose.psd");
+            var resultArt=Panel(g.resultPanel.transform,"Result Art",0,0,940,705,Color.white).GetComponent<Image>();
+            resultArt.preserveAspect=true; resultArt.sprite=SpriteAt("Assets/Image/Win.psd");
             shell.winNumbers=new[]{Text(g.resultPanel.transform,"Win Target","",145,274,194,49,25),Text(g.resultPanel.transform,"Win Excess","",584,274,194,49,25),Text(g.resultPanel.transform,"Win Interest","",145,395,194,49,25),Text(g.resultPanel.transform,"Win Staff","",584,395,194,49,25),Text(g.resultPanel.transform,"Win Income","",354,552,194,38,28)};
             shell.loseNumbers=new[]{Text(g.resultPanel.transform,"Lose Target","",185,340,215,52,30),Text(g.resultPanel.transform,"Lose Result","",548,340,215,52,30)};
             Move(g.resultButton.transform,g.resultPanel.transform,337,669,266,58,true); g.resultButton.GetComponent<Image>().color=Paper; g.resultButton.GetComponentInChildren<TMP_Text>().color=Brown;
             shell.restart=Button(g.resultPanel.transform,"Restart","",335,424,270,81,Color.clear); UnityEventTools.AddPersistentListener(shell.restart.onClick,g.NewGame);
+            ResultUiBuilder.Bind(g);
             g.resultPanel.SetActive(false);
         }
         static void BuildSettings(GameShell shell,Transform canvas)
@@ -272,6 +276,49 @@ namespace WorkWork.Editor
             var obj=new GameObject(name,typeof(RectTransform),typeof(TextMeshProUGUI)); Move(obj.transform,parent,x,y,w,h,true);
             var label=obj.GetComponent<TextMeshProUGUI>(); label.text=text; label.font=font; label.fontSize=size; label.color=Brown; label.alignment=TextAlignmentOptions.Center; label.raycastTarget=false; return label;
         }
+        [MenuItem("WorkWork/Apply Button Color Tint")]
+        public static void ApplyButtonTint()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode) return;
+            var g=UnityEngine.Object.FindObjectOfType<GameController>();ConfigureAllButtons(g);
+            EditorSceneManager.MarkSceneDirty(g.gameObject.scene);EditorSceneManager.SaveScene(g.gameObject.scene);AssetDatabase.SaveAssets();
+        }
+        public static void ConfigureAllButtons(GameController g)
+        {
+            foreach(var button in g.GetComponentsInChildren<Button>(true)) ConfigureButtonTint(button);
+            ConfigureButtonTint(g.cardPrefab.button);EditorUtility.SetDirty(g.cardPrefab.button);
+        }
+        public static void ConfigureButtonTint(Button button)
+        {
+            var colors=button.colors;colors.normalColor=Color.white;colors.highlightedColor=new Color(.85f,.85f,.85f,1);colors.pressedColor=new Color(.7f,.7f,.7f,1);colors.selectedColor=Color.white;colors.colorMultiplier=1;colors.fadeDuration=.08f;
+            button.colors=colors;button.transition=Selectable.Transition.ColorTint;
+            if(button.targetGraphic!=null && button.targetGraphic.color.a==0)
+            {
+                var icon=button.GetComponentsInChildren<Image>(true).FirstOrDefault(i=>i.color.a>0);
+                if(icon!=null) button.targetGraphic=icon;
+                else if(button.name=="Refresh Shop" || button.name=="Next Month")
+                {
+                    var art=button.transform.parent.Find("Shop PSD Layers");
+                    var target=art==null?null:art.Find(button.name=="Refresh Shop"?"图层 8":"下个月");
+                    if(target!=null) button.targetGraphic=target.GetComponent<Image>();
+                }
+                else if(button.name=="Restart")
+                {
+                    var source=button.transform.parent.Find("Background Image") as RectTransform;
+                    if(source!=null)
+                    {
+                        // Native UI mask reveals only the baked button region; Color Tint affects this Image.
+                        if(button.GetComponent<RectMask2D>()==null) button.gameObject.AddComponent<RectMask2D>();
+                        var obj=new GameObject("Button Artwork",typeof(RectTransform),typeof(Image));obj.transform.SetParent(button.transform,false);
+                        var rect=(RectTransform)obj.transform;rect.pivot=source.pivot;rect.sizeDelta=source.rect.size;rect.position=source.position;
+                        var scale=source.lossyScale;var parentScale=button.transform.lossyScale;rect.localScale=new Vector3(scale.x/parentScale.x,scale.y/parentScale.y,1);
+                        var image=obj.GetComponent<Image>();var original=source.GetComponent<Image>();image.sprite=original.sprite;image.preserveAspect=original.preserveAspect;image.color=original.color;image.raycastTarget=false;
+                        obj.transform.SetAsFirstSibling();button.targetGraphic=image;
+                    }
+                }
+            }
+            EditorUtility.SetDirty(button);
+        }
         static Button Button(Transform parent,string name,string text,float x,float y,float w,float h,Color color)
         {
             var obj=Panel(parent,name,x,y,w,h,color); var button=obj.AddComponent<Button>(); button.targetGraphic=obj.GetComponent<Image>();
@@ -281,3 +328,7 @@ namespace WorkWork.Editor
         }
     }
 }
+
+
+
+

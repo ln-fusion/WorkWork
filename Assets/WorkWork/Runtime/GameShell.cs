@@ -15,11 +15,12 @@ namespace WorkWork
         public TMP_Text[] volumeLabels;
         public TMP_Text chips, multiplier, target, cash, shopCash, pattern, plays, redraws;
         public TMP_Text[] dateNumbers;
-        public Image resultArt;
-        public Sprite winArt, loseArt;
+        public GameObject winGroup, loseGroup;
         public TMP_Text[] winNumbers;
         public TMP_Text[] loseNumbers;
         public Button restart;
+        public GameObject patternHelp;
+        public TMP_Text[] patternNames, patternChips, patternMultipliers;
         bool initialized;
         float previousTimeScale = 1;
         public void Initialize(GameController controller)
@@ -33,23 +34,34 @@ namespace WorkWork
             effects.onValueChanged.AddListener(_=>ApplyVolume());
             initialized=true; ApplyVolume(); ShowWelcome();
         }
-        public void BeginPlay() { game.detailsTooltip?.Hide(); CloseSettings(); welcome.SetActive(false); board.SetActive(true); }
+        public void OpenPatternHelp()
+        {
+            game.detailsTooltip?.Hide();
+            for(int i=0;i<Scoring.Rewards.Count;i++)
+            {
+                var reward=Scoring.Rewards[Scoring.Rewards.Count-1-i];
+                patternNames[i].text=reward.name;patternChips[i].text="+"+reward.chips;patternMultipliers[i].text="+"+reward.mult;
+            }
+            patternHelp.SetActive(true);patternHelp.transform.SetAsLastSibling();
+        }
+        public void ClosePatternHelp() {if(patternHelp!=null) patternHelp.SetActive(false);}
+        public void BeginPlay() { ClosePatternHelp();game.detailsTooltip?.Hide(); CloseSettings(); welcome.SetActive(false); board.SetActive(true); }
         public void ShowWelcome()
         {
-            game.detailsTooltip?.Hide();CloseSettings(); board.SetActive(false); welcome.SetActive(true);
+            ClosePatternHelp();game.detailsTooltip?.Hide();CloseSettings(); board.SetActive(false); welcome.SetActive(true);
             continueButton.interactable=game.HasSave;
         }
         public void OpenSettings()
         {
             game.detailsTooltip?.Hide();
-            previousTimeScale=Time.timeScale; Time.timeScale=0;
+            ClosePatternHelp();previousTimeScale=Time.timeScale; Time.timeScale=0;
             settings.SetActive(true); settings.transform.SetAsLastSibling();
         }
         public void CloseSettings() { settings.SetActive(false); Time.timeScale=previousTimeScale; }
         void OnDisable() { if(settings!=null && settings.activeSelf) Time.timeScale=previousTimeScale; }
         void Update()
         {
-            if(initialized && Input.GetKeyDown(KeyCode.Escape)) { if(game.detailsTooltip!=null && game.detailsTooltip.IsVisible) {game.detailsTooltip.Hide();return;} if(settings.activeSelf) CloseSettings(); else OpenSettings(); }
+            if(initialized && Input.GetKeyDown(KeyCode.Escape)) { if(patternHelp!=null && patternHelp.activeSelf) {ClosePatternHelp();return;} if(game.detailsTooltip!=null && game.detailsTooltip.IsVisible) {game.detailsTooltip.Hide();return;} if(settings.activeSelf) CloseSettings(); else OpenSettings(); }
         }
         void ApplyVolume()
         {
@@ -80,10 +92,8 @@ namespace WorkWork
             game.header.text=$"第 {(state.month-1)/12+1} 年 {((state.month-1)%12)+1} 月\n第 {state.week} 周";
             dateNumbers[0].text=(((state.month-1)/12)+1).ToString(); dateNumbers[1].text=(((state.month-1)%12)+1).ToString(); dateNumbers[2].text=state.week.ToString();
             bool won=state.phase==Phase.MonthResult;
-            resultArt.sprite=won?winArt:loseArt;
-            restart.gameObject.SetActive(state.phase==Phase.Failed);
-            foreach(var label in winNumbers) label.gameObject.SetActive(won);
-            foreach(var label in loseNumbers) label.gameObject.SetActive(!won);
+            winGroup.SetActive(won);
+            loseGroup.SetActive(state.phase==Phase.Failed);
             if(won)
             {
                 // Summary freezes reward components before money is credited.
@@ -96,3 +106,5 @@ namespace WorkWork
         }
     }
 }
+
+

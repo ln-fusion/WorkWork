@@ -6,6 +6,23 @@ namespace WorkWork.Core
 {
     public static class Scoring
     {
+        public static IReadOnlyList<Pattern> Rewards { get; } = Array.AsReadOnly(new[]
+        {
+            new Pattern("无牌型", 0, 0, 0),
+            new Pattern("一对", 1, 5, 1),
+            new Pattern("两对", 2, 8, 1),
+            new Pattern("三条", 3, 10, 2),
+            new Pattern("三对", 4, 12, 2),
+            new Pattern("顺子", 5, 14, 2),
+            new Pattern("六顺", 6, 16, 3),
+            new Pattern("同花", 7, 16, 3),
+            new Pattern("葫芦", 8, 18, 3),
+            new Pattern("双三条", 9, 22, 4),
+            new Pattern("四条", 10, 24, 5),
+            new Pattern("四带对", 11, 28, 6),
+            new Pattern("同花顺", 12, 36, 8),
+            new Pattern("六张同花顺", 13, 50, 12)
+        });
         public static Pattern BestPattern(IEnumerable<Card> source)
         {
             var cards = source.Where(c => c != null).ToList();
@@ -17,20 +34,20 @@ namespace WorkWork.Core
             int top = groups.Length == 0 ? 0 : groups[0];
             int pairs = groups.Count(n => n >= 2);
             // 5/6 of a kind have no row in the design: provisional fallback to four of a kind.
-            if (sixsf) return new Pattern("六张同花顺", 13, 50, 12);
-            if (sf) return new Pattern("同花顺", 12, 36, 8);
-            if (groups.SequenceEqual(new[] {4, 2})) return new Pattern("四带对", 11, 28, 6);
-            if (top >= 4) return new Pattern("四条", 10, 24, 5);
-            if (groups.SequenceEqual(new[] {3, 3})) return new Pattern("双三条", 9, 22, 4);
-            if (top >= 3 && pairs >= 2) return new Pattern("葫芦", 8, 18, 3);
-            if (flush) return new Pattern("同花", 7, 16, 3);
-            if (six && cards.Count == 6) return new Pattern("六顺", 6, 16, 3);
-            if (straight) return new Pattern("顺子", 5, 14, 2);
-            if (groups.SequenceEqual(new[] {2, 2, 2})) return new Pattern("三对", 4, 12, 2);
-            if (top >= 3) return new Pattern("三条", 3, 10, 2);
-            if (pairs >= 2) return new Pattern("两对", 2, 8, 1);
-            if (top >= 2) return new Pattern("一对", 1, 5, 1);
-            return new Pattern("无牌型", 0, 0, 0);
+            if (sixsf) return Rewards[13];
+            if (sf) return Rewards[12];
+            if (groups.SequenceEqual(new[] {4, 2})) return Rewards[11];
+            if (top >= 4) return Rewards[10];
+            if (groups.SequenceEqual(new[] {3, 3})) return Rewards[9];
+            if (top >= 3 && pairs >= 2) return Rewards[8];
+            if (flush) return Rewards[7];
+            if (six && cards.Count == 6) return Rewards[6];
+            if (straight) return Rewards[5];
+            if (groups.SequenceEqual(new[] {2, 2, 2})) return Rewards[4];
+            if (top >= 3) return Rewards[3];
+            if (pairs >= 2) return Rewards[2];
+            if (top >= 2) return Rewards[1];
+            return Rewards[0];
         }
         static bool HasStraight(IEnumerable<Card> cards, int count)
         {
@@ -113,3 +130,4 @@ namespace WorkWork.Core
         }
     }
 }
+

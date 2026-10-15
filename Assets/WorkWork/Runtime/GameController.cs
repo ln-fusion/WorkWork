@@ -37,7 +37,7 @@ namespace WorkWork
         public Image officeBackground;
         public GameSession Session { get; private set; }
         int selectedCard = -1, selectedSlot, selectedEmployee = -1;
-        string checkpoint, message = "选择手牌后点击工位，或直接拖入；点击工位上的牌可收回。";
+        string message = "选择手牌后点击工位，或直接拖入；点击工位上的牌可收回。";
         string SavePath => Path.Combine(Application.persistentDataPath, "workwork-mvp.json");
         public bool HasSave => File.Exists(SavePath);
         void Start()
@@ -84,14 +84,14 @@ namespace WorkWork
                 var state = SaveCodec.Deserialize(File.ReadAllText(SavePath));
                 if (state == null || state.slots == null || state.slots.Length != 6) throw new InvalidDataException("存档格式不正确");
                 Session = new GameSession(catalog.rules, state.randomState, state);
-                checkpoint = SaveCodec.Serialize(state); selectedCard = -1; message = "已回到本周或商店开始时。"; Render();
+                selectedCard = -1; message = "已回到本周或商店开始时。"; Render();
                 GetComponent<GameShell>()?.BeginPlay();
             }
             catch (Exception ex) { Debug.LogException(ex); message = "读取存档失败。"; Render(); }
         }
         void SaveCheckpoint()
         {
-            checkpoint = SaveCodec.Serialize(Session.State);
+            string checkpoint = SaveCodec.Serialize(Session.State);
             // In-game Continue always restores the beginning of a week/shop, not partial drags.
             try { File.WriteAllText(SavePath, checkpoint); } catch (IOException ex) { Debug.LogWarning(ex.Message); }
         }
@@ -185,7 +185,7 @@ namespace WorkWork
             scoreButton.interactable = s.phase == Phase.Playing && s.slots.Any(c => c != null);
             shopPanel.SetActive(s.phase == Phase.Shop);
             resultPanel.SetActive(s.phase == Phase.MonthResult || s.phase == Phase.Failed);
-            resultText.text = $"{(s.phase == Phase.Failed ? "月度验收未通过" : "月度验收通过")}\n\n{s.monthScore:N0} / {s.target:N0}\n\n{s.monthSummary}";
+            if(resultText!=null) resultText.text = $"{(s.phase == Phase.Failed ? "月度验收未通过" : "月度验收通过")}\n\n{s.monthScore:N0} / {s.target:N0}\n\n{s.monthSummary}";
             resultButton.gameObject.SetActive(s.phase == Phase.MonthResult);
             shopTitle.text = $"月末商店   ·   ¥{s.cash}   ·   目标工位 {selectedSlot + 1}   ·   拖入工位购入 / 拖入商店出售";
             refreshButton.GetComponentInChildren<TMP_Text>().text = (3+s.refreshes).ToString();
@@ -214,3 +214,4 @@ namespace WorkWork
         }
     }
 }
+

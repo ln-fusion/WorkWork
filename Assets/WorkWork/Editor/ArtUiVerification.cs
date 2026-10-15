@@ -34,7 +34,7 @@ namespace WorkWork.Editor
                     float expected=Mathf.Min(size.x/1600,size.y/900);
                     if(Mathf.Abs(frame.transform.localScale.x-expected)>.001f || frame.transform.localScale.x!=frame.transform.localScale.y) throw new Exception("Responsive aspect ratio failed");
                 }
-                if(shell.winArt==null || shell.loseArt==null || g.theme.Icon("employee.chips")==null || g.theme.Icon("item.chips")==null) throw new Exception("Provided art not bound");
+                if(shell.winGroup==null || shell.loseGroup==null || g.theme.Icon("employee.chips")==null || g.theme.Icon("item.chips")==null) throw new Exception("Provided art not bound");
                 return "PASS: Separate background Images; 16:9, 4:3 and ultrawide frame fitting; welcome/continue/settings routing; 3 volume sliders, audio category gains and persistence; supplied employee/item/win/lose art. Existing run/save unchanged.";
             }
             finally
@@ -46,3 +46,4 @@ namespace WorkWork.Editor
         }
     }
 }
+

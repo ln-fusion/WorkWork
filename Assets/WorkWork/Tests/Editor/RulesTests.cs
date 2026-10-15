@@ -218,6 +218,27 @@ namespace WorkWork.Tests
             Assert.IsTrue(text.EndsWith("3. "+WorkWork.InspectionText.EnchantmentEffect(Enchantment.X2)));
             foreach(Enchantment e in System.Enum.GetValues(typeof(Enchantment))) Assert.IsFalse(string.IsNullOrEmpty(WorkWork.InspectionText.EnchantmentEffect(e)));
         }
+        [Test] public void ShopShowsNextTargetAndClearsScoreWithoutPayingAgain()
+        {
+            var g=new GameSession(new Settings{firstTarget=100},17);var s=g.State;s.monthScore=1000;
+            for(int i=0;i<4;i++) {g.Place(s.hand[0].id,0);g.ScoreWeek();}
+            Assert.AreEqual(Phase.MonthResult,s.phase);Assert.AreEqual(100,s.target);Assert.Greater(s.monthScore,0);
+            int cash=s.cash,income=s.lastIncome;string summary=s.monthSummary;
+            Assert.IsTrue(g.OpenShop());Assert.AreEqual(130,s.target);Assert.AreEqual(0,s.monthScore);Assert.IsNull(s.lastScore);
+            Assert.AreEqual(cash,s.cash);Assert.AreEqual(income,s.lastIncome);Assert.AreEqual(summary,s.monthSummary);
+            Assert.IsFalse(g.OpenShop());Assert.AreEqual(130,s.target);
+            var restored=new GameSession(g.Config,1,WorkWork.SaveCodec.Deserialize(WorkWork.SaveCodec.Serialize(s)));
+            Assert.AreEqual(130,restored.State.target);Assert.AreEqual(0,restored.State.monthScore);
+            Assert.IsTrue(restored.NextMonth());Assert.AreEqual(2,restored.State.month);Assert.AreEqual(130,restored.State.target);Assert.AreEqual(0,restored.State.monthScore);
+        }
+        [TestCase(1)] [TestCase(12)] [TestCase(24)] [TestCase(36)]
+        public void LegacyShopRestoreAndNextMonthUseIdenticalTarget(int month)
+        {
+            var saved=new GameState{phase=Phase.Shop,month=month,target=1,monthScore=999,cash=20};
+            var g=new GameSession(new Settings{firstTarget=100},1,saved);long target=g.State.target;
+            Assert.AreEqual(0,g.State.monthScore);Assert.AreEqual(20,g.State.cash);
+            Assert.IsTrue(g.NextMonth());Assert.AreEqual(month+1,g.State.month);Assert.AreEqual(target,g.State.target);
+        }
         [Test] public void ShopEnforcesUniqueContentAndEquipmentRequiresEmployee()
         {
             var config=new Settings(); config.content.Add(new Content{id="staff",price=4}); config.content.Add(new Content{id="item",item=true,price=4});
@@ -229,3 +250,4 @@ namespace WorkWork.Tests
         }
     }
 }
+
