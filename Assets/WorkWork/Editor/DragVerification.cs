@@ -17,6 +17,7 @@ namespace WorkWork.Editor
             var original=g.Session;var setter=typeof(GameController).GetProperty("Session");
             string originalJson=SaveCodec.Serialize(original.State);
             var temporary=new GameSession(g.catalog.rules,27);
+            temporary.NextMonth();
             setter.SetValue(g,temporary);
             var e=new PointerEventData(EventSystem.current){position=new Vector2(Screen.width/2,Screen.height/2),eligibleForClick=true};
             DragToken active=null;

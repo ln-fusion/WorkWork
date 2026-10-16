@@ -1,0 +1,1491 @@
+{
+  "firstTarget": 600,
+  "content": [
+    {
+      "id": "employee.01",
+      "name": "客服",
+      "description": "持有时，所有红桃牌获得“金币”。结算时，场上每有一张红桃牌，+4倍率。\n\n附魔说明：\n“金币”：该牌计分时，额外+20基础分。",
+      "item": false,
+      "price": 5,
+      "rule": "employee.01",
+      "values": {
+        "multiplier": 4
+      },
+      "effects": [
+        {
+          "trigger": 4,
+          "kind": 7,
+          "local": false,
+          "amount": 1,
+          "enchantment": 0,
+          "rankFilter": -1,
+          "suitFilter": 1
+        }
+      ]
+    },
+    {
+      "id": "employee.02",
+      "name": "美术设计",
+      "description": "结算时，将本工位牌的花色改为梅花，本月保留；随后场上每有一张梅花牌，+20基础分，包含自身。",
+      "item": false,
+      "price": 5,
+      "rule": "employee.02",
+      "values": {
+        "chips": 20
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.03",
+      "name": "游戏测试",
+      "description": "持有时，所有黑桃6获得“重抽”。结算时，本月每重抽过1次，+10基础分，跨月清零。\n\n附魔说明：\n“重抽”：该牌计分时，重抽次数+1。",
+      "item": false,
+      "price": 5,
+      "rule": "employee.03",
+      "values": {
+        "chips": 10
+      },
+      "effects": [
+        {
+          "trigger": 4,
+          "kind": 7,
+          "local": false,
+          "amount": 1,
+          "enchantment": 4,
+          "rankFilter": 6,
+          "suitFilter": 0
+        }
+      ]
+    },
+    {
+      "id": "employee.04",
+      "name": "程序",
+      "description": "持有时，所有黑桃1获得“复制”。结算时，若本工位牌点数为1，+40基础分。\n\n附魔说明：\n“复制”：该牌计分时，向牌库加入一份本月有效的副本，保留原牌点数、花色及其他附魔，不继承“复制”。",
+      "item": false,
+      "price": 6,
+      "rule": "employee.04",
+      "values": {
+        "chips": 40
+      },
+      "effects": [
+        {
+          "trigger": 4,
+          "kind": 7,
+          "local": false,
+          "amount": 1,
+          "enchantment": 3,
+          "rankFilter": 1,
+          "suitFilter": 0
+        }
+      ]
+    },
+    {
+      "id": "employee.05",
+      "name": "特效师",
+      "description": "结算时，若本工位牌为偶数，将其花色改为方片，本月保留；随后若本工位牌为偶数方片，+该牌牌面点数×10的基础分。",
+      "item": false,
+      "price": 5,
+      "rule": "employee.05",
+      "values": {
+        "chips": 10
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.06",
+      "name": "音乐音效",
+      "description": "结算时，给本工位牌添加“同花加分”，本月保留；随后额外结算一次该附魔，不触发其他附魔。若本工位牌与左右任意一张相邻牌同色，再+4倍率，不重复计数。已带该附魔时仍可额外结算；添加失败且未带该附魔时，不进行额外结算。\n\n附魔说明：\n“同花加分”：该牌计分时，额外获得场上同花色牌牌面点数总和的基础分，包含自身。",
+      "item": false,
+      "price": 6,
+      "rule": "employee.06",
+      "values": {
+        "multiplier": 4
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.07",
+      "name": "游戏运营",
+      "description": "结算时，向牌库加入6张随机花色的0点牌，本月保留；随后场上每有一张0点牌，+20分。",
+      "item": false,
+      "price": 4,
+      "rule": "employee.07",
+      "values": {
+        "count": 6,
+        "chips": 20
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.08",
+      "name": "文案策划",
+      "description": "持有时，所有3点牌获得“粉丝”。结算时，若本工位牌为奇数红桃，+3倍率。\n\n附魔说明：\n“粉丝”：该牌计分时，额外增加等于该牌牌面点数的倍率。",
+      "item": false,
+      "price": 5,
+      "rule": "employee.08",
+      "values": {
+        "multiplier": 3
+      },
+      "effects": [
+        {
+          "trigger": 4,
+          "kind": 7,
+          "local": false,
+          "amount": 1,
+          "enchantment": 1,
+          "rankFilter": 3,
+          "suitFilter": -1
+        }
+      ]
+    },
+    {
+      "id": "employee.09",
+      "name": "法务",
+      "description": "结算时，从抽牌堆和弃牌堆中删除至多2张无附魔的0至2点牌；随后本次结算每已删除一张牌，+2倍率，最多+8倍率。",
+      "item": false,
+      "price": 4,
+      "rule": "employee.09",
+      "values": {
+        "count": 2,
+        "multiplier": 2,
+        "limit": 8
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.10",
+      "name": "行政管理",
+      "description": "结算时，若本工位牌为0至2点，将其删除；随后场上每有一个空卡牌工位，+20基础分，若本工位无牌，再+30基础分。若当前全牌堆比本月基础牌组少至少4张，再+5倍率。",
+      "item": false,
+      "price": 5,
+      "rule": "employee.10",
+      "values": {
+        "chips": 20,
+        "bonusChips": 30,
+        "threshold": 4,
+        "bonusMultiplier": 5
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.11",
+      "name": "人力资源",
+      "description": "招聘后，每月首次购买其他员工时价格-1元，最低1元。结算时，场上每有一名其他员工，+10基础分。",
+      "item": false,
+      "price": 4,
+      "rule": "employee.11",
+      "values": {
+        "chips": 10,
+        "discount": 1
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.12",
+      "name": "商务",
+      "description": "结算时，若本工位有牌，将其花色改为左侧相邻牌的花色；左侧无牌时，改为右侧相邻牌的花色，两侧都无牌则不改色，本月保留。随后左右相邻工位每有一张与本工位牌同色的牌，+3倍率；若两侧均满足，再+30基础分。",
+      "item": false,
+      "price": 5,
+      "rule": "employee.12",
+      "values": {
+        "multiplier": 3,
+        "bonusChips": 30
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.13",
+      "name": "活动策划",
+      "description": "结算时，向牌库加入1张本工位牌的副本，本月保留，每次员工结算最多复制1张；随后场上每有一张与本工位牌同点数的其他牌，+3倍率；若同点数牌达到3张，包含自身，再+40基础分。\n\n附魔说明：\n“复制”：该牌计分时，向牌库加入一份本月有效的副本，保留原牌点数、花色及其他附魔，不继承“复制”。",
+      "item": false,
+      "price": 6,
+      "rule": "employee.13",
+      "values": {
+        "count": 1,
+        "multiplier": 3,
+        "threshold": 3,
+        "bonusChips": 40
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.14",
+      "name": "采购",
+      "description": "招聘后，每月首次购买道具时价格-1元，最低1元。结算时，本工位每有一件道具，+10基础分。",
+      "item": false,
+      "price": 5,
+      "rule": "employee.14",
+      "values": {
+        "chips": 10,
+        "discount": 1
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.15",
+      "name": "财务",
+      "description": "持有时，所有方片牌获得“金币”。结算时，每持有5元，+1倍率，最多+6倍率，不消耗资金。\n\n附魔说明：\n“金币”：该牌计分时，额外+20基础分；该附魔不增加资金。",
+      "item": false,
+      "price": 6,
+      "rule": "employee.15",
+      "values": {
+        "threshold": 5,
+        "multiplier": 1,
+        "limit": 6
+      },
+      "effects": [
+        {
+          "trigger": 4,
+          "kind": 7,
+          "local": false,
+          "amount": 1,
+          "enchantment": 0,
+          "rankFilter": -1,
+          "suitFilter": 3
+        }
+      ]
+    },
+    {
+      "id": "employee.16",
+      "name": "校对",
+      "description": "每月向牌库加入6张随机花色的0点牌，本月保留。结算时，若本工位牌为0点，将其改为1点，本月保留；随后若本工位牌为1点，+80基础分。",
+      "item": false,
+      "price": 4,
+      "rule": "employee.16",
+      "values": {
+        "chips": 80,
+        "count": 6
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.17",
+      "name": "界面与体验",
+      "description": "持有时，所有2点牌获得“点数翻倍”。结算时，若本工位牌点数为2或4，+50基础分。\n\n附魔说明：\n“点数翻倍”：该牌牌面点数提供的基础分×2，不改变实际点数或牌型。",
+      "item": false,
+      "price": 4,
+      "rule": "employee.17",
+      "values": {
+        "chips": 50
+      },
+      "effects": [
+        {
+          "trigger": 4,
+          "kind": 7,
+          "local": false,
+          "amount": 1,
+          "enchantment": 5,
+          "rankFilter": 2,
+          "suitFilter": -1
+        }
+      ]
+    },
+    {
+      "id": "employee.18",
+      "name": "玩法策划",
+      "description": "每月向牌库加入4张7点牌，四种花色各1张，本月保留。结算时，若本次最强牌型与上周不同，+8倍率；无上周有效记录时不触发。",
+      "item": false,
+      "price": 5,
+      "rule": "employee.18",
+      "values": {
+        "count": 4,
+        "multiplier": 8
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.19",
+      "name": "市场营销",
+      "description": "持有时，所有2点牌获得“粉丝”。结算时，场上每有一张带“粉丝”的牌，+2倍率。\n\n附魔说明：\n“粉丝”：该牌计分时，额外增加等于该牌牌面点数的倍率。",
+      "item": false,
+      "price": 6,
+      "rule": "employee.19",
+      "values": {
+        "multiplier": 2
+      },
+      "effects": [
+        {
+          "trigger": 4,
+          "kind": 7,
+          "local": false,
+          "amount": 1,
+          "enchantment": 1,
+          "rankFilter": 2,
+          "suitFilter": -1
+        }
+      ]
+    },
+    {
+      "id": "employee.20",
+      "name": "社群运营",
+      "description": "持有时，所有黑桃牌获得“同花加分”。结算时，场上每有一张带“同花加分”的牌，+15基础分。\n\n附魔说明：\n“同花加分”：该牌计分时，额外获得场上同花色牌牌面点数总和的基础分，包含自身。",
+      "item": false,
+      "price": 6,
+      "rule": "employee.20",
+      "values": {
+        "chips": 15
+      },
+      "effects": [
+        {
+          "trigger": 4,
+          "kind": 7,
+          "local": false,
+          "amount": 1,
+          "enchantment": 2,
+          "rankFilter": -1,
+          "suitFilter": 0
+        }
+      ]
+    },
+    {
+      "id": "employee.21",
+      "name": "用户研究",
+      "description": "结算时，本工位牌点数+1，本月保留；改点后若与场上任意其他牌同点数，再+4倍率，不重复计数。",
+      "item": false,
+      "price": 5,
+      "rule": "employee.21",
+      "values": {
+        "multiplier": 4
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.22",
+      "name": "建模师",
+      "description": "结算时，将本工位红桃改为梅花、方片改为黑桃，本月保留；随后若本工位牌为黑色且点数至少为4，+50基础分。",
+      "item": false,
+      "price": 5,
+      "rule": "employee.22",
+      "values": {
+        "chips": 50,
+        "threshold": 4
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.23",
+      "name": "数值策划",
+      "description": "结算时，从本工位牌尚未拥有的“金币”“粉丝”“同花加分”“点数翻倍”“双倍”中，随机添加一种，本月保留；满4种附魔时不添加。随后本工位牌每有一种不同附魔，+20基础分；若拥有4种，再+4倍率。\n\n附魔说明：\n“金币”：该牌计分时，额外+20基础分。\n“粉丝”：该牌计分时，额外增加等于该牌牌面点数的倍率。\n“同花加分”：该牌计分时，额外获得场上同花色牌牌面点数总和的基础分，包含自身。\n“点数翻倍”：该牌牌面点数提供的基础分×2，不改变实际点数或牌型。\n“双倍”：该牌计分时，由该牌附魔提供的额外倍率×2，不翻倍全场累计倍率。\n“复制”：该牌计分时，向牌库加入一份本月有效的副本，保留原牌点数、花色及其他附魔，不继承“复制”。\n“重抽”：该牌计分时，重抽次数+1。\n",
+      "item": false,
+      "price": 7,
+      "rule": "employee.23",
+      "values": {
+        "chips": 20,
+        "bonusMultiplier": 4
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.24",
+      "name": "游戏发行",
+      "description": "结算时，若场上牌面点数总和为21，倍率×2；若总和小于21，改为+40基础分。",
+      "item": false,
+      "price": 8,
+      "rule": "employee.24",
+      "values": {
+        "threshold": 21,
+        "multiplier": 2,
+        "chips": 40
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.25",
+      "name": "供应链管理",
+      "description": "结算时，向牌库加入1张与本工位牌同花色的1点牌，本月保留。随后当前全牌堆每比本月基础牌组多2张，+1倍率，最多+12倍率。若本工位装备3件道具，再将倍率×2。",
+      "item": false,
+      "price": 8,
+      "rule": "employee.25",
+      "values": {
+        "count": 1,
+        "threshold": 2,
+        "limit": 12,
+        "multiplier": 2
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.26",
+      "name": "关卡策划",
+      "description": "结算时，若场上缺少花色，且本工位牌的花色在其他工位仍有出现，将本工位牌改为一种缺失花色，本月保留。随后场上每有一种不同花色，+4倍率；若四种全部出现，再+8倍率。",
+      "item": false,
+      "price": 8,
+      "rule": "employee.26",
+      "values": {
+        "multiplier": 4,
+        "bonusMultiplier": 8
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.27",
+      "name": "动画",
+      "description": "结算时，给本工位牌添加“点数翻倍”，本月保留；随后该牌牌面及计分附魔额外结算一次。\n\n附魔说明：\n“金币”：该牌计分时，额外+20基础分。\n“粉丝”：该牌计分时，额外增加等于该牌牌面点数的倍率。\n“同花加分”：该牌计分时，额外获得场上同花色牌牌面点数总和的基础分，包含自身。\n“点数翻倍”：该牌牌面点数提供的基础分×2，不改变实际点数或牌型。\n“双倍”：该牌计分时，由该牌附魔提供的额外倍率×2，不翻倍全场累计倍率。\n“复制”：该牌计分时生成本月有效副本，副本保留其他附魔、不继承“复制”；本员工的额外结算不触发。\n“重抽”：该牌计分时，重抽次数+1；本员工的额外结算不触发。",
+      "item": false,
+      "price": 9,
+      "rule": "employee.27",
+      "values": {},
+      "effects": []
+    },
+    {
+      "id": "employee.28",
+      "name": "公关",
+      "description": "结算时，若本工位牌为0至2点，将其删除，删除成功+30基础分；若本工位牌点数大于2，改为+20基础分。",
+      "item": false,
+      "price": 5,
+      "rule": "employee.28",
+      "values": {
+        "threshold": 2,
+        "chips": 30,
+        "bonusChips": 20
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.29",
+      "name": "项目经理",
+      "description": "招聘后，每月首次商店刷新免费，仍消耗刷新次数并推进后续价格。结算时，若位于最右第6工位，+40基础分。",
+      "item": false,
+      "price": 6,
+      "rule": "employee.29",
+      "values": {
+        "chips": 40
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.30",
+      "name": "引擎开发",
+      "description": "结算时，将本工位红桃改为梅花、方片改为黑桃，再使本工位牌点数+1，本月保留。随后若该牌为场上唯一最高点数，倍率×2；否则+30基础分。",
+      "item": false,
+      "price": 10,
+      "rule": "employee.30",
+      "values": {
+        "chips": 30,
+        "multiplier": 2
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.31",
+      "name": "电竞经理",
+      "description": "结算时，若本工位牌点数为1或6，+6倍率；若场上同时存在1点和6点牌，再+60基础分。",
+      "item": false,
+      "price": 6,
+      "rule": "employee.31",
+      "values": {
+        "multiplier": 6,
+        "bonusChips": 60
+      },
+      "effects": []
+    },
+    {
+      "id": "employee.32",
+      "name": "市场经理",
+      "description": "持有时，所有6点牌获得“金币”。本工位牌每次触发“金币”，额外+10基础分，重复结算也适用。结算时，向牌库加入1张随机花色的6点牌，本月保留；随后本周截至此时每新增一张牌，+15基础分，最多+120基础分。\n\n附魔说明：\n“金币”：该牌计分时，额外+20基础分。",
+      "item": false,
+      "price": 8,
+      "rule": "employee.32",
+      "values": {
+        "count": 1,
+        "chips": 15,
+        "limit": 120,
+        "bonusChips": 10
+      },
+      "effects": [
+        {
+          "trigger": 4,
+          "kind": 7,
+          "local": false,
+          "amount": 1,
+          "enchantment": 0,
+          "rankFilter": 6,
+          "suitFilter": -1
+        }
+      ]
+    },
+    {
+      "id": "employee.33",
+      "name": "技术美术",
+      "description": "结算时，将本工位红桃改为梅花、方片改为黑桃，本月保留；若该牌本月曾被效果改变花色，给它添加“粉丝”，本月保留。随后若该牌带“粉丝”且点数至少为4，+3倍率。已有“粉丝”时不重复添加，附魔满槽时添加失败。\n\n附魔说明：\n“粉丝”：该牌计分时，额外增加等于该牌牌面点数的倍率。",
+      "item": false,
+      "price": 6,
+      "rule": "employee.33",
+      "values": {
+        "threshold": 4,
+        "multiplier": 3
+      },
+      "effects": []
+    },
+    {
+      "id": "item.BenZai",
+      "name": "仙人掌盆栽",
+      "description": "+40基础分。",
+      "item": true,
+      "price": 3,
+      "rule": "item.BenZai",
+      "values": {
+        "chips": 40
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Farmer",
+      "name": "老香鸡",
+      "description": "+4倍率。",
+      "item": true,
+      "price": 3,
+      "rule": "item.Farmer",
+      "values": {
+        "multiplier": 4
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.C4",
+      "name": "小夜灯",
+      "description": "删除本工位及相邻工位仍存在的牌；每删一张立即结算一次其牌面和附魔，按上文执行，不重触发员工/道具。\n\n附魔说明：\n“金币”：该牌计分时，额外+20基础分。\n“粉丝”：该牌计分时，额外增加等于该牌牌面点数的倍率。\n“同花加分”：该牌计分时，额外获得场上同花色牌牌面点数总和的基础分，包含自身。\n“复制”：该牌计分时，向牌库加入一份本月有效的副本，保留原牌点数、花色及其他附魔，不继承“复制”。\n“重抽”：该牌计分时，重抽次数+1。\n“点数翻倍”：该牌牌面点数提供的基础分×2，不改变实际点数或牌型。\n“双倍”：该牌计分时，由该牌附魔提供的额外倍率×2，不翻倍全场累计倍率。",
+      "item": true,
+      "price": 6,
+      "rule": "item.C4",
+      "values": {},
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Rail",
+      "name": "双子铁轨",
+      "description": "场上至少1张牌且全部为偶数时，+120基础分。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Rail",
+      "values": {
+        "chips": 120
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Potato",
+      "name": "一颗土豆",
+      "description": "下一个工位的牌点数+1，保留本月；无牌则不触发，不重判本次牌型。",
+      "item": true,
+      "price": 3,
+      "rule": "item.Potato",
+      "values": {
+        "count": 1
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Gun",
+      "name": "P90冲锋枪",
+      "description": "下一个工位的牌点数-1，最低0，保留本月；无牌则不触发，不重判本次牌型。",
+      "item": true,
+      "price": 3,
+      "rule": "item.Gun",
+      "values": {
+        "count": -1
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.HotPot",
+      "name": "麻辣火锅",
+      "description": "本工位牌点数在场上唯一时，+100基础分；装备员工不能在商店外移动。",
+      "item": true,
+      "price": 4,
+      "rule": "item.HotPot",
+      "values": {
+        "chips": 100
+      },
+      "effects": [],
+      "locksEmployee": true,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Zhan",
+      "name": "斩尽万物",
+      "description": "本工位牌点数为场上最高时，+90基础分，允许并列最高；装备员工不能在商店外移动。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Zhan",
+      "values": {
+        "chips": 90
+      },
+      "effects": [],
+      "locksEmployee": true,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Spray",
+      "name": "失忆喷雾",
+      "description": "本工位牌点数与该工位上一周正常结算牌的点数相同时，+70基础分；无有效上周记录不触发。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Spray",
+      "values": {
+        "chips": 70
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Log",
+      "name": "笔直棍木",
+      "description": "场上至少1张牌且全部为奇数时，+120基础分。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Log",
+      "values": {
+        "chips": 120
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Steam",
+      "name": "蒸汽阀门",
+      "description": "场上没有点数为3的牌时，+70基础分。",
+      "item": true,
+      "price": 3,
+      "rule": "item.Steam",
+      "values": {
+        "chips": 70,
+        "threshold": 3
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.TNT",
+      "name": "TNT",
+      "description": "本次最初判定的最强牌型为四条或四带对时，+16倍率；后续删牌不撤回判定。",
+      "item": true,
+      "price": 4,
+      "rule": "item.TNT",
+      "values": {
+        "multiplier": 16
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Prince",
+      "name": "征召上前",
+      "description": "场上6个卡牌工位摆满时，+8倍率。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Prince",
+      "values": {
+        "multiplier": 8
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.RIPot",
+      "name": "咖啡壶",
+      "description": "场上每名员工提供+2倍率。",
+      "item": true,
+      "price": 5,
+      "rule": "item.RIPot",
+      "values": {
+        "multiplier": 2
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Rubbish",
+      "name": "美好的品德",
+      "description": "场上至少1张牌且全部为黑色花色时，+10倍率。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Rubbish",
+      "values": {
+        "multiplier": 10
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.3men",
+      "name": "三人合影",
+      "description": "删除本工位及相邻工位仍存在的牌，每删一张仅本次结算+2倍率；不额外结算牌面/附魔。保留原价格与数值，未采用此前+6/5元建议。",
+      "item": true,
+      "price": 6,
+      "rule": "item.3men",
+      "values": {
+        "multiplier": 2
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Angle",
+      "name": "All for one",
+      "description": "场上每名员工提供+20基础分。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Angle",
+      "values": {
+        "chips": 20
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Clock",
+      "name": "劳累闹钟",
+      "description": "+80基础分，并在牌库加入2张0点牌；每次结算执行，额外牌本月有效。",
+      "item": true,
+      "price": 3,
+      "rule": "item.Clock",
+      "values": {
+        "chips": 80,
+        "count": 2
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.NaiLong",
+      "name": "奶蛙的笑",
+      "description": "+8倍率，并在牌库加入2张0点牌；每次结算执行，额外牌本月有效。",
+      "item": true,
+      "price": 4,
+      "rule": "item.NaiLong",
+      "values": {
+        "multiplier": 8,
+        "count": 2
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.FangSi",
+      "name": "匹斯",
+      "description": "等概率获得基础分+10、+20、+50、+80或+120，每档20%，均值+56。",
+      "item": true,
+      "price": 4,
+      "rule": "item.FangSi",
+      "values": {},
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Tomato",
+      "name": "无梗番茄",
+      "description": "场上至少1张牌且全部为红色花色时，+10倍率。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Tomato",
+      "values": {
+        "multiplier": 10
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Light1",
+      "name": "辉光管1",
+      "description": "场上每张1点牌提供+20基础分。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Light",
+      "values": {
+        "chips": 20,
+        "threshold": 1
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Light2",
+      "name": "辉光管2",
+      "description": "场上每张2点牌提供+20基础分。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Light",
+      "values": {
+        "chips": 20,
+        "threshold": 2
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Light3",
+      "name": "辉光管3",
+      "description": "场上每张3点牌提供+20基础分。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Light",
+      "values": {
+        "chips": 20,
+        "threshold": 3
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Light4",
+      "name": "辉光管4",
+      "description": "场上每张4点牌提供+20基础分。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Light",
+      "values": {
+        "chips": 20,
+        "threshold": 4
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Light5",
+      "name": "辉光管5",
+      "description": "场上每张5点牌提供+20基础分。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Light",
+      "values": {
+        "chips": 20,
+        "threshold": 5
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Light6",
+      "name": "辉光管6",
+      "description": "场上每张6点牌提供+20基础分。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Light",
+      "values": {
+        "chips": 20,
+        "threshold": 6
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Book1",
+      "name": "概要-红桃",
+      "description": "场上每张红桃牌提供+2倍率。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Book",
+      "values": {
+        "multiplier": 2,
+        "threshold": 1
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Book2",
+      "name": "概要-方片",
+      "description": "场上每张方片牌提供+2倍率。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Book",
+      "values": {
+        "multiplier": 2,
+        "threshold": 3
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Book3",
+      "name": "概要-梅花",
+      "description": "场上每张梅花牌提供+2倍率。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Book",
+      "values": {
+        "multiplier": 2,
+        "threshold": 2
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Book4",
+      "name": "概要-黑桃",
+      "description": "场上每张黑桃牌提供+2倍率。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Book",
+      "values": {
+        "multiplier": 2,
+        "threshold": 0
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Fusion",
+      "name": "合成台",
+      "description": "本局历史每达成一种有奖励牌型，本次结算+2倍率；回溯历史、同种不重复，最多13种，装备时生效。",
+      "item": true,
+      "price": 8,
+      "rule": "item.Fusion",
+      "values": {
+        "multiplier": 2
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Fangdan",
+      "name": "45号防弹插板",
+      "description": "本局历史每达成一种有奖励牌型，本次结算+20基础分；回溯历史、同种不重复，最多13种，装备时生效。",
+      "item": true,
+      "price": 6,
+      "rule": "item.Fangdan",
+      "values": {
+        "chips": 20
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.CockTail",
+      "name": "番茄鸡尾酒特调",
+      "description": "场上每张与本工位牌点数相同的牌提供+25基础分。",
+      "item": true,
+      "price": 6,
+      "rule": "item.CockTail",
+      "values": {
+        "chips": 25
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 0
+    },
+    {
+      "id": "item.Hat",
+      "name": "菲礼帽",
+      "description": "+200基础分，每月末扣2元，购买当月起第3个月末扣费后损毁；资金最低0。",
+      "item": true,
+      "price": 6,
+      "rule": "item.Hat",
+      "values": {
+        "chips": 200,
+        "count": 2
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 3
+    },
+    {
+      "id": "item.Candy",
+      "name": "吃得完的糖",
+      "description": "购买当月起第3个月末自然损毁并获得7元；出售不发到期奖金。",
+      "item": true,
+      "price": 4,
+      "rule": "item.Candy",
+      "values": {
+        "chips": 7
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 3
+    },
+    {
+      "id": "item.Bing",
+      "name": "宇宙魔冰",
+      "description": "当前累计倍率×2，购买当月起第3个月末损毁。",
+      "item": true,
+      "price": 8,
+      "rule": "item.Bing",
+      "values": {
+        "multiplier": 2
+      },
+      "effects": [],
+      "locksEmployee": false,
+      "lifetimeMonths": 3
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task.01",
+      "name": "两对结算6次",
+      "description": "累计6次打出两对",
+      "kind": 0,
+      "target": 6,
+      "reward": 1,
+      "deadlineMonths": 2,
+      "patternPriorities": [
+        2
+      ]
+    },
+    {
+      "id": "task.02",
+      "name": "全红结算3次",
+      "description": "累计3次全为红色花色卡牌的结算",
+      "kind": 1,
+      "target": 3,
+      "reward": 1,
+      "deadlineMonths": 2,
+      "patternPriorities": []
+    },
+    {
+      "id": "task.03",
+      "name": "全黑结算3次",
+      "description": "累计3次全为黑色花色卡牌的结算",
+      "kind": 2,
+      "target": 3,
+      "reward": 1,
+      "deadlineMonths": 2,
+      "patternPriorities": []
+    },
+    {
+      "id": "task.04",
+      "name": "不重抽完成3个月",
+      "description": "累计3次一个月内四周均不使用重roll的情况下完成结算",
+      "kind": 3,
+      "target": 3,
+      "reward": 1,
+      "deadlineMonths": 3,
+      "patternPriorities": []
+    },
+    {
+      "id": "task.05",
+      "name": "全场至少4点结算3次",
+      "description": "累计3次全为点数大于等于4卡牌的结算",
+      "kind": 4,
+      "target": 3,
+      "reward": 2,
+      "deadlineMonths": 1,
+      "patternPriorities": []
+    },
+    {
+      "id": "task.06",
+      "name": "双倍达标3个月",
+      "description": "累计3次当月总计点数达到目标点数的两倍及以上",
+      "kind": 5,
+      "target": 3,
+      "reward": 2,
+      "deadlineMonths": 4,
+      "patternPriorities": []
+    },
+    {
+      "id": "task.07",
+      "name": "不摆满完成3个月",
+      "description": "累计3次一个月内四周均在卡牌格不全放置满的情况下完成结算",
+      "kind": 6,
+      "target": 3,
+      "reward": 2,
+      "deadlineMonths": 4,
+      "patternPriorities": []
+    },
+    {
+      "id": "task.08",
+      "name": "四周四种不同牌型",
+      "description": "累计1次一个月内的四周达成牌型均不同的情况下完成结算",
+      "kind": 7,
+      "target": 1,
+      "reward": 2,
+      "deadlineMonths": 2,
+      "patternPriorities": []
+    },
+    {
+      "id": "task.09",
+      "name": "买空同批3件道具",
+      "description": "累计1次购买商店提供的全部道具",
+      "kind": 8,
+      "target": 1,
+      "reward": 3,
+      "deadlineMonths": 2,
+      "patternPriorities": []
+    },
+    {
+      "id": "task.10",
+      "name": "连续3月不买卖",
+      "description": "累计1次三个月内不购买或售出任何员工与道具",
+      "kind": 9,
+      "target": 3,
+      "reward": 3,
+      "deadlineMonths": 3,
+      "patternPriorities": []
+    },
+    {
+      "id": "task.11",
+      "name": "顺子结算6次",
+      "description": "累计6次打出顺子",
+      "kind": 0,
+      "target": 6,
+      "reward": 3,
+      "deadlineMonths": 4,
+      "patternPriorities": [
+        5
+      ]
+    },
+    {
+      "id": "task.12",
+      "name": "结算六张同花顺",
+      "description": "累计1次以六张同花顺牌型完成周结算",
+      "kind": 0,
+      "target": 1,
+      "reward": 3,
+      "deadlineMonths": 0,
+      "patternPriorities": [
+        13
+      ]
+    },
+    {
+      "id": "task.13",
+      "name": "集齐其余12种牌型",
+      "description": "累计打出除六张同花顺以外的全部牌型",
+      "kind": 10,
+      "target": 12,
+      "reward": 3,
+      "deadlineMonths": 0,
+      "patternPriorities": []
+    },
+    {
+      "id": "task.14",
+      "name": "单月十倍达标",
+      "description": "当月总计点数达到目标点数的十倍及以上",
+      "kind": 11,
+      "target": 1,
+      "reward": 3,
+      "deadlineMonths": 0,
+      "patternPriorities": []
+    },
+    {
+      "id": "task.15",
+      "name": "葫芦结算7次",
+      "description": "累计7次打出葫芦",
+      "kind": 0,
+      "target": 7,
+      "reward": 3,
+      "deadlineMonths": 0,
+      "patternPriorities": [
+        8
+      ]
+    }
+  ],
+  "images": [
+    {
+      "id": "employee.01",
+      "path": "Assets/Image/Staff/员工1-客服.png"
+    },
+    {
+      "id": "employee.02",
+      "path": "Assets/Image/Staff/员工2-美术设计.png"
+    },
+    {
+      "id": "employee.03",
+      "path": "Assets/Image/Staff/员工3-游戏测试QA.png"
+    },
+    {
+      "id": "employee.04",
+      "path": "Assets/Image/Staff/员工4-程序.png"
+    },
+    {
+      "id": "employee.05",
+      "path": "Assets/Image/Staff/员工5-特效师.png"
+    },
+    {
+      "id": "employee.06",
+      "path": "Assets/Image/Staff/员工6-音乐音效.png"
+    },
+    {
+      "id": "employee.07",
+      "path": "Assets/Image/Staff/员工7-游戏运营.png"
+    },
+    {
+      "id": "employee.08",
+      "path": "Assets/Image/Staff/员工8-文案策划.png"
+    },
+    {
+      "id": "employee.09",
+      "path": "Assets/Image/Staff/员工9-法务.png"
+    },
+    {
+      "id": "employee.10",
+      "path": "Assets/Image/Staff/员工10-行政管理.png"
+    },
+    {
+      "id": "employee.11",
+      "path": "Assets/Image/Staff/员工11-HR.png"
+    },
+    {
+      "id": "employee.12",
+      "path": "Assets/Image/Staff/员工12-商务.png"
+    },
+    {
+      "id": "employee.13",
+      "path": "Assets/Image/Staff/员工13-活动策划.png"
+    },
+    {
+      "id": "employee.14",
+      "path": "Assets/Image/Staff/员工14-采购.png"
+    },
+    {
+      "id": "employee.15",
+      "path": "Assets/Image/Staff/员工15-财务.png"
+    },
+    {
+      "id": "employee.16",
+      "path": "Assets/Image/Staff/员工8-文案策划.png"
+    },
+    {
+      "id": "employee.17",
+      "path": "Assets/Image/Staff/员工2-美术设计.png"
+    },
+    {
+      "id": "employee.18",
+      "path": "Assets/Image/Staff/员工13-活动策划.png"
+    },
+    {
+      "id": "employee.19",
+      "path": "Assets/Image/Staff/员工12-商务.png"
+    },
+    {
+      "id": "employee.20",
+      "path": "Assets/Image/Staff/员工7-游戏运营.png"
+    },
+    {
+      "id": "employee.21",
+      "path": "Assets/Image/Staff/员工3-游戏测试QA.png"
+    },
+    {
+      "id": "employee.22",
+      "path": "Assets/Image/Staff/员工2-美术设计.png"
+    },
+    {
+      "id": "employee.23",
+      "path": "Assets/Image/Staff/员工15-财务.png"
+    },
+    {
+      "id": "employee.24",
+      "path": "Assets/Image/Staff/员工12-商务.png"
+    },
+    {
+      "id": "employee.25",
+      "path": "Assets/Image/Staff/员工14-采购.png"
+    },
+    {
+      "id": "employee.26",
+      "path": "Assets/Image/Staff/员工13-活动策划.png"
+    },
+    {
+      "id": "employee.27",
+      "path": "Assets/Image/Staff/员工5-特效师.png"
+    },
+    {
+      "id": "employee.28",
+      "path": "Assets/Image/Staff/员工9-法务.png"
+    },
+    {
+      "id": "employee.29",
+      "path": "Assets/Image/Staff/员工30-PM.png"
+    },
+    {
+      "id": "employee.30",
+      "path": "Assets/Image/Staff/员工4-程序.png"
+    },
+    {
+      "id": "employee.31",
+      "path": "Assets/Image/Staff/员工13-活动策划.png"
+    },
+    {
+      "id": "employee.32",
+      "path": "Assets/Image/Staff/员工12-商务.png"
+    },
+    {
+      "id": "employee.33",
+      "path": "Assets/Image/Staff/员工5-特效师.png"
+    },
+    {
+      "id": "item.BenZai",
+      "path": "Assets/Image/Tools/BenZai.png"
+    },
+    {
+      "id": "item.Farmer",
+      "path": "Assets/Image/Tools/Farmer.png"
+    },
+    {
+      "id": "item.C4",
+      "path": "Assets/Image/Tools/C4.png"
+    },
+    {
+      "id": "item.Rail",
+      "path": "Assets/Image/Tools/Rail.png"
+    },
+    {
+      "id": "item.Potato",
+      "path": "Assets/Image/Tools/Potato.png"
+    },
+    {
+      "id": "item.Gun",
+      "path": "Assets/Image/Tools/Gun.png"
+    },
+    {
+      "id": "item.HotPot",
+      "path": "Assets/Image/Tools/HotPot.png"
+    },
+    {
+      "id": "item.Zhan",
+      "path": "Assets/Image/Tools/Zhan.png"
+    },
+    {
+      "id": "item.Spray",
+      "path": "Assets/Image/Tools/Spray.png"
+    },
+    {
+      "id": "item.Log",
+      "path": "Assets/Image/Tools/Log.png"
+    },
+    {
+      "id": "item.Steam",
+      "path": "Assets/Image/Tools/Steam.png"
+    },
+    {
+      "id": "item.TNT",
+      "path": "Assets/Image/Tools/TNT.png"
+    },
+    {
+      "id": "item.Prince",
+      "path": "Assets/Image/Tools/Prince.png"
+    },
+    {
+      "id": "item.RIPot",
+      "path": "Assets/Image/Tools/RIPot.png"
+    },
+    {
+      "id": "item.Rubbish",
+      "path": "Assets/Image/Tools/Rubbish.png"
+    },
+    {
+      "id": "item.3men",
+      "path": "Assets/Image/Tools/3men.png"
+    },
+    {
+      "id": "item.Angle",
+      "path": "Assets/Image/Tools/Angle.png"
+    },
+    {
+      "id": "item.Clock",
+      "path": "Assets/Image/Tools/Clock.png"
+    },
+    {
+      "id": "item.NaiLong",
+      "path": "Assets/Image/Tools/NaiLong.png"
+    },
+    {
+      "id": "item.FangSi",
+      "path": "Assets/Image/Tools/FangSi.png"
+    },
+    {
+      "id": "item.Tomato",
+      "path": "Assets/Image/Tools/Tomato.png"
+    },
+    {
+      "id": "item.Light1",
+      "path": "Assets/Image/Tools/Light1.png"
+    },
+    {
+      "id": "item.Light2",
+      "path": "Assets/Image/Tools/Light2.png"
+    },
+    {
+      "id": "item.Light3",
+      "path": "Assets/Image/Tools/Light3.png"
+    },
+    {
+      "id": "item.Light4",
+      "path": "Assets/Image/Tools/Light4.png"
+    },
+    {
+      "id": "item.Light5",
+      "path": "Assets/Image/Tools/Light5.png"
+    },
+    {
+      "id": "item.Light6",
+      "path": "Assets/Image/Tools/Light6.png"
+    },
+    {
+      "id": "item.Book1",
+      "path": "Assets/Image/Tools/Book1.png"
+    },
+    {
+      "id": "item.Book2",
+      "path": "Assets/Image/Tools/Book2.png"
+    },
+    {
+      "id": "item.Book3",
+      "path": "Assets/Image/Tools/Book3.png"
+    },
+    {
+      "id": "item.Book4",
+      "path": "Assets/Image/Tools/Book4.png"
+    },
+    {
+      "id": "item.Fusion",
+      "path": "Assets/Image/Tools/Fusion.png"
+    },
+    {
+      "id": "item.Fangdan",
+      "path": "Assets/Image/Tools/FangDan.png"
+    },
+    {
+      "id": "item.CockTail",
+      "path": "Assets/Image/Tools/CockTail.png"
+    },
+    {
+      "id": "item.Hat",
+      "path": "Assets/Image/Tools/Hat.png"
+    },
+    {
+      "id": "item.Candy",
+      "path": "Assets/Image/Tools/Candy.png"
+    },
+    {
+      "id": "item.Bing",
+      "path": "Assets/Image/Tools/Bing.png"
+    }
+  ]
+}

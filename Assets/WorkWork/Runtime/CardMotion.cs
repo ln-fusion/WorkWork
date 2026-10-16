@@ -21,15 +21,35 @@ namespace WorkWork
         }
         readonly List<Flight> flights=new List<Flight>();
         GameObject layer;
-        public void Clear()
+        GameObject generatedSources;
+        void ClearFlights()
         {
             foreach(var flight in flights)if(flight.original!=null)flight.original.alpha=flight.alpha;
             flights.Clear();if(layer!=null)Destroy(layer);layer=null;
         }
+        public void Clear(){ClearFlights();if(generatedSources!=null)Destroy(generatedSources);generatedSources=null;}
         void OnDisable() => Clear();
+        public IEnumerator FlyGenerated(GameController game,IEnumerable<WorkWork.Core.Card> cards,RectTransform source)
+        {
+            Clear();var batch=cards.Where(c=>c!=null).ToArray();if(batch.Length==0)yield break;
+            generatedSources=new GameObject("Generated Card Sources",typeof(RectTransform),typeof(CanvasGroup));generatedSources.transform.SetParent(game.canvas.transform,false);
+            var hidden=generatedSources.GetComponent<CanvasGroup>();hidden.alpha=0;hidden.blocksRaycasts=false;hidden.interactable=false;
+            var views=new List<CardView>();
+            try
+            {
+                foreach(var card in batch)
+                {
+                    var view=Instantiate(game.cardPrefab,generatedSources.transform);view.Bind(card,game.theme,false);view.button.enabled=false;view.drag.enabled=false;
+                    var rect=(RectTransform)view.transform;rect.sizeDelta=game.CardSize;rect.position=source.TransformPoint(source.rect.center);rect.rotation=source.rotation;
+                    views.Add(view);
+                }
+                yield return Fly(game,views,false,false);
+            }
+            finally{if(generatedSources!=null)Destroy(generatedSources);generatedSources=null;}
+        }
         public IEnumerator Fly(GameController game,IEnumerable<CardView> cards,bool drawing,bool hideOriginal=true,WorkWork.Core.Card copiedCard=null)
         {
-            Clear();var views=cards.Where(v=>v!=null && v.BoundCard!=null).ToArray();if(views.Length==0)yield break;
+            ClearFlights();var views=cards.Where(v=>v!=null && v.BoundCard!=null).ToArray();if(views.Length==0)yield break;
             var canvas=(RectTransform)game.canvas.transform;
             layer=new GameObject("Card Flight Layer",typeof(RectTransform));layer.transform.SetParent(canvas,false);
             var holder=(RectTransform)layer.transform;holder.anchorMin=Vector2.zero;holder.anchorMax=Vector2.one;holder.offsetMin=holder.offsetMax=Vector2.zero;
@@ -55,7 +75,7 @@ namespace WorkWork
                 {
                     var f=flights[i];if(f.ghost==null)continue;
                     float time=elapsed-i*spacing,sign=i%2==0?1:-1;
-                    if(!drawing && time<0)continue;
+                    if(!drawing){f.ghost.GetComponent<CanvasGroup>().alpha=time<0?0:1;if(time<0)continue;}
                     float t=Mathf.Clamp01(time/flightTime),ease=drawing?1-Mathf.Pow(1-t,3):t*t;
                     float lift=Mathf.Max(0,landingLift);
                     var landing=f.home+canvas.TransformVector(new Vector3(sign*12,lift,0));
@@ -75,7 +95,7 @@ namespace WorkWork
                 }
                 yield return null;
             }
-            Clear();
+            ClearFlights();
         }
         static float Bottom(RectTransform rect,RectTransform canvas)
         {

@@ -83,7 +83,7 @@ namespace WorkWork.Core
                     for (int slot = 0; slot < 6; slot++)
                         if (cards[slot] != null && (!e.local || owner == slot) && (e.suitFilter < 0 || (int)cards[slot].suit == e.suitFilter))
                         {
-                            if (e.kind == EffectKind.SetRank) cards[slot].rank = Math.Max(1, e.amount);
+                            if (e.kind == EffectKind.SetRank) cards[slot].rank = Math.Max(0, e.amount);
                             if (e.kind == EffectKind.SetSuit) cards[slot].suit = (Suit)Math.Max(0, Math.Min(3, e.amount));
                         }
             return cards;
@@ -93,82 +93,6 @@ namespace WorkWork.Core
             var pattern=BestPattern(PrepareCards(state,settings));
             return new ScoreResult{pattern=pattern.name,patternPriority=pattern.priority,chips=pattern.chips,multiplier=1+pattern.mult};
         }
-        static void Step(ScoreResult result,decimal mult,int slot,string label)
-        {result.steps.Add(new ScoreStep{slot=slot,label=label,chips=result.chips,multiplier=(double)mult});}
-        public static ScoreResult Evaluate(GameState state, Settings settings)
-        {
-            var cards=PrepareCards(state,settings);
-            var result=new ScoreResult();
-            var p = BestPattern(cards);
-            result.pattern = p.name;
-            result.patternPriority = p.priority;
-            result.chips = p.chips;
-            decimal mult = 1 + p.mult;
-            result.events.Add("基础倍率：1");
-            result.events.Add($"牌型：{p.name}，基础分 +{p.chips}，倍率 +{p.mult}");
-            Step(result,mult,-1,"牌型奖励");
-            for (int slot = 0; slot < 6; slot++)
-            {
-                var card = cards[slot];
-                if (card == null) continue;
-                var enchants=(card.enchantments ?? new List<Enchantment>()).Take(Card.MaxEnchantments).ToArray();
-                long points=card.rank;
-                foreach(var enchant in enchants.Where(e=>e==Enchantment.Arrow)) points=checked(points*2);
-                long bonus=20L*enchants.Count(e=>e==Enchantment.Coin);
-                // Wild uses face ranks of the scoring board, including this card.
-                long sameSuit=cards.Where(c=>c!=null && c.suit==card.suit).Sum(c=>(long)c.rank);
-                bonus=checked(bonus+sameSuit*enchants.Count(e=>e==Enchantment.Wild));
-                decimal cardMult=(decimal)card.rank*enchants.Count(e=>e==Enchantment.Fans);
-                foreach(var enchant in enchants.Where(e=>e==Enchantment.X2)) cardMult*=2;
-                result.chips=checked(result.chips+points+bonus);mult+=cardMult;
-                result.events.Add($"工位 {slot + 1}：卡牌基础分 +{points}，附魔基础分 +{bonus}，附魔倍率 +{cardMult}");
-                Step(result,mult,slot,$"工位 {slot+1}：卡牌与附魔");
-                var cardStep=result.steps[result.steps.Count-1];cardStep.source=ScoreSource.Card;cardStep.sourceSlot=slot;
-                cardStep.chipsDelta=points+bonus;cardStep.multiplierDelta=(double)cardMult;
-                foreach(var enchant in enchants.Where(e=>e==Enchantment.Retry || e==Enchantment.Copy))
-                {
-                    Step(result,mult,slot,$"工位 {slot+1}：{(enchant==Enchantment.Retry?"重抽 +1":"复制卡牌")}");
-                    var triggerStep=result.steps[result.steps.Count-1];triggerStep.source=ScoreSource.Card;triggerStep.sourceSlot=slot;
-                    if(enchant==Enchantment.Retry){result.extraRedraws++;triggerStep.extraRedrawDelta=1;}
-                    else {result.copies.Add(card.Copy());triggerStep.copiedCard=card.Copy();}
-                }
-                // Preserve workstation, employee, equipment slot and configured effect order.
-                var effects = new List<EffectOrigin>();
-                for (int owner = 0; owner < 6; owner++)
-                    effects.AddRange(EffectSources(state, settings, owner).Where(o => o.effect.trigger == Trigger.CardScored && (!o.effect.local || owner == slot) && (o.effect.suitFilter < 0 || (int)card.suit == o.effect.suitFilter)));
-                foreach (var origin in effects) ApplySource(origin,result,ref mult,card,slot);
-            }
-            for (int owner = 0; owner < 6; owner++)
-                foreach (var origin in EffectSources(state, settings, owner).Where(o => o.effect.trigger == Trigger.WeekEnd))
-                    ApplySource(origin,result,ref mult,null,owner);
-            result.multiplier = (double)mult;
-            result.total = checked((long)decimal.Floor(result.chips * mult));
-            result.events.Add($"本周合计：{result.chips} × {mult} = {result.total}");
-            return result;
-        }
-        static void ApplySource(EffectOrigin origin,ScoreResult result,ref decimal mult,Card card,int slot)
-        {
-            long before=result.chips;decimal beforeMult=mult;int redraws=result.extraRedraws,copies=result.copies.Count;var e=origin.effect;
-            Apply(e,result,ref mult,card,$"工位 {slot+1}");
-            Step(result,mult,slot,$"工位 {slot+1}：{e.kind}");
-            var step=result.steps[result.steps.Count-1];step.source=origin.equipment<0?ScoreSource.Employee:ScoreSource.Item;
-            step.sourceSlot=origin.slot;step.equipmentSlot=origin.equipment;step.chipsDelta=result.chips-before;
-            step.multiplierDelta=(double)(mult-beforeMult);step.multipliesMultiplier=e.kind==EffectKind.MultiplyMultiplier;
-            step.multiplierOperand=e.amount;
-            step.extraRedrawDelta=result.extraRedraws-redraws;
-            if(result.copies.Count>copies)step.copiedCard=result.copies[result.copies.Count-1].Copy();
-        }
-        static void Apply(Effect e, ScoreResult result, ref decimal mult, Card card, string label)
-        {
-            switch (e.kind)
-            {
-                case EffectKind.AddChips: result.chips += e.amount; result.events.Add($"{label}效果：基础分 +{e.amount}"); break;
-                case EffectKind.AddMultiplier: mult += e.amount; result.events.Add($"{label}效果：倍率 +{e.amount}"); break;
-                case EffectKind.MultiplyMultiplier: mult *= e.amount; result.events.Add($"{label}效果：倍率 ×{e.amount}"); break;
-                case EffectKind.ExtraRedraw: result.extraRedraws += e.amount; break;
-                case EffectKind.CopyCard: if (card != null) result.copies.Add(card.Copy()); break;
-            }
-        }
+        public static ScoreResult Evaluate(GameState state, Settings settings) => Settlement.Evaluate(state,settings);
     }
 }
-

@@ -47,6 +47,7 @@ namespace WorkWork
         }
         struct Pose {public Vector2 position;public Quaternion rotation;}
         readonly Dictionary<RectTransform,Pose> poses=new Dictionary<RectTransform,Pose>();
+        public bool IsBouncing(RectTransform rect)=>rect!=null && poses.ContainsKey(rect);
         readonly List<GameObject> popups=new List<GameObject>();
         public void ClearFeedback()
         {
@@ -57,18 +58,27 @@ namespace WorkWork
         }
         void OnDisable() => ClearFeedback();
         public void Play(GameController game,ScoreStep step)
+        {Play(game,step,true);}
+        public void AnimateSource(GameController game,ScoreStep step)
+        {if(step.source!=ScoreSource.Pattern)Source(game,step,true);}
+        RectTransform Source(GameController game,ScoreStep step,bool jump)
         {
-            if(step.source==ScoreSource.Pattern)return;
             RectTransform source=null;int owner=step.sourceSlot;
             if(step.source==ScoreSource.Card)
             {
                 var view=game.slotRoots[owner].GetComponentInChildren<CardView>();
-                if(view!=null) {source=(RectTransform)view.transform;Jump(source,true);}
-                if(step.extraRedrawDelta==0 && step.copiedCard==null && game.employeeIcons[owner].gameObject.activeInHierarchy)Jump(game.employeeIcons[owner].rectTransform,false);
+                if(view!=null) {source=(RectTransform)view.transform;if(jump)Jump(source,true);}
+                if(jump && step.extraRedrawDelta==0 && step.copiedCard==null && game.employeeIcons[owner].gameObject.activeInHierarchy)Jump(game.employeeIcons[owner].rectTransform,false);
             }
             else if(step.source==ScoreSource.Employee)
-            {source=game.employeeIcons[owner].rectTransform;if(source.gameObject.activeInHierarchy)Jump(source,false);}
+            {source=game.employeeIcons[owner].rectTransform;if(jump && source.gameObject.activeInHierarchy)Jump(source,false);}
             else if(step.source==ScoreSource.Item)source=game.itemIcons[owner*3+step.equipmentSlot].rectTransform;
+            return source;
+        }
+        public void Play(GameController game,ScoreStep step,bool animateSource)
+        {
+            if(step.source==ScoreSource.Pattern)return;
+            var source=Source(game,step,animateSource);
             var shell=game.GetComponent<GameShell>();
             if(step.extraRedrawDelta!=0 && shell!=null && shell.redraws!=null)
             {

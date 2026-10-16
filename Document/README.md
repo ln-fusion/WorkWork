@@ -1,6 +1,24 @@
 # 开发记录入口
 
+2026-10-17：新游戏第一批商店员工保底原价不超过5（包含5费），3名不重复；首次刷新及之后商店恢复全池，道具不受限。见 [opening-shop.md](opening-shop.md)。
+
+2026-10-17：条件联动高亮已接入；匹配的牌、员工、道具或空位短暂亮起后显示收益，按每步实际场面记录。214项规则测试通过，见 [condition-feedback.md](condition-feedback.md)。
+
+2026-10-17：删牌刀光、上下两半分离消散已接入员工与道具；小夜灯先重结算再斩断，删牌不再参加末尾收牌。204项规则回归通过，见 [card-deletion-motion.md](card-deletion-motion.md)。
+
+2026-10-17：生成新牌已复用复制上送动画，覆盖员工、道具及月初补牌，多张并行，月初先上送补牌再发手牌；198项规则测试通过。见 [generated-card-motion.md](generated-card-motion.md)。
+
+2026-10-17：改花色与改点数动画已接入，统一缩小淡出、放大至115%再回弹，并在附魔更替之前播放。参数在WorkWork MVP/Card Face Feedback；188项规则回归通过，见 [card-face-motion.md](card-face-motion.md)。
+
+2026-10-17：附魔出现、消失与图标补位已接入结算和员工交易，参数在WorkWork MVP/Enchantment Feedback，见 [enchantment-motion.md](enchantment-motion.md)。完整规则回归现为181项通过。
+
+2026-10-17：新游戏改为先进入一次开局商店，购物后开始第1月第1周；保留初始资金与目标，旧存档不强制插入商店。175项规则回归通过，见 [opening-shop.md](opening-shop.md)。
+
 更新：2026-10-16（北京时间）。单机MVP已接入美术、音乐、附魔、周期任务选择及基础动画。最新归档与清理见[archive-review-2026-10-16.md](archive-review-2026-10-16.md)，当前范围见[mvp-status.md](mvp-status.md)，接口和参数入口见[presentation-interfaces.md](presentation-interfaces.md)。midterm-review.md保留10月15日历史检查。
+
+正式内容最新接入：[final-content-integration.md](final-content-integration.md)。33员工、37道具、15任务及首月600曲线已配置；图片70项齐全，134项规则测试通过。此记录覆盖此前“仅文档、尚未实现”的阶段状态。
+
+最新员工第二版已接入：[employee-effects-v2.md](employee-effects-v2.md)，实现与验证见 [employee-revision-integration.md](employee-revision-integration.md)。完整33名按用户修改后的表配置，167项规则回归通过；生成脚本已切换第二版。此次仅应用员工内容，保留当前Inspector初始目标400、两副牌组、道具、任务、美术和手调UI。
 
 ## 项目约束
 
@@ -20,8 +38,13 @@
 - 用户确认MVP规则：牌型只取最强一种；基础倍率1（按用户最新更正）；每月重抽4次；牌库耗尽时将弃牌堆洗回牌库，手牌和工位中的牌不参与；玩家无需查看牌库或弃牌堆。
 - Unity实现必须方便后续替换正式美术资源，具体约束见 `unity-resource-guidelines.md`。
 - 推测、建议、实现默认值必须与已确认规则区分。
+- 2026-10-16最新附魔确认已接入：每张牌最多4种不同附魔，同一种不能重复获得，重复赋予不多占槽或叠加效果；多个来源合并生效但保留来源关系。明确的额外结算仍可再次触发附魔。覆盖旧文档中允许重复附魔的记述，见[employee-design.md](employee-design.md)。
 
 ## 文件导航
+
+- [enchantment-motion.md](enchantment-motion.md)：附魔逐步显示、来源飞入、失去消散、同批补位、Inspector参数与取消清理。
+
+- [opening-shop.md](opening-shop.md)：开局购物、首次离店月份、补牌/装备/优惠归属与存档兼容。
 
 - `ui-art-integration.md`：用户分层资源接入、欢迎/设置、背景自适应和任务入口的后续实现记录。
 
@@ -36,6 +59,15 @@
 - `loading-transition.md`：正反镂空PNG翻转、加载就绪接口与游戏界面切换时机。
 - `deck-copies.md`：两副24张基础牌及Inspector配置入口。
 - `repeatable-items.md`：重复道具购买、持有、出售、独立效果及旧存档兼容。
+- [item-design.md](item-design.md)：已配置的37件道具完整设计表、结算边界和首轮测试数值。
+- [item-design-review.md](item-design-review.md)：道具平衡评审及本轮确认结果，保留后续测试方向。
+- [target-curve.md](target-curve.md)：已采用首月600及分段增长，累计乘积向上取整到10；原800起点表不再适用。
+- [employee-design.md](employee-design.md)：多效果与跨流派员工、大卡组/小卡组/中间型的方向与附魔规则；最新接入状态见正式内容记录。
+- [employee-effects-draft.md](employee-effects-draft.md)：第一版33个普通岗位与组合说明，作为历史记录保留。
+- [employee-effects-v2.md](employee-effects-v2.md)：当前已接入的完整33名员工，含价格、逐项附魔说明、结算边界与跨流派组合。
+- [employee-revision-integration.md](employee-revision-integration.md)：第二版规则、员工专用导入入口、旧存档兼容与验证。
+- [employee-art-mapping.md](employee-art-mapping.md)：已配置的员工图片对应表，16张对应图、17名缺图岗位复用占位。
+- [task-design.md](task-design.md)：用户提供的15条正式任务原文；计数口径、配置简称与期限说明见正式内容接入记录。
 - `unity-mcp.md`：安装版本、连接服务和恢复步骤。
 
 - `rules-comparison.md`：原版与策划案对照，歧义和实现风险。

@@ -1,5 +1,19 @@
 # 功能与表现接口归档（2026-10-16）
 
+2026-10-17：ConditionFeedback.Play/Clear读取ScoreStep.linkedCardIds/linkedEmployeeSlots/linkedItemSlots/linkedEmptySlots，按步骤高亮后再显示收益；ScoreFeedback.AnimateSource与Play(game,step,false)分开发来源动作和飘字。接口与覆盖范围见 condition-feedback.md。
+
+2026-10-17：新增CardDeletionFeedback.Play/IsDeleted/Clear与ScoreStep.deletedCards；小夜灯各目标额外计分后发独立删除步骤，末尾收牌过滤已经斩断的实体。参数与规则见 card-deletion-motion.md。
+
+2026-10-17：CardMotion.FlyGenerated复用原上送动画，读取ScoreStep.generatedCards；月初读取GameSession.MonthlyGeneratedCards，并由DealMonthHand控制手牌隐藏/恢复。表现不生成实际奖励，见 generated-card-motion.md。
+
+2026-10-17：新增 CardFaceFeedback 与ScoreStep.faceChanges；CardView.PresentFace只覆盖显示，先播放牌面再播放附魔变化，取消时恢复。参数与接口见 card-face-motion.md。
+
+2026-10-17：新增 EnchantmentFeedback，读取ScoreStep.enchantmentChanges（cardId、before、after），通过Play/Transaction表现结算与交易中的附魔变化；CardView仅覆盖显示，不提前修改权威状态。参数与取消接口见 enchantment-motion.md。
+
+2026-10-17流程调整：新会话从开局商店开始，openingShop标记使首次NextMonth仍进入第1月；过场后不再立即发牌，首次离店复用商店缩回与抽牌。后续月末流程不变，见 opening-shop.md。
+
+正式内容与新规则接口已接入，见final-content-integration.md。新增Settlement快照结算、ContentRules牌堆操作、独立任务事件统计及限期装备月份记录；既有动画读取结算步骤，提交已经播放的同一份结果，不重复生成随机收益。
+
 本文是入口索引，具体规则和参数细节在分项文档。Inspector中的值可由用户手调，文档给出的是代码初始值，不覆盖场景中的自定义值。场景位于Assets/WorkWork/Scenes/WorkWorkMvp.unity。
 
 | 功能 | 组件/对象 | 触发接口或数据 | 记录 |

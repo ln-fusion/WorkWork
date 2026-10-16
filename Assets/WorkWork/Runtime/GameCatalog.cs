@@ -13,7 +13,7 @@ namespace WorkWork
     [CreateAssetMenu(menuName = "WorkWork/Game Catalog")]
     public class GameCatalog : ScriptableObject
     {
-        [Tooltip("Rules and test content; change balance here, independently of visual assets.")]
+        [Tooltip("正式规则、员工、道具和任务配置；数值与美术资源独立。")]
         public Settings rules = new Settings();
     }
 }

@@ -5,10 +5,12 @@ using System.Linq;
 namespace WorkWork.Core
 {
     // This is the command boundary a future authoritative LAN host can reuse.
-    public sealed class GameSession
+    public sealed partial class GameSession
     {
         public GameState State { get; }
         public Settings Config { get; }
+        // Presentation events from this session's latest monthly grants; never saved as rewards.
+        public List<GeneratedCardBatch> MonthlyGeneratedCards {get;}=new List<GeneratedCardBatch>();
         public GameSession(Settings settings, uint seed, GameState saved = null)
         {
             Config = settings;
@@ -27,6 +29,7 @@ namespace WorkWork.Core
                 if(old != null) for(int i=0;i<Math.Min(6,old.Length);i++) State.items[i*3]=old[i];
             }
             for(int i=0;i<State.items.Length;i++) if(string.IsNullOrEmpty(State.items[i])) State.items[i]=null;
+            NormalizeContentState();
             if(saved != null && State.offers.Count != 6 && State.phase == Phase.Shop)
             {
                 var old = State.offers.ToArray(); State.offers.Clear();
@@ -37,8 +40,8 @@ namespace WorkWork.Core
                 }
             }
             if(saved!=null && State.phase==Phase.Shop) PrepareShopScore();
-            if (saved == null) BeginMonth();
-            else RefreshOwnedEnchantments();
+            if (saved == null) BeginOpeningShop();
+            else {if(State.phase==Phase.Playing || State.phase==Phase.TaskChoice)ApplyMonthlyCards();RefreshOwnedEnchantments();}
         }
         int Next(int max)
         {
@@ -51,9 +54,17 @@ namespace WorkWork.Core
         {
             for (int i = list.Count - 1; i > 0; i--) { int j = Next(i + 1); T t = list[i]; list[i] = list[j]; list[j] = t; }
         }
+        void BeginOpeningShop()
+        {
+            State.openingShop=true;State.phase=Phase.Shop;State.refreshes=0;
+            State.redraws=Config.redraws;State.target=TargetForMonth(State.month);
+            RollOffers(openingGuarantee:true);
+        }
         void BeginMonth()
         {
+            MonthlyGeneratedCards.Clear();
             State.week = 1; State.redraws = Config.redraws; State.monthScore = 0;
+            State.monthRedraws=0;State.weekAddedCards=0;
             State.phase = Phase.Playing; State.deck.Clear(); State.discard.Clear(); State.hand.Clear();
             Array.Clear(State.slots, 0, 6);
             // Each copy contains 24 faces; every physical card has an independent ID.
@@ -62,11 +73,12 @@ namespace WorkWork.Core
                 State.deck.Add(new Card { id = ++State.nextCardId, suit = (Suit)suit, rank = rank });
             Shuffle(State.deck);
             State.target = TargetForMonth(State.month);
+            ApplyMonthlyCards();
             RefreshOwnedEnchantments();
             Draw(6);
             CreateTaskOffers();
         }
-        public static TaskDefinition CopyTask(TaskDefinition task) => new TaskDefinition{id=task.id,name=task.name,target=task.target,reward=task.reward,deadlineMonths=task.deadlineMonths,
+        public static TaskDefinition CopyTask(TaskDefinition task) => new TaskDefinition{id=task.id,name=task.name,description=task.description,kind=task.kind,target=task.target,reward=task.reward,deadlineMonths=task.deadlineMonths,
             patternPriorities=task.patternPriorities==null ? new List<int>() : new List<int>(task.patternPriorities)};
         public IEnumerable<TaskDefinition> ActiveTasks => (State.acceptedTasks??new List<TaskDefinition>()).Where(t=>t!=null && State.tasks?.Any(p=>p.id==t.id && (p.expired||p.rewarded))!=true).Take(3);
         void CreateTaskOffers()
@@ -88,17 +100,19 @@ namespace WorkWork.Core
         {
             if(State.phase!=Phase.TaskChoice || State.taskOffers==null || index<0 || index>=State.taskOffers.Count || ActiveTasks.Count()>=3) return false;
             if(State.acceptedTasks==null) State.acceptedTasks=new List<TaskDefinition>();
-            State.acceptedTasks.Add(CopyTask(State.taskOffers[index]));State.taskOffers.Clear();State.phase=Phase.Playing;return true;
+            var task=CopyTask(State.taskOffers[index]);State.acceptedTasks.Add(task);
+            State.taskOffers.Clear();State.phase=Phase.Playing;return true;
         }
         long TargetForMonth(int month)
         {
             decimal target=Config.firstTarget;
-            for(int m=2;m<=month;m++) target*=m<=12?1.25m:m<=24?1.4m:m<=36?1.6m:2m;
-            return checked((long)(decimal.Ceiling(target/10m)*10m));
+            for(int m=2;m<=month;m++) target*=(decimal)(m<=12?Config.firstYearGrowth:m<=24?Config.secondYearGrowth:m<=36?Config.thirdYearGrowth:Config.laterGrowth);
+            int rounding=Math.Max(1,Config.targetRounding);
+            return checked((long)(decimal.Ceiling(target/rounding)*rounding));
         }
         void PrepareShopScore()
         {
-            State.target=TargetForMonth(State.month+1);
+            State.target=TargetForMonth(State.openingShop?State.month:State.month+1);
             State.monthScore=0;
             State.lastScore=null;
         }
@@ -118,13 +132,13 @@ namespace WorkWork.Core
         Card FindCard(int id) => State.hand.Concat(State.deck).Concat(State.discard).Concat(State.slots.Where(c=>c!=null)).FirstOrDefault(c=>c.id==id);
         public bool SetCardRank(int id,int rank)
         {
-            var card=FindCard(id);if(State.phase!=Phase.Playing || card==null || rank<1) return false;
+            var card=FindCard(id);if(State.phase!=Phase.Playing || card==null || rank<0) return false;
             card.rank=rank;RefreshOwnedEnchantments();return true;
         }
         public bool SetCardSuit(int id,Suit suit)
         {
             var card=FindCard(id);if(State.phase!=Phase.Playing || card==null || !Enum.IsDefined(typeof(Suit),suit)) return false;
-            card.suit=suit;RefreshOwnedEnchantments();return true;
+            if(card.suit!=suit)card.suitChangedThisMonth=true;card.suit=suit;RefreshOwnedEnchantments();return true;
         }
         public bool AddCardEnchantment(int id,Enchantment enchantment)
         {
@@ -160,37 +174,7 @@ namespace WorkWork.Core
             var card=State.slots[from];State.slots[from]=State.slots[to];State.slots[to]=card;
             return true;
         }
-        void RefreshOwnedEnchantments()
-        {
-            var cards=State.hand.Concat(State.deck).Concat(State.discard).Concat(State.slots.Where(c=>c!=null)).ToArray();
-            foreach(var card in cards)
-            {
-                card.NormalizeEnchantmentSources();
-                for(int i=card.enchantments.Count-1;i>=0;i--)
-                    if((card.enchantmentSources[i]??"").StartsWith("owned:"))
-                    {card.enchantments.RemoveAt(i);card.enchantmentSources.RemoveAt(i);}
-            }
-            var owned=State.employees.Concat(State.items).Where(id=>!string.IsNullOrEmpty(id)).Distinct().ToArray();
-            // Acquisition order keeps the four available enchantment slots stable when employees move.
-            var ordered=State.acquired.Where(id=>owned.Contains(id)).Concat(owned).Distinct();
-            foreach(string id in ordered)
-                {
-                    var def=Config.content.Find(c=>c.id==id);
-                    if(def==null) continue;
-                    int copies=State.employees.Concat(State.items).Count(ownedId=>ownedId==id);
-                    for(int copyIndex=0;copyIndex<copies;copyIndex++)
-                    for(int effectIndex=0;effectIndex<def.effects.Count;effectIndex++)
-                    {
-                        var effect=def.effects[effectIndex];
-                        if(effect.trigger!=Trigger.WhileOwned || effect.kind!=EffectKind.AddEnchantment) continue;
-                        foreach(var card in cards)
-                        if((effect.rankFilter<0 || effect.rankFilter==card.rank) &&
-                           (effect.suitFilter<0 || effect.suitFilter==(int)card.suit) &&
-                           card.enchantments.Count<Card.MaxEnchantments)
-                            card.AddEnchantment(effect.enchantment,"owned:"+id+":"+effectIndex+(copyIndex==0?"":":copy:"+copyIndex));
-                    }
-                }
-        }
+        void RefreshOwnedEnchantments() => ContentRules.RefreshEnchantments(State,Config);
         public bool ReturnCard(int slot)
         {
             if (State.phase != Phase.Playing || slot < 0 || slot >= 6 || State.slots[slot] == null) return false;
@@ -200,39 +184,23 @@ namespace WorkWork.Core
         {
             if (State.phase != Phase.Playing || State.redraws <= 0 || State.hand.Count == 0) return false;
             int count = State.hand.Count;
-            State.discard.AddRange(State.hand); State.hand.Clear(); State.redraws--; Draw(count); return true;
+            State.discard.AddRange(State.hand); State.hand.Clear(); State.redraws--;State.monthRedraws++; Draw(count); return true;
         }
-        public bool ScoreWeek()
+        public bool ScoreWeek(ScoreResult prepared=null)
         {
-            if (State.phase != Phase.Playing || State.slots.All(c => c == null)) return false;
-            var score = Scoring.Evaluate(State, Config); State.lastScore = score;
-            if(State.tasks==null) State.tasks=new List<TaskProgress>();
-            foreach(var task in ActiveTasks.ToArray())
-            {
-                bool matches=task.patternPriorities!=null && task.patternPriorities.Contains(score.patternPriority);
-                var progress=State.tasks.Find(t=>t.id==task.id);
-                if(progress==null && !matches && task.deadlineMonths<=0) continue;
-                if(progress==null) {progress=new TaskProgress{id=task.id};State.tasks.Add(progress);}
-                if(progress.expired || progress.rewarded) continue;
-                if(matches) progress.current=Math.Min(task.target,progress.current+1);
-                if(progress.current>=task.target && !progress.rewarded)
-                {
-                    State.cash+=Math.Max(1,Math.Min(3,task.reward));
-                    progress.rewarded=true;
-                    score.events.Add($"任务完成：{task.name}，奖金 +{Math.Max(1,Math.Min(3,task.reward))}");
-                }
-                else if(task.deadlineMonths>0 && State.week==4)
-                {
-                    progress.elapsedMonths++;
-                    if(progress.elapsedMonths>=task.deadlineMonths)
-                    {progress.expired=true;score.events.Add($"任务到期：{task.name}");}
-                }
-            }
-            State.monthScore = checked(State.monthScore + score.total); State.redraws += score.extraRedraws;
-            foreach (var c in score.copies) { c.id = ++State.nextCardId; State.deck.Add(c); }
-            foreach (var c in State.slots) if (c != null) State.discard.Add(c);
-            Array.Clear(State.slots, 0, 6);
-            if (State.week < 4) { State.week++; Draw(6 - State.hand.Count); }
+            if(State.phase!=Phase.Playing || State.slots.All(c=>c==null))return false;
+            var initialBoard=State.slots.Select(c=>c?.Copy()).ToArray();
+            var score=prepared??Scoring.Evaluate(State,Config);
+            if(score.resolvedState==null)return false;
+            var resolved=score.resolvedState;
+            State.deck=resolved.deck;State.discard=resolved.discard;State.hand=resolved.hand;State.slots=resolved.slots;
+            State.randomState=resolved.randomState;State.nextCardId=resolved.nextCardId;State.weekAddedCards=resolved.weekAddedCards;
+            State.previousRanks=resolved.previousRanks;State.previousPattern=resolved.previousPattern;State.achievedPatterns=resolved.achievedPatterns;
+            State.lastScore=score;State.monthScore=checked(State.monthScore+score.total);State.redraws+=score.extraRedraws;
+            AdvanceSettlementTasks(score,initialBoard);
+            foreach(var card in State.slots)if(card!=null)State.discard.Add(card);
+            Array.Clear(State.slots,0,6);
+            if(State.week<4){State.week++;State.weekAddedCards=0;Draw(6-State.hand.Count);}
             else FinishMonth();
             return true;
         }
@@ -254,9 +222,10 @@ namespace WorkWork.Core
                 if (def != null) foreach (var e in def.effects)
                     if (e.trigger == Trigger.MonthEnd && e.kind == EffectKind.AddChips) staff += e.amount;
             }
-            State.cash += 4 + bonus + interest + staff;
-            State.lastIncome=4+bonus+interest+staff; State.lastInterest=interest; State.lastStaffIncome=staff;
-            State.monthSummary = $"验收成功：固定 4 + 超额 {bonus} + 利息 {interest} + 员工收入 {staff} = {4 + bonus + interest + staff} 元";
+            int before=State.cash;State.cash += 4 + bonus + interest + staff;
+            staff+=MatureItems();
+            State.lastIncome=State.cash-before; State.lastInterest=interest; State.lastStaffIncome=staff;
+            State.monthSummary = $"验收成功：固定 4 + 超额 {bonus} + 利息 {interest} + 特殊效果 {staff} = {State.lastIncome} 元";
             State.phase = Phase.MonthResult;
         }
         public bool OpenShop()
@@ -265,20 +234,24 @@ namespace WorkWork.Core
             PrepareShopScore();
             State.phase = Phase.Shop; State.refreshes = 0; RollOffers(); return true;
         }
-        void RollOffers()
+        void RollOffers(bool openingGuarantee=false)
         {
             State.offers.Clear();
+            State.shelfBatch++;State.shelfBoughtItems=0;
             foreach (bool item in new[] {false, true})
             {
-                var candidates = Config.content.Where(c => c.item == item && (item || !State.acquired.Contains(c.id))).Select(c => c.id).ToList();
+                // Only the first shelf of a new game guarantees staff costing at most 5.
+                var candidates = Config.content.Where(c => c.item == item && (item || !State.acquired.Contains(c.id))
+                    && (item || !openingGuarantee || c.price<=5)).Select(c => c.id).ToList();
                 Shuffle(candidates); for(int i=0;i<3;i++) State.offers.Add(i<candidates.Count?candidates[i]:null);
             }
+            State.shelfInitialItems=State.offers.Skip(3).Count(id=>!string.IsNullOrEmpty(id));
         }
         public bool RefreshShop()
         {
-            int cost = 3 + State.refreshes;
+            int cost = RefreshPrice;
             if (State.phase != Phase.Shop || State.refreshes >= 5 || State.cash < cost) return false;
-            State.cash -= cost; State.refreshes++; RollOffers(); return true;
+            State.cash -= cost;if(cost==0)State.freeRefreshMonth=EffectiveMonth; State.refreshes++; RollOffers(); return true;
         }
         public int FirstEmptyEquipmentSlot(int employee)
         {
@@ -290,7 +263,8 @@ namespace WorkWork.Core
         {
             if (State.phase != Phase.Shop || slot < 0 || slot >= 6 || string.IsNullOrEmpty(id) || !State.offers.Contains(id)) return false;
             var def = Config.content.Find(c => c.id == id);
-            if (def == null || State.cash < def.price || (!def.item && State.acquired.Contains(id))) return false;
+            int cost=PurchasePrice(id);
+            if (def == null || State.cash < cost || (!def.item && State.acquired.Contains(id))) return false;
             var dest = def.item ? State.items : State.employees;
             int index=slot;
             if(def.item)
@@ -301,7 +275,11 @@ namespace WorkWork.Core
                 index=slot*3+equipmentSlot;
             }
             if (!string.IsNullOrEmpty(dest[index])) return false;
-            dest[index] = id; State.cash -= def.price;if(!State.acquired.Contains(id))State.acquired.Add(id);
+            if(cost<def.price){if(def.item)State.itemDiscountMonth=EffectiveMonth;else State.staffDiscountMonth=EffectiveMonth;}
+            dest[index] = id; State.cash -= cost;if(!State.acquired.Contains(id))State.acquired.Add(id);
+            if(def.item){State.itemBoughtMonths[index]=EffectiveMonth;State.shelfBoughtItems++;}
+            if(def.rule=="employee.16" || def.rule=="employee.18")QueueMonthlyCards(def.id,EffectiveMonth);
+            RecordTrade();if(def.item && State.shelfInitialItems==3 && State.shelfBoughtItems==3)CompleteShelfTasks();
             RefreshOwnedEnchantments();
             State.offers[State.offers.IndexOf(id)]=null; return true;
         }
@@ -312,6 +290,7 @@ namespace WorkWork.Core
             var def = Config.content.Find(c => c.id == dest[slot]);
             if (def == null || (!item && Enumerable.Range(slot*3,3).Any(i=>!string.IsNullOrEmpty(State.items[i])))) return false;
             State.cash += def.price * 60 / 100; dest[slot] = null;
+            if(item)State.itemBoughtMonths[slot]=0;RecordTrade();
             // Employees return to the unique pool; items remain available even while owned.
             if(!State.employees.Concat(State.items).Contains(def.id))State.acquired.RemoveAll(id=>id==def.id);
             RefreshOwnedEnchantments();
@@ -320,20 +299,24 @@ namespace WorkWork.Core
         public bool MoveEmployee(int from, int to)
         {
             if ((State.phase != Phase.Playing && State.phase != Phase.Shop) || from < 0 || from >= 6 || to < 0 || to >= 6) return false;
+            if(State.phase==Phase.Playing && (EmployeeLocked(from) || EmployeeLocked(to)))return false;
             string e = State.employees[from]; State.employees[from] = State.employees[to]; State.employees[to] = e;
-            for(int j=0;j<3;j++) { string id=State.items[from*3+j]; State.items[from*3+j]=State.items[to*3+j]; State.items[to*3+j]=id; }
+            for(int j=0;j<3;j++) { string id=State.items[from*3+j]; State.items[from*3+j]=State.items[to*3+j]; State.items[to*3+j]=id;
+                int bought=State.itemBoughtMonths[from*3+j];State.itemBoughtMonths[from*3+j]=State.itemBoughtMonths[to*3+j];State.itemBoughtMonths[to*3+j]=bought; }
             return true;
         }
         public bool MoveItem(int from, int to)
         {
             if (State.phase != Phase.Shop || from < 0 || from >= 18 || to < 0 || to >= 18 || string.IsNullOrEmpty(State.employees[to/3]) || string.IsNullOrEmpty(State.items[from])) return false;
             if (!string.IsNullOrEmpty(State.items[to]) && string.IsNullOrEmpty(State.employees[from/3])) return false;
-            string item = State.items[from]; State.items[from] = State.items[to]; State.items[to] = item; return true;
+            string item = State.items[from]; State.items[from] = State.items[to]; State.items[to] = item;
+            int bought=State.itemBoughtMonths[from];State.itemBoughtMonths[from]=State.itemBoughtMonths[to];State.itemBoughtMonths[to]=bought;return true;
         }
         public bool NextMonth()
         {
             if (State.phase != Phase.Shop) return false;
-            State.month++; BeginMonth(); return true;
+            if(!State.openingShop)State.month++;
+            State.openingShop=false;BeginMonth();return true;
         }
     }
 }

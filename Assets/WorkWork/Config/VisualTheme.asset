@@ -31,118 +31,146 @@ MonoBehaviour:
   - {fileID: -2043017983467968750, guid: 1fcd6a2be9b024442a03d5b4157f8ffc, type: 3}
   - {fileID: -6715531495586219312, guid: 740213ae14631aa478149a142d0686c8, type: 3}
   contentArt:
-  - id: "art.\u5458\u5DE51-\u5BA2\u670D"
+  - id: employee.01
     icon: {fileID: 21300000, guid: 3d03adb7fa297fa42b32e8568b3194ca, type: 3}
-  - id: "art.\u5458\u5DE52-\u7F8E\u672F\u8BBE\u8BA1"
+  - id: employee.02
     icon: {fileID: 21300000, guid: 4827af2b27ccf4c48b48e6108cbb78f9, type: 3}
-  - id: "art.\u5458\u5DE53-\u6E38\u620F\u6D4B\u8BD5QA"
+  - id: employee.03
     icon: {fileID: 21300000, guid: 8a435411f8a980943b1e60adf2ed9d72, type: 3}
-  - id: "art.\u5458\u5DE54-\u7A0B\u5E8F"
+  - id: employee.04
     icon: {fileID: 21300000, guid: 6aa6accc21bcda24ba2ecff7219247f6, type: 3}
-  - id: "art.\u5458\u5DE55-\u7279\u6548\u5E08"
+  - id: employee.05
     icon: {fileID: 21300000, guid: b9eea84d55263654fb5115336a107b8f, type: 3}
-  - id: "art.\u5458\u5DE56-\u97F3\u4E50\u97F3\u6548"
+  - id: employee.06
     icon: {fileID: 21300000, guid: 3b2efd61ce044a344a999ff190f55b9c, type: 3}
-  - id: "art.\u5458\u5DE57-\u6E38\u620F\u8FD0\u8425"
+  - id: employee.07
     icon: {fileID: 21300000, guid: 089a397b2c16fe748aa566cd28f187f2, type: 3}
-  - id: "art.\u5458\u5DE58-\u6587\u6848\u7B56\u5212"
+  - id: employee.08
     icon: {fileID: 21300000, guid: 625ba48bb6b648c4c9fa5e19b7b7e1d8, type: 3}
-  - id: "art.\u5458\u5DE59-\u6CD5\u52A1"
+  - id: employee.09
     icon: {fileID: 21300000, guid: 973f209524f30dd47bf3af7bd2dea1ff, type: 3}
-  - id: "art.\u5458\u5DE510-\u884C\u653F\u7BA1\u7406"
+  - id: employee.10
     icon: {fileID: 21300000, guid: 9ce1ce3f14ddcb34f892c1b20481aa90, type: 3}
-  - id: "art.\u5458\u5DE511-HR"
+  - id: employee.11
     icon: {fileID: 21300000, guid: 850960b3250168d41bdfbdc7cad5d4d5, type: 3}
-  - id: "art.\u5458\u5DE512-\u5546\u52A1"
+  - id: employee.12
     icon: {fileID: 21300000, guid: 7c99d035d568911459557d1f03bd4067, type: 3}
-  - id: "art.\u5458\u5DE513-\u6D3B\u52A8\u7B56\u5212"
+  - id: employee.13
     icon: {fileID: 21300000, guid: e21b37526d913f14ba0629360efe793e, type: 3}
-  - id: "art.\u5458\u5DE514-\u91C7\u8D2D"
+  - id: employee.14
     icon: {fileID: 21300000, guid: d146d24931ac4284d9e36ca120badee2, type: 3}
-  - id: "art.\u5458\u5DE515-\u8D22\u52A1"
+  - id: employee.15
     icon: {fileID: 21300000, guid: 8a349babb67787149a447d7f0a906e5f, type: 3}
-  - id: "art.\u5458\u5DE530-PM"
-    icon: {fileID: 21300000, guid: 0dc8abc0234b1e8499da4da1f329da70, type: 3}
-  - id: art.3men
-    icon: {fileID: 21300000, guid: d942783cbc21c264ea4040b586b64783, type: 3}
-  - id: art.Angle
-    icon: {fileID: 21300000, guid: 132d4e3d400a2df4fad2fc616bc02df7, type: 3}
-  - id: art.BenZai
-    icon: {fileID: 21300000, guid: 546e8179fb031bf4bbad378920cfeaba, type: 3}
-  - id: art.Bing
-    icon: {fileID: 21300000, guid: 5a48143b5ee20c84e8c128d412bf46cc, type: 3}
-  - id: art.C4
-    icon: {fileID: 21300000, guid: 503766a6dcf8b1744ba21b5a85ed4972, type: 3}
-  - id: art.Candy
-    icon: {fileID: 21300000, guid: 0f4a34737a6363041a2b370480f148fa, type: 3}
-  - id: art.Clock
-    icon: {fileID: 21300000, guid: 384b96ffb5d32294eb535ebfc3cdca9e, type: 3}
-  - id: art.CockTail
-    icon: {fileID: 21300000, guid: fd6a824b38d1d4745850fc8facf5f4b0, type: 3}
-  - id: art.FangDan
-    icon: {fileID: 21300000, guid: 8c5ea67d8b13aa449b1d08f23939f886, type: 3}
-  - id: art.FangSi
-    icon: {fileID: 21300000, guid: 070a2ad2b0fce6345a23c8239145bc2e, type: 3}
-  - id: art.Farmer
-    icon: {fileID: 21300000, guid: 37573155bc8eb7345aaf8694c92c33fe, type: 3}
-  - id: art.Fusion
-    icon: {fileID: 21300000, guid: ee31d6f81ad85c04baa611ffc514c0ab, type: 3}
-  - id: art.Gun
-    icon: {fileID: 21300000, guid: cd2691e31cee90b49b0dad9698c6135f, type: 3}
-  - id: art.Hat
-    icon: {fileID: 21300000, guid: 54177033711d5ab4fa182a7f7de889d4, type: 3}
-  - id: art.HotPot
-    icon: {fileID: 21300000, guid: f0cdca582d079204392ec6a61ab26607, type: 3}
-  - id: art.Log
-    icon: {fileID: 21300000, guid: 486a275d16930ce4ab4a36780290cb27, type: 3}
-  - id: art.NaiLong
-    icon: {fileID: 21300000, guid: 8e37dc711d71a234cab5f303326aa32e, type: 3}
-  - id: art.Potato
-    icon: {fileID: 21300000, guid: 38cefd279b25bbb4a83e0b9ec7c0343a, type: 3}
-  - id: art.Prince
-    icon: {fileID: 21300000, guid: 824e89c0a659f10438bb307a09027bba, type: 3}
-  - id: art.Rail
-    icon: {fileID: 21300000, guid: 02bad2cb3aaa4f94a9eb7ed1c6f24772, type: 3}
-  - id: art.RIPot
-    icon: {fileID: 21300000, guid: 598c50e37a88d9d4cad7402c35d95af7, type: 3}
-  - id: art.Rubbish
-    icon: {fileID: 21300000, guid: 52162f2b747c2a94cb34011f70bb9170, type: 3}
-  - id: art.Spray
-    icon: {fileID: 21300000, guid: 7f73a66bd75666442be8d5afc0cad3d9, type: 3}
-  - id: art.Steam
-    icon: {fileID: 21300000, guid: cf5b0bd6d7cc4ce43969554a26f9f172, type: 3}
-  - id: art.TNT
-    icon: {fileID: 21300000, guid: 4fe995fe4f9c19843ae67d909f2442eb, type: 3}
-  - id: art.Tomato
-    icon: {fileID: 21300000, guid: 2fb1301ba9890e64e820c2043a8328cb, type: 3}
-  - id: art.Zhan
-    icon: {fileID: 21300000, guid: f6deab22af2f84249bdbc0a536abfc7d, type: 3}
-  - id: employee.chips
-    icon: {fileID: 21300000, guid: 6aa6accc21bcda24ba2ecff7219247f6, type: 3}
-  - id: employee.mult
-    icon: {fileID: 21300000, guid: 4827af2b27ccf4c48b48e6108cbb78f9, type: 3}
-  - id: employee.redraw
-    icon: {fileID: 21300000, guid: 8a435411f8a980943b1e60adf2ed9d72, type: 3}
-  - id: item.chips
-    icon: {fileID: 21300000, guid: f0cdca582d079204392ec6a61ab26607, type: 3}
-  - id: item.mult
-    icon: {fileID: 21300000, guid: 384b96ffb5d32294eb535ebfc3cdca9e, type: 3}
-  - id: item.double
-    icon: {fileID: 21300000, guid: 4fe995fe4f9c19843ae67d909f2442eb, type: 3}
-  - id: employee.enchant.coin
-    icon: {fileID: 21300000, guid: 8a349babb67787149a447d7f0a906e5f, type: 3}
-  - id: employee.enchant.fans
-    icon: {fileID: 21300000, guid: 089a397b2c16fe748aa566cd28f187f2, type: 3}
-  - id: employee.enchant.wild
+  - id: employee.16
     icon: {fileID: 21300000, guid: 625ba48bb6b648c4c9fa5e19b7b7e1d8, type: 3}
-  - id: employee.enchant.copy
-    icon: {fileID: 21300000, guid: 6aa6accc21bcda24ba2ecff7219247f6, type: 3}
-  - id: employee.enchant.retry
+  - id: employee.17
+    icon: {fileID: 21300000, guid: 4827af2b27ccf4c48b48e6108cbb78f9, type: 3}
+  - id: employee.18
+    icon: {fileID: 21300000, guid: e21b37526d913f14ba0629360efe793e, type: 3}
+  - id: employee.19
+    icon: {fileID: 21300000, guid: 7c99d035d568911459557d1f03bd4067, type: 3}
+  - id: employee.20
+    icon: {fileID: 21300000, guid: 089a397b2c16fe748aa566cd28f187f2, type: 3}
+  - id: employee.21
     icon: {fileID: 21300000, guid: 8a435411f8a980943b1e60adf2ed9d72, type: 3}
-  - id: employee.enchant.arrow
+  - id: employee.22
+    icon: {fileID: 21300000, guid: 4827af2b27ccf4c48b48e6108cbb78f9, type: 3}
+  - id: employee.23
+    icon: {fileID: 21300000, guid: 8a349babb67787149a447d7f0a906e5f, type: 3}
+  - id: employee.24
+    icon: {fileID: 21300000, guid: 7c99d035d568911459557d1f03bd4067, type: 3}
+  - id: employee.25
+    icon: {fileID: 21300000, guid: d146d24931ac4284d9e36ca120badee2, type: 3}
+  - id: employee.26
+    icon: {fileID: 21300000, guid: e21b37526d913f14ba0629360efe793e, type: 3}
+  - id: employee.27
     icon: {fileID: 21300000, guid: b9eea84d55263654fb5115336a107b8f, type: 3}
-  - id: employee.enchant.x2
-    icon: {fileID: 21300000, guid: 3b2efd61ce044a344a999ff190f55b9c, type: 3}
+  - id: employee.28
+    icon: {fileID: 21300000, guid: 973f209524f30dd47bf3af7bd2dea1ff, type: 3}
+  - id: employee.29
+    icon: {fileID: 21300000, guid: 0dc8abc0234b1e8499da4da1f329da70, type: 3}
+  - id: employee.30
+    icon: {fileID: 21300000, guid: 6aa6accc21bcda24ba2ecff7219247f6, type: 3}
+  - id: employee.31
+    icon: {fileID: 21300000, guid: e21b37526d913f14ba0629360efe793e, type: 3}
+  - id: employee.32
+    icon: {fileID: 21300000, guid: 7c99d035d568911459557d1f03bd4067, type: 3}
+  - id: employee.33
+    icon: {fileID: 21300000, guid: b9eea84d55263654fb5115336a107b8f, type: 3}
+  - id: item.BenZai
+    icon: {fileID: 21300000, guid: 546e8179fb031bf4bbad378920cfeaba, type: 3}
+  - id: item.Farmer
+    icon: {fileID: 21300000, guid: 37573155bc8eb7345aaf8694c92c33fe, type: 3}
+  - id: item.C4
+    icon: {fileID: 21300000, guid: 503766a6dcf8b1744ba21b5a85ed4972, type: 3}
+  - id: item.Rail
+    icon: {fileID: 21300000, guid: 02bad2cb3aaa4f94a9eb7ed1c6f24772, type: 3}
+  - id: item.Potato
+    icon: {fileID: 21300000, guid: 38cefd279b25bbb4a83e0b9ec7c0343a, type: 3}
+  - id: item.Gun
+    icon: {fileID: 21300000, guid: cd2691e31cee90b49b0dad9698c6135f, type: 3}
+  - id: item.HotPot
+    icon: {fileID: 21300000, guid: f0cdca582d079204392ec6a61ab26607, type: 3}
+  - id: item.Zhan
+    icon: {fileID: 21300000, guid: f6deab22af2f84249bdbc0a536abfc7d, type: 3}
+  - id: item.Spray
+    icon: {fileID: 21300000, guid: 7f73a66bd75666442be8d5afc0cad3d9, type: 3}
+  - id: item.Log
+    icon: {fileID: 21300000, guid: 486a275d16930ce4ab4a36780290cb27, type: 3}
+  - id: item.Steam
+    icon: {fileID: 21300000, guid: cf5b0bd6d7cc4ce43969554a26f9f172, type: 3}
+  - id: item.TNT
+    icon: {fileID: 21300000, guid: 4fe995fe4f9c19843ae67d909f2442eb, type: 3}
+  - id: item.Prince
+    icon: {fileID: 21300000, guid: 824e89c0a659f10438bb307a09027bba, type: 3}
+  - id: item.RIPot
+    icon: {fileID: 21300000, guid: 598c50e37a88d9d4cad7402c35d95af7, type: 3}
+  - id: item.Rubbish
+    icon: {fileID: 21300000, guid: 52162f2b747c2a94cb34011f70bb9170, type: 3}
+  - id: item.3men
+    icon: {fileID: 21300000, guid: d942783cbc21c264ea4040b586b64783, type: 3}
+  - id: item.Angle
+    icon: {fileID: 21300000, guid: 132d4e3d400a2df4fad2fc616bc02df7, type: 3}
+  - id: item.Clock
+    icon: {fileID: 21300000, guid: 384b96ffb5d32294eb535ebfc3cdca9e, type: 3}
+  - id: item.NaiLong
+    icon: {fileID: 21300000, guid: 8e37dc711d71a234cab5f303326aa32e, type: 3}
+  - id: item.FangSi
+    icon: {fileID: 21300000, guid: 070a2ad2b0fce6345a23c8239145bc2e, type: 3}
+  - id: item.Tomato
+    icon: {fileID: 21300000, guid: 2fb1301ba9890e64e820c2043a8328cb, type: 3}
+  - id: item.Light1
+    icon: {fileID: 21300000, guid: 1552e2962af457c48b4cf7ed659d11c3, type: 3}
+  - id: item.Light2
+    icon: {fileID: 21300000, guid: 8507d7ecbd9ec0c41a0a5721d0c8bbfd, type: 3}
+  - id: item.Light3
+    icon: {fileID: 21300000, guid: 2bded9c6e54dec0408761511d1dd5ea5, type: 3}
+  - id: item.Light4
+    icon: {fileID: 21300000, guid: eaf50d94dc8d38a45b10c7bb67e8c839, type: 3}
+  - id: item.Light5
+    icon: {fileID: 21300000, guid: a565389cf12e31048901c62fbbdce8d1, type: 3}
+  - id: item.Light6
+    icon: {fileID: 21300000, guid: dd7cba777dfeaaa499296b82fa57e299, type: 3}
+  - id: item.Book1
+    icon: {fileID: 21300000, guid: ba2ebbec3b0eb144cbfe08a466b6dd29, type: 3}
+  - id: item.Book2
+    icon: {fileID: 21300000, guid: 7c9e89bde4abb364380470ab73dac191, type: 3}
+  - id: item.Book3
+    icon: {fileID: 21300000, guid: ea90607656a40114f9ae548e3ab080a3, type: 3}
+  - id: item.Book4
+    icon: {fileID: 21300000, guid: f3edec554d37261488d5abbefe551315, type: 3}
+  - id: item.Fusion
+    icon: {fileID: 21300000, guid: ee31d6f81ad85c04baa611ffc514c0ab, type: 3}
+  - id: item.Fangdan
+    icon: {fileID: 21300000, guid: 8c5ea67d8b13aa449b1d08f23939f886, type: 3}
+  - id: item.CockTail
+    icon: {fileID: 21300000, guid: fd6a824b38d1d4745850fc8facf5f4b0, type: 3}
+  - id: item.Hat
+    icon: {fileID: 21300000, guid: 54177033711d5ab4fa182a7f7de889d4, type: 3}
+  - id: item.Candy
+    icon: {fileID: 21300000, guid: 0f4a34737a6363041a2b370480f148fa, type: 3}
+  - id: item.Bing
+    icon: {fileID: 21300000, guid: 5a48143b5ee20c84e8c128d412bf46cc, type: 3}
   suitColors:
   - {r: 0.16, g: 0.19, b: 0.18, a: 1}
   - {r: 0.81, g: 0.36, b: 0.38, a: 1}

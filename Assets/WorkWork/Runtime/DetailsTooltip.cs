@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace WorkWork
 {
@@ -11,6 +12,7 @@ namespace WorkWork
         GameController game;
         DragToken owner;
         Vector2 screenPoint;
+        ScrollRect bodyScroll;
         public bool IsVisible => gameObject.activeSelf;
         public void Initialize(GameController controller) {game=controller;Hide();}
         public void Hide() {owner=null;gameObject.SetActive(false);}
@@ -39,7 +41,17 @@ namespace WorkWork
             float height=Mathf.Min(canvasRect.rect.height-16,bodyY+bodyHeight+36);
             panel.sizeDelta=new Vector2(width,height);
             Place((RectTransform)nameText.transform,40,30,textWidth,42);
-            Place((RectTransform)effectText.transform,40,bodyY,textWidth,height-bodyY-36);
+            if(bodyScroll==null)
+            {
+                var viewport=new GameObject("Effect Viewport",typeof(RectTransform),typeof(RectMask2D),typeof(ScrollRect));viewport.transform.SetParent(panel,false);
+                bodyScroll=viewport.GetComponent<ScrollRect>();bodyScroll.viewport=(RectTransform)viewport.transform;
+                effectText.transform.SetParent(viewport.transform,false);bodyScroll.content=(RectTransform)effectText.transform;
+                bodyScroll.horizontal=false;bodyScroll.vertical=true;bodyScroll.movementType=ScrollRect.MovementType.Clamped;bodyScroll.scrollSensitivity=35;
+                effectText.raycastTarget=true;
+            }
+            Place((RectTransform)bodyScroll.transform,40,bodyY,textWidth,height-bodyY-36);
+            Place((RectTransform)effectText.transform,0,0,textWidth,Mathf.Max(bodyHeight,height-bodyY-36));
+            bodyScroll.verticalNormalizedPosition=1;
             Vector2 point;RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect,screenPoint,game.canvas.renderMode==RenderMode.ScreenSpaceOverlay?null:game.canvas.worldCamera,out point);
             point+=new Vector2(18,-18);
             point.x=Mathf.Clamp(point.x,canvasRect.rect.xMin+8,canvasRect.rect.xMax-width-8);

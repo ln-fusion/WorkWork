@@ -88,37 +88,16 @@ namespace WorkWork.Editor
             EditorUtility.SetDirty(g); EditorUtility.SetDirty(shell); if(g.theme!=null) EditorUtility.SetDirty(g.theme);
             AssetDatabase.SaveAssets(); EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
             MusicSetup.Configure();CurrencyIconSetup.Configure();TaskPanelBuilder.Configure();TaskChoiceBuilder.Configure();
-            ScoreFeedbackSetup.Configure();CardMotionSetup.Configure();ShopRevealSetup.Configure();
+            ScoreFeedbackSetup.Configure();ConditionFeedbackSetup.Configure();EnchantmentFeedbackSetup.Configure();CardFaceFeedbackSetup.Configure();CardDeletionFeedbackSetup.Configure();CardMotionSetup.Configure();ShopRevealSetup.Configure();
             FailureRevealSetup.Configure();VictoryRevealSetup.Configure();PhonePickupSetup.Configure();
             ActionFeedbackSetup.Configure();DropHintsSetup.Configure();DeploymentTiltSetup.Configure();LoadingTransitionSetup.Configure();
             Debug.Log("WORKWORK_ART_UI_READY");
         }
         static void BindArt(GameController g)
         {
-            var entries=new System.Collections.Generic.List<ContentArt>();
-            // Import every supplied portrait/icon into the shared lookup, excluding abandoned art.
-            foreach(string folder in new[]{"Assets/Image/Staff","Assets/Image/Tools"})
-                foreach(string guid in AssetDatabase.FindAssets("t:Sprite",new[]{folder}))
-                {
-                    string path=AssetDatabase.GUIDToAssetPath(guid); if(path.Contains("废弃")) continue;
-                    string id="art."+System.IO.Path.GetFileNameWithoutExtension(path);
-                    entries.Add(new ContentArt{id=id,icon=AssetDatabase.LoadAssetAtPath<Sprite>(path)});
-                }
-            entries.Add(new ContentArt{id="employee.chips",icon=SpriteAt("Assets/Image/Staff/员工4-程序.png")});
-            entries.Add(new ContentArt{id="employee.mult",icon=SpriteAt("Assets/Image/Staff/员工2-美术设计.png")});
-            entries.Add(new ContentArt{id="employee.redraw",icon=SpriteAt("Assets/Image/Staff/员工3-游戏测试QA.png")});
-            string[] enchantIds={"coin","fans","wild","copy","retry","arrow","x2"};
-            string[] enchantPortraits={"员工15-财务","员工7-游戏运营","员工8-文案策划","员工4-程序","员工3-游戏测试QA","员工5-特效师","员工6-音乐音效"};
-            for(int i=0;i<enchantIds.Length;i++)
-                entries.Add(new ContentArt{id="employee.enchant."+enchantIds[i],icon=SpriteAt("Assets/Image/Staff/"+enchantPortraits[i]+".png")});
-            entries.Add(new ContentArt{id="item.chips",icon=SpriteAt("Assets/Image/Tools/HotPot.png")});
-            entries.Add(new ContentArt{id="item.mult",icon=SpriteAt("Assets/Image/Tools/Clock.png")});
-            entries.Add(new ContentArt{id="item.double",icon=SpriteAt("Assets/Image/Tools/TNT.png")});
             g.theme=AssetDatabase.LoadAssetAtPath<VisualTheme>("Assets/WorkWork/Config/VisualTheme.asset");
-            foreach(var entry in entries) SetArt(g,entry.id,entry.icon);
+            FinalContentSetup.BindArt(g.theme);
         }
-        static void SetArt(GameController g,string id,Sprite sprite)
-        { if(g.theme.contentArt==null) g.theme.contentArt=new System.Collections.Generic.List<ContentArt>(); var art=g.theme.contentArt.Find(a=>a!=null && a.id==id); if(art==null) g.theme.contentArt.Add(new ContentArt{id=id,icon=sprite}); else art.icon=sprite; }
         [MenuItem("WorkWork/Separate UI Background Images")]
         public static void FixBackgrounds()
         {

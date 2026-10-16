@@ -16,7 +16,7 @@ namespace WorkWork.Editor
             var original=g.Session;var setter=typeof(GameController).GetProperty("Session");
             var shell=g.GetComponent<GameShell>();bool board=shell.board.activeSelf,welcome=shell.welcome.activeSelf;
             string snapshot=SaveCodec.Serialize(original.State);
-            var temp=new GameSession(g.catalog.rules,12);setter.SetValue(g,temp);shell.BeginPlay();
+            var temp=new GameSession(g.catalog.rules,12);temp.NextMonth();setter.SetValue(g,temp);shell.BeginPlay();
             var e=new PointerEventData(EventSystem.current){button=PointerEventData.InputButton.Right,position=new Vector2(Screen.width-1,1)};
             try
             {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TMPro;
@@ -46,11 +47,19 @@ namespace WorkWork
         public ShopReveal shopReveal;
         public LoadingTransition loadingTransition;
         public bool IsEntering => loadingTransition!=null && loadingTransition.IsPlaying;
-        public bool IsBusy => IsEntering || IsScoring || IsCardTransition || (shopReveal!=null && shopReveal.IsPlaying) || (GetComponent<GameShell>()?.IsResultRevealing??false);
+        public bool IsBusy => IsEntering || IsScoring || IsCardTransition || (conditionFeedback!=null && conditionFeedback.IsPlaying) || (cardDeletionFeedback!=null && cardDeletionFeedback.IsPlaying) || (cardFaceFeedback!=null && cardFaceFeedback.IsPlaying) || (enchantmentFeedback!=null && enchantmentFeedback.IsPlaying) || (shopReveal!=null && shopReveal.IsPlaying) || (GetComponent<GameShell>()?.IsResultRevealing??false);
         public CardMotion cardMotion;
         public ActionFeedback actionFeedback;
         public DropHints dropHints;
         public DeploymentTilt deploymentTilt;
+        public EnchantmentFeedback enchantmentFeedback;
+        public CardFaceFeedback cardFaceFeedback;
+        public CardDeletionFeedback cardDeletionFeedback;
+        public ConditionFeedback conditionFeedback;
+        ConditionFeedback Conditions => conditionFeedback!=null?conditionFeedback:(conditionFeedback=GetComponent<ConditionFeedback>()??gameObject.AddComponent<ConditionFeedback>());
+        CardDeletionFeedback DeletionMotion => cardDeletionFeedback!=null?cardDeletionFeedback:(cardDeletionFeedback=GetComponent<CardDeletionFeedback>()??gameObject.AddComponent<CardDeletionFeedback>());
+        CardFaceFeedback FaceMotion => cardFaceFeedback!=null?cardFaceFeedback:(cardFaceFeedback=GetComponent<CardFaceFeedback>()??gameObject.AddComponent<CardFaceFeedback>());
+        EnchantmentFeedback EnchantmentMotion => enchantmentFeedback!=null?enchantmentFeedback:(enchantmentFeedback=GetComponent<EnchantmentFeedback>()??gameObject.AddComponent<EnchantmentFeedback>());
         public void BeginDeploymentTilt(DragToken token)
         {
             if(deploymentTilt==null)deploymentTilt=GetComponent<DeploymentTilt>();
@@ -69,6 +78,38 @@ namespace WorkWork
         public void HideDropHints(){if(dropHints!=null)dropHints.Hide();}
         ActionFeedback Feedback => actionFeedback!=null?actionFeedback:(actionFeedback=GetComponent<ActionFeedback>()??gameObject.AddComponent<ActionFeedback>());
         Coroutine cardRoutine;
+        readonly Dictionary<CanvasGroup,float> hiddenDealRoots=new Dictionary<CanvasGroup,float>();
+        void HideDealHand()
+        {
+            foreach(var root in handRoots)
+            {
+                var group=root.GetComponent<CanvasGroup>();if(group==null)group=root.gameObject.AddComponent<CanvasGroup>();
+                if(!hiddenDealRoots.ContainsKey(group))hiddenDealRoots.Add(group,group.alpha);
+                group.alpha=0;
+            }
+        }
+        void RestoreDealHand(){foreach(var pair in hiddenDealRoots)if(pair.Key!=null)pair.Key.alpha=pair.Value;hiddenDealRoots.Clear();}
+        RectTransform GenerationSource(ScoreStep step)
+        {
+            if(step.sourceSlot<0 || step.sourceSlot>=6)return (RectTransform)canvas.transform;
+            return step.source==ScoreSource.Item && step.equipmentSlot>=0?itemIcons[step.sourceSlot*3+step.equipmentSlot].rectTransform:employeeIcons[step.sourceSlot].rectTransform;
+        }
+        System.Collections.IEnumerator DealMonthHand()
+        {
+            HideDealHand();
+            try
+            {
+                foreach(var batch in Session.MonthlyGeneratedCards)
+                {
+                    int owner=Array.IndexOf(Session.State.employees,batch.employeeId);
+                    var source=owner>=0?employeeIcons[owner].rectTransform:(RectTransform)canvas.transform;
+                    yield return Motion.FlyGenerated(this,batch.cards,source);
+                }
+                Session.MonthlyGeneratedCards.Clear();
+                yield return Motion.Fly(this,Views(handRoots),true);
+            }
+            finally{RestoreDealHand();}
+        }
         CardMotion Motion => cardMotion!=null?cardMotion:(cardMotion=GetComponent<CardMotion>()??gameObject.AddComponent<CardMotion>());
         CardView[] Views(RectTransform[] roots) => roots.SelectMany(root=>root.GetComponentsInChildren<CardView>()).Where(v=>v.BoundCard!=null).ToArray();
         void PulseCards(params int[] ids)
@@ -96,8 +137,9 @@ namespace WorkWork
             if(changed)
             {
                 if(nextMonth)SaveCheckpoint();
+                if(nextMonth && Session.MonthlyGeneratedCards.Count>0)HideDealHand();
                 message=nextMonth?"新月份开始。":"已重抽未放置的手牌。";Render();
-                yield return Motion.Fly(this,Views(handRoots),true);
+                if(nextMonth)yield return DealMonthHand();else yield return Motion.Fly(this,Views(handRoots),true);
             }
             IsCardTransition=false;cardRoutine=null;Render();
         }
@@ -115,10 +157,15 @@ namespace WorkWork
             if(scoringRoutine!=null) StopCoroutine(scoringRoutine);
             if(cardRoutine!=null)StopCoroutine(cardRoutine);
             cardRoutine=null;IsCardTransition=false;if(cardMotion!=null)cardMotion.Clear();
+            RestoreDealHand();
             if(shopReveal!=null)shopReveal.CancelAnimation();
             scoringRoutine=null;IsScoring=false;
             if(scoreFeedback!=null)scoreFeedback.ClearFeedback();
             if(actionFeedback!=null)actionFeedback.Clear();
+            if(enchantmentFeedback!=null)enchantmentFeedback.Clear();
+            if(cardFaceFeedback!=null)cardFaceFeedback.Clear();
+            if(cardDeletionFeedback!=null)cardDeletionFeedback.Clear();
+            if(conditionFeedback!=null)conditionFeedback.Clear();
         }
         public void BeginScoring()
         {
@@ -131,10 +178,24 @@ namespace WorkWork
             var result=Scoring.Evaluate(Session.State,catalog.rules);
             if(scoreFeedback==null)scoreFeedback=GetComponent<ScoreFeedback>()??gameObject.AddComponent<ScoreFeedback>();
             IsScoring=true;Render();
+            if(cardDeletionFeedback!=null)cardDeletionFeedback.Clear();
             int shownRedraws=Session.State.redraws;
             foreach(var step in result.steps)
             {
-                scoreFeedback.Play(this,step);
+                bool linked=ConditionFeedback.HasTargets(step),deletionPlayed=false;
+                if(linked)scoreFeedback.AnimateSource(this,step);else scoreFeedback.Play(this,step);
+                if(step.faceChanges!=null && step.faceChanges.Count>0)yield return FaceMotion.Play(this,step.faceChanges);
+                if(step.enchantmentChanges!=null && step.enchantmentChanges.Count>0)
+                {
+                    var source=step.sourceSlot>=0 && step.sourceSlot<employeeIcons.Length?employeeIcons[step.sourceSlot].rectTransform:(RectTransform)canvas.transform;
+                    if(step.source==ScoreSource.Item && step.sourceSlot>=0 && step.equipmentSlot>=0)source=itemIcons[step.sourceSlot*3+step.equipmentSlot].rectTransform;
+                    yield return EnchantmentMotion.Play(this,step.enchantmentChanges,source.TransformPoint(source.rect.center));
+                }
+                if(linked)
+                {
+                    if(step.deletedCards!=null && step.deletedCards.Count>0){yield return DeletionMotion.Play(this,step.deletedCards,GenerationSource(step));deletionPlayed=true;}
+                    yield return Conditions.Play(this,step);scoreFeedback.Play(this,step,false);
+                }
                 var shell=GetComponent<GameShell>();shell?.ShowScoreStep(step);
                 shownRedraws+=step.extraRedrawDelta;
                 if(shell!=null && shell.redraws!=null)shell.redraws.text=shownRedraws.ToString();
@@ -145,16 +206,18 @@ namespace WorkWork
                     var view=slotRoots[step.slot].GetComponentInChildren<CardView>();
                     if(view!=null)yield return Motion.Fly(this,new[]{view},false,false,step.copiedCard);
                 }
+                if(step.generatedCards!=null && step.generatedCards.Count>0)yield return Motion.FlyGenerated(this,step.generatedCards,GenerationSource(step));
+                if(!deletionPlayed && step.deletedCards!=null && step.deletedCards.Count>0)yield return DeletionMotion.Play(this,step.deletedCards,GenerationSource(step));
                 if(scoringStepDelay>0) yield return new WaitForSeconds(scoringStepDelay);
                 else yield return null;
             }
             yield return new WaitForSeconds(Mathf.Max(0,scoreFeedback.popupDuration));
             scoreFeedback.ClearFeedback();
             var kept=Session.State.hand.Select(c=>c.id).ToArray();
-            var collected=Views(slotRoots);
+            var collected=Views(slotRoots).Where(v=>cardDeletionFeedback==null || !cardDeletionFeedback.IsDeleted(v.BoundCard.id)).ToArray();
             long previousScore=Session.State.monthScore;
             int completedTasks=Session.State.tasks?.Count(t=>t.rewarded)??0;
-            if(Session.ScoreWeek())
+            if(Session.ScoreWeek(result))
             {
                 if((Session.State.tasks?.Count(t=>t.rewarded)??0)>completedTasks)Feedback.VibratePhone();
                 SaveCheckpoint();message=$"本周结算：{result.chips:N0} × {result.multiplier:0.##} = {result.total:N0}";
@@ -218,7 +281,7 @@ namespace WorkWork
         {
             if(IsEntering)return;
             CancelScoring();
-            Action complete=()=>{Render();if(!resume)cardRoutine=StartCoroutine(DealInitialHand());};
+            Action complete=()=>{Render();if(!resume && Session.State.phase==Phase.Playing)cardRoutine=StartCoroutine(DealInitialHand());};
             Action reveal=()=>{Render();GetComponent<GameShell>()?.BeginPlay();};
             Action<Exception> failed=error=>{Debug.LogException(error);message=resume?"读取存档失败。":"开始游戏失败。";Render();};
             if(loadingTransition!=null)loadingTransition.Play(()=>PrepareEntry(resume),complete,failed,reveal);
@@ -240,6 +303,7 @@ namespace WorkWork
             else
             {
                 Session = new GameSession(catalog.rules, (uint)Environment.TickCount);
+                message="开局准备：先招聘员工、选购道具，再开始第一个月。";
                 selectedEmployee=-1;selectedSlot=0;SaveCheckpoint();
             }
             yield return null;
@@ -310,9 +374,12 @@ namespace WorkWork
             HideDropHints();
             if(IsBusy) return;
             int cashBefore=Session.State.cash;
+            var beforeEnchantments=EnchantmentMotion.Capture(this);
+            int completedBefore=Session.State.tasks.Count(t=>t.rewarded);
             int movedCard=token.kind==TokenKind.HandCard?token.value:token.kind==TokenKind.SlotCard?Session.State.slots[token.value]?.id??-1:-1;
             int exchangedCard=zone.slot>=0?Session.State.slots[zone.slot]?.id??-1:-1;
             var definition=catalog.rules.content.Find(c=>c.id==token.contentId);
+            int purchaseCost=definition==null?0:Session.PurchasePrice(definition.id);
             int equipment=zone.equipmentSlot>=0?zone.equipmentSlot:Session.FirstEmptyEquipmentSlot(zone.slot);
             RectTransform destination=zone.slot>=0
                 ? (token.kind==TokenKind.Item || (token.kind==TokenKind.Offer && definition?.item==true))
@@ -323,7 +390,7 @@ namespace WorkWork
             if(token.kind==TokenKind.Offer && zone.slot>=0 && definition!=null)
             {
                 if(Session.State.phase!=Phase.Shop)reason="请在商店购买";
-                else if(Session.State.cash<definition.price)reason="资金不足";
+                else if(Session.State.cash<Session.PurchasePrice(definition.id))reason="资金不足";
                 else if(definition.item && string.IsNullOrEmpty(Session.State.employees[zone.slot]))reason="请先放置员工";
                 else if(definition.item && (equipment<0 || !string.IsNullOrEmpty(Session.State.items[zone.slot*3+equipment])))reason="道具槽已满或被占用";
                 else if(!definition.item && !string.IsNullOrEmpty(Session.State.employees[zone.slot]))reason="员工工位已被占用";
@@ -342,12 +409,16 @@ namespace WorkWork
                 else if (token.kind == TokenKind.SlotCard) ok = Session.MoveCard(token.value,zone.slot);
                 else if (token.kind == TokenKind.Item && (zone.equipmentSlot>=0 || Session.FirstEmptyEquipmentSlot(zone.slot)>=0)) ok = Session.MoveItem(token.value, zone.slot*3+(zone.equipmentSlot>=0?zone.equipmentSlot:Session.FirstEmptyEquipmentSlot(zone.slot)));
             }
+            var enchantmentSource=zone.shop && token.kind==TokenKind.Employee?employeeIcons[token.value].rectTransform:destination;
+            Vector3 enchantmentOrigin=enchantmentSource.TransformPoint(enchantmentSource.rect.center);
             Act(ok, "操作完成。");
             if(ok)
             {
-                Feedback.Spend(this,cashBefore-Session.State.cash);
+                if(Session.State.tasks.Count(t=>t.rewarded)>completedBefore)Feedback.VibratePhone();
+                Feedback.Spend(this,token.kind==TokenKind.Offer?purchaseCost:cashBefore-Session.State.cash);
                 if(token.kind==TokenKind.HandCard || token.kind==TokenKind.SlotCard)PulseCards(movedCard,exchangedCard);
                 if(zone.slot>=0 && (token.kind==TokenKind.Offer || token.kind==TokenKind.Employee || token.kind==TokenKind.Item))Feedback.Pulse(destination);
+                EnchantmentMotion.Transaction(this,beforeEnchantments,enchantmentOrigin);
             }
             else {message=reason;if(status!=null)status.text=message;Feedback.Failure(this,destination,reason);}
         }
@@ -377,8 +448,9 @@ namespace WorkWork
                 if (offer)
                 {
                     var def = catalog.rules.content.Find(c => c.id == s.offers[i]);
+                    if(def==null){offerButtons[i].gameObject.SetActive(false);continue;}
                     offerTexts[i].text = def.name;
-                    if(offerPrices!=null && i<offerPrices.Length) offerPrices[i].text=def.price.ToString();
+                    if(offerPrices!=null && i<offerPrices.Length) offerPrices[i].text=Session.PurchasePrice(def.id).ToString();
                     offerIcons[i].sprite = theme.Icon(def.id); offerIcons[i].gameObject.SetActive(offerIcons[i].sprite != null);
                     SetToken(offerButtons[i], TokenKind.Offer, i, def.id);
                 }
@@ -390,9 +462,9 @@ namespace WorkWork
             resultPanel.SetActive(s.phase == Phase.MonthResult || s.phase == Phase.Failed);
             if(resultText!=null) resultText.text = $"{(s.phase == Phase.Failed ? "月度验收未通过" : "月度验收通过")}\n\n{s.monthScore:N0} / {s.target:N0}\n\n{s.monthSummary}";
             resultButton.gameObject.SetActive(s.phase == Phase.MonthResult);
-            if(shopTitle!=null) shopTitle.text = $"月末商店   ·   {VisualTheme.CurrencyIcon}{s.cash}   ·   目标工位 {selectedSlot + 1}   ·   拖入工位购入 / 拖入商店出售";
-            refreshButton.GetComponentInChildren<TMP_Text>().text = (3+s.refreshes).ToString();
-            refreshButton.interactable = s.refreshes < 5 && s.cash >= 3 + s.refreshes;
+            if(shopTitle!=null) shopTitle.text = $"{(s.openingShop?"开局商店":"月末商店")}   ·   {VisualTheme.CurrencyIcon}{s.cash}   ·   目标工位 {selectedSlot + 1}   ·   拖入工位购入 / 拖入商店出售";
+            refreshButton.GetComponentInChildren<TMP_Text>().text = Session.RefreshPrice.ToString();
+            refreshButton.interactable = !IsBusy && s.phase==Phase.Shop && s.refreshes < 5 && s.cash >= Session.RefreshPrice;
             GetComponent<GameShell>()?.Refresh(s,p);
             Feedback.ObservePattern(this,p.pattern,s.slots.Any(card=>card!=null));
         }

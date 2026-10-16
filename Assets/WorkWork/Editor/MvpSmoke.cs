@@ -32,7 +32,7 @@ namespace WorkWork.Editor
                 if(SaveCodec.Serialize(g.Session.State)!=snapshot) throw new Exception("UI check modified actual run");
             }
             // Complete a deterministic month in an isolated session; do not mutate the user's run/save.
-            var config=new Settings {firstTarget=10}; var game=new GameSession(config,71);
+            var config=new Settings {firstTarget=10}; var game=new GameSession(config,71);game.NextMonth();
             game.State.monthScore=100;
             for(int week=0;week<4;week++) { game.Place(game.State.hand[0].id,0); if(!game.ScoreWeek()) throw new Exception("Week scoring failed"); }
             if(game.State.phase!=Phase.MonthResult || !game.OpenShop()) throw new Exception("Month/shop transition failed");

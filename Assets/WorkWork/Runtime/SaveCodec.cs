@@ -8,20 +8,9 @@ namespace WorkWork
     {
         public static string Serialize(GameState s)
         {
-            // Unity's serializer can materialize null class-array elements. Serialize an
-            // isolated snapshot with explicit empty sentinels, never the live board.
-            var snapshot = new GameState {
-                month=s.month,week=s.week,cash=s.cash,redraws=s.redraws,nextCardId=s.nextCardId,refreshes=s.refreshes,
-                randomState=s.randomState,target=s.target,monthScore=s.monthScore,phase=s.phase,
-                deck=s.deck.Select(c=>c.Copy()).ToList(),discard=s.discard.Select(c=>c.Copy()).ToList(),hand=s.hand.Select(c=>c.Copy()).ToList(),
-                slots=s.slots.Select(c=>c?.Copy() ?? new Card()).ToArray(),
-                employees=(string[])s.employees.Clone(),items=(string[])s.items.Clone(),
-                acquired=s.acquired.ToList(),offers=s.offers.ToList(),lastScore=s.lastScore,monthSummary=s.monthSummary,
-                lastIncome=s.lastIncome,lastInterest=s.lastInterest,lastStaffIncome=s.lastStaffIncome,
-                tasks=s.tasks==null ? new System.Collections.Generic.List<TaskProgress>() : s.tasks.Select(t=>new TaskProgress{id=t.id,current=t.current,rewarded=t.rewarded,elapsedMonths=t.elapsedMonths,expired=t.expired}).ToList(),
-                acceptedTasks=s.acceptedTasks==null?new System.Collections.Generic.List<TaskDefinition>():s.acceptedTasks.Select(GameSession.CopyTask).ToList(),
-                taskOffers=s.taskOffers==null?new System.Collections.Generic.List<TaskDefinition>():s.taskOffers.Select(GameSession.CopyTask).ToList(),lastTaskOfferMonth=s.lastTaskOfferMonth
-            };
+            var snapshot=s.Copy();
+            // JsonUtility needs explicit empty sentinels for missing class-array elements.
+            snapshot.slots=snapshot.slots.Select(c=>c??new Card()).ToArray();
             return JsonUtility.ToJson(snapshot);
         }
         public static GameState Deserialize(string json) => JsonUtility.FromJson<GameState>(json);

@@ -5725,6 +5725,10 @@ GameObject:
   - component: {fileID: 381261238}
   - component: {fileID: 381261239}
   - component: {fileID: 381261240}
+  - component: {fileID: 381261241}
+  - component: {fileID: 381261242}
+  - component: {fileID: 381261243}
+  - component: {fileID: 381261244}
   m_Layer: 0
   m_Name: WorkWork MVP
   m_TagString: Untagged
@@ -5893,6 +5897,10 @@ MonoBehaviour:
   actionFeedback: {fileID: 381261238}
   dropHints: {fileID: 381261239}
   deploymentTilt: {fileID: 381261240}
+  enchantmentFeedback: {fileID: 381261241}
+  cardFaceFeedback: {fileID: 381261242}
+  cardDeletionFeedback: {fileID: 381261243}
+  conditionFeedback: {fileID: 381261244}
   scoreFeedback: {fileID: 381261236}
 --- !u!4 &381261234
 Transform:
@@ -6115,6 +6123,76 @@ MonoBehaviour:
   tiltAngles: {x: 28, y: -6, z: -3}
   enterDuration: 0.2
   returnDuration: 0.18
+--- !u!114 &381261241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381261232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1c00734a1168d14894f589829b591d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flightDuration: 0.2
+  settleDuration: 0.15
+  removeDuration: 0.2
+  shiftDuration: 0.15
+  cardStagger: 0.03
+  landingScale: 1.2
+--- !u!114 &381261242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381261232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88712822f77d44c4fb118598589ff4e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disappearDuration: 0.12
+  appearDuration: 0.16
+  settleDuration: 0.1
+  overshootScale: 1.15
+  jumpHeight: 6
+--- !u!114 &381261243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381261232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d49405a248732a40ad24282de21ad81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slashDuration: 0.1
+  splitDuration: 0.4
+  separation: 40
+  sideways: 22
+  rotation: 12
+  cardStagger: 0.04
+  slashColor: {r: 1, g: 0.85, b: 0.65, a: 1}
+--- !u!114 &381261244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381261232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8248cb1341e55f45bc76bf60215b2c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.2
+  borderWidth: 3
+  fillAlpha: 0.14
+  highlightColor: {r: 1, g: 0.85, b: 0.4, a: 1}
 --- !u!1 &381705798
 GameObject:
   m_ObjectHideFlags: 0

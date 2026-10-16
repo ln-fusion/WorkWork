@@ -1,1 +1,1 @@
-{"name":"WorkWork.Tests","references":["WorkWork.Core","WorkWork.Runtime"],"includePlatforms":["Editor"],"optionalUnityReferences":["TestAssemblies"]}
+{"name":"WorkWork.Tests","references":["WorkWork.Core","WorkWork.Runtime","Unity.TextMeshPro"],"includePlatforms":["Editor"],"optionalUnityReferences":["TestAssemblies"]}
