@@ -1,0 +1,11 @@
+# 道具可重复持有（2026-10-16）
+
+用户取消道具的持有唯一性，员工仍唯一。RollOffers的道具候选不再排除已持有类型；Buy仅对员工检查acquired唯一限制。因此同款道具可在后续刷新/月份再次出现、再次购买，分别占一个装备槽，仍要求员工存在且最多三个槽。同一批货架继续按类型不放回抽取，此次未改成同批重复商品。
+
+State.items按槽位保存多件相同ID；acquired保留为持有类型及顺序记录，同一ID不重复添加。出售时仅清空选中槽，剩余同款仍在时保留acquired；最后一件才移除记录。普通计分和月末效果本来按槽逐件执行，重复件独立生效。
+
+WhileOwned附魔原先按类型去重，现在按实际持有件数分别赋予，来源中增加副本序号。出售/读档/月初重建按剩余持有数量重建附魔，仍受每牌4附魔上限限制。无需改存档结构；旧存档的已持有道具也可再次刷新购买。
+
+更新SoldContentReentersPoolAfterSaveAndCanBeBoughtAgain的道具预期，新增重复购买/卖出/保存、独立计分及附魔来源回归；员工唯一测试保留。当前Unity MCP工具不可用，未运行本轮Unity Test Runner或编辑器验收。
+
+已用本地Roslyn编译生产Core三文件和SaveCodec并运行21项定向断言，通过。存档测试以System.Text.Json代替Unity JsonUtility，不能替代Unity真实序列化验收。尝试使用Unity自带NUnit在.NET 10上运行时因CallContext不兼容而未执行有效断言，不将其计作规则失败或成功；最终改用定向断言。临时编译器/适配代码位于被忽略的Temp/ItemRepeatCheck，不进入Assets或游戏构建。

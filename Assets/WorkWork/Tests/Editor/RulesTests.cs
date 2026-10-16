@@ -396,13 +396,13 @@ namespace WorkWork.Tests
             var config=new Settings();config.content.Add(new Content{id="staff",price=5});config.content.Add(new Content{id="gear",item=true,price=5});
             var g=new GameSession(config,7);var s=g.State;s.phase=Phase.MonthResult;s.cash=100;g.OpenShop();
             Assert.IsTrue(g.Buy("staff",5));if(item) Assert.IsTrue(g.Buy("gear",5,equipmentSlot));
-            string id=item?"gear":"staff";g.RefreshShop();CollectionAssert.DoesNotContain(s.offers,id);
+            string id=item?"gear":"staff";g.RefreshShop();Assert.AreEqual(item,s.offers.Contains(id));
             var offers=s.offers.ToArray();int cash=s.cash,slot=item?15+equipmentSlot:5;
             Assert.IsTrue(g.Sell(slot,item));Assert.AreEqual(cash+3,s.cash);CollectionAssert.DoesNotContain(s.acquired,id);
             CollectionAssert.AreEqual(offers,s.offers);Assert.IsFalse(g.Sell(slot,item));Assert.AreEqual(cash+3,s.cash);
             var restored=new GameSession(config,1,WorkWork.SaveCodec.Deserialize(WorkWork.SaveCodec.Serialize(s)));
             Assert.IsTrue(restored.RefreshShop());CollectionAssert.Contains(restored.State.offers,id);
-            Assert.IsTrue(restored.Buy(id,5,item?equipmentSlot:-1));Assert.IsTrue(restored.RefreshShop());CollectionAssert.DoesNotContain(restored.State.offers,id);
+            Assert.IsTrue(restored.Buy(id,5,item?equipmentSlot:-1));Assert.IsTrue(restored.RefreshShop());Assert.AreEqual(item,restored.State.offers.Contains(id));
         }
         static Settings EnchanterConfig(Enchantment enchantment,int rank=-1,int suit=-1)
         {
@@ -481,7 +481,39 @@ namespace WorkWork.Tests
             CollectionAssert.Contains(card.enchantments,Enchantment.Coin);
             g.SetCardSuit(card.id,Suit.Hearts);CollectionAssert.DoesNotContain(card.enchantments,Enchantment.Coin);
         }
-        [Test] public void ShopEnforcesUniqueContentAndEquipmentRequiresEmployee()
+        [Test] public void RepeatedItemsFillSeparateSlotsAndSurviveSellingAndSaving()
+        {
+            var config=new Settings();config.content.Add(new Content{id="staff",price=4});config.content.Add(new Content{id="gear",item=true,price=4});
+            var g=new GameSession(config,9);var s=g.State;s.phase=Phase.MonthResult;s.cash=100;g.OpenShop();
+            Assert.IsTrue(g.Buy("staff",0));
+            for(int i=0;i<3;i++){if(i>0)Assert.IsTrue(g.RefreshShop());Assert.IsTrue(g.Buy("gear",0));}
+            CollectionAssert.AreEqual(new[]{"gear","gear","gear"},s.items.Take(3));
+            Assert.IsTrue(g.RefreshShop());Assert.IsFalse(g.Buy("gear",0));
+            Assert.IsTrue(g.Sell(1,true));CollectionAssert.Contains(s.acquired,"gear");
+            Assert.AreEqual("gear",s.items[0]);Assert.AreEqual("gear",s.items[2]);
+            var restored=new GameSession(config,1,WorkWork.SaveCodec.Deserialize(WorkWork.SaveCodec.Serialize(s)));
+            Assert.IsTrue(restored.Buy("gear",0,1));Assert.AreEqual(3,restored.State.items.Count(id=>id=="gear"));
+            for(int i=0;i<3;i++)Assert.IsTrue(restored.Sell(i,true));CollectionAssert.DoesNotContain(restored.State.acquired,"gear");
+            Assert.IsFalse(restored.Buy("staff",1));
+        }
+        [Test] public void DuplicateEquipmentScoresIndependentlyAndEnchantSaleKeepsOtherCopy()
+        {
+            var config=new Settings();config.content.Add(new Content{id="staff",price=1});
+            config.content.Add(new Content{id="gear",item=true,price=1,effects=new System.Collections.Generic.List<Effect>{
+                new Effect{trigger=Trigger.CardScored,kind=EffectKind.AddChips,amount=7},
+                new Effect{trigger=Trigger.WhileOwned,kind=EffectKind.AddEnchantment,enchantment=Enchantment.Coin}}});
+            var g=new GameSession(config,9);var s=g.State;s.phase=Phase.MonthResult;s.cash=100;g.OpenShop();
+            Assert.IsTrue(g.Buy("staff",0));Assert.IsTrue(g.Buy("gear",0,0));g.RefreshShop();Assert.IsTrue(g.Buy("gear",0,1));
+            var card=s.hand[0];Assert.AreEqual(2,card.enchantments.Count);
+            Assert.AreEqual(2,card.enchantmentSources.Distinct().Count());
+            s.slots[0]=card;s.hand.Remove(card);var score=Scoring.Evaluate(s,config);
+            Assert.AreEqual(2,score.steps.Count(step=>step.source==ScoreSource.Item && step.chipsDelta==7));
+            var restored=new GameSession(config,1,WorkWork.SaveCodec.Deserialize(WorkWork.SaveCodec.Serialize(s)));
+            Assert.AreEqual(2,restored.State.slots[0].enchantments.Count);
+            Assert.IsTrue(restored.Sell(0,true));Assert.AreEqual(1,restored.State.slots[0].enchantments.Count);
+            Assert.IsTrue(restored.Sell(1,true));Assert.AreEqual(0,restored.State.slots[0].enchantments.Count);
+        }
+        [Test] public void ShopEnforcesUniqueEmployeesAndEquipmentRequiresEmployee()
         {
             var config=new Settings(); config.content.Add(new Content{id="staff",price=4}); config.content.Add(new Content{id="item",item=true,price=4});
             var game=new GameSession(config,9); var s=game.State; s.phase=Phase.MonthResult; s.cash=100; game.OpenShop();

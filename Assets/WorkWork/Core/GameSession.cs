@@ -177,6 +177,8 @@ namespace WorkWork.Core
                 {
                     var def=Config.content.Find(c=>c.id==id);
                     if(def==null) continue;
+                    int copies=State.employees.Concat(State.items).Count(ownedId=>ownedId==id);
+                    for(int copyIndex=0;copyIndex<copies;copyIndex++)
                     for(int effectIndex=0;effectIndex<def.effects.Count;effectIndex++)
                     {
                         var effect=def.effects[effectIndex];
@@ -185,7 +187,7 @@ namespace WorkWork.Core
                         if((effect.rankFilter<0 || effect.rankFilter==card.rank) &&
                            (effect.suitFilter<0 || effect.suitFilter==(int)card.suit) &&
                            card.enchantments.Count<Card.MaxEnchantments)
-                            card.AddEnchantment(effect.enchantment,"owned:"+id+":"+effectIndex);
+                            card.AddEnchantment(effect.enchantment,"owned:"+id+":"+effectIndex+(copyIndex==0?"":":copy:"+copyIndex));
                     }
                 }
         }
@@ -268,7 +270,7 @@ namespace WorkWork.Core
             State.offers.Clear();
             foreach (bool item in new[] {false, true})
             {
-                var candidates = Config.content.Where(c => c.item == item && !State.acquired.Contains(c.id)).Select(c => c.id).ToList();
+                var candidates = Config.content.Where(c => c.item == item && (item || !State.acquired.Contains(c.id))).Select(c => c.id).ToList();
                 Shuffle(candidates); for(int i=0;i<3;i++) State.offers.Add(i<candidates.Count?candidates[i]:null);
             }
         }
@@ -288,7 +290,7 @@ namespace WorkWork.Core
         {
             if (State.phase != Phase.Shop || slot < 0 || slot >= 6 || string.IsNullOrEmpty(id) || !State.offers.Contains(id)) return false;
             var def = Config.content.Find(c => c.id == id);
-            if (def == null || State.cash < def.price || State.acquired.Contains(id)) return false;
+            if (def == null || State.cash < def.price || (!def.item && State.acquired.Contains(id))) return false;
             var dest = def.item ? State.items : State.employees;
             int index=slot;
             if(def.item)
@@ -299,7 +301,7 @@ namespace WorkWork.Core
                 index=slot*3+equipmentSlot;
             }
             if (!string.IsNullOrEmpty(dest[index])) return false;
-            dest[index] = id; State.cash -= def.price; State.acquired.Add(id);
+            dest[index] = id; State.cash -= def.price;if(!State.acquired.Contains(id))State.acquired.Add(id);
             RefreshOwnedEnchantments();
             State.offers[State.offers.IndexOf(id)]=null; return true;
         }
@@ -310,8 +312,8 @@ namespace WorkWork.Core
             var def = Config.content.Find(c => c.id == dest[slot]);
             if (def == null || (!item && Enumerable.Range(slot*3,3).Any(i=>!string.IsNullOrEmpty(State.items[i])))) return false;
             State.cash += def.price * 60 / 100; dest[slot] = null;
-            // Sold content returns to the pool; owned content remains unique.
-            State.acquired.RemoveAll(id=>id==def.id);
+            // Employees return to the unique pool; items remain available even while owned.
+            if(!State.employees.Concat(State.items).Contains(def.id))State.acquired.RemoveAll(id=>id==def.id);
             RefreshOwnedEnchantments();
             return true;
         }
