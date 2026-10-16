@@ -1,0 +1,1 @@
+{"name":"WorkWork.Trailer.Editor","references":["WorkWork.Trailer","WorkWork.Runtime","WorkWork.Core","Unity.TextMeshPro","Unity.ugui"],"includePlatforms":["Editor"]}

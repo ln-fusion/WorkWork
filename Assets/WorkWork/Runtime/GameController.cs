@@ -38,7 +38,9 @@ namespace WorkWork
         public GameSession Session { get; private set; }
         int selectedSlot, selectedEmployee = -1;
         string message = "点击手牌自动放入空工位，也可直接拖入；点击工位上的牌可收回。";
-        string SavePath => Path.Combine(Application.persistentDataPath, "workwork-mvp.json");
+        [Tooltip("Optional separate checkpoint file for isolated preview scenes. Empty uses the normal save.")]
+        public string checkpointFileName;
+        string SavePath => Path.Combine(Application.persistentDataPath, string.IsNullOrWhiteSpace(checkpointFileName) ? "workwork-mvp.json" : Path.GetFileName(checkpointFileName));
         public bool HasSave => File.Exists(SavePath);
         [Min(0)] public float scoringStepDelay=.25f;
         public bool IsScoring {get;private set;}

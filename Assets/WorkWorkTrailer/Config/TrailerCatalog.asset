@@ -1,0 +1,735 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bea475ef9c56e445b8716a5e02a1ff3, type: 3}
+  m_Name: TrailerCatalog
+  m_EditorClassIdentifier: 
+  rules:
+    firstTarget: 100
+    initialCash: 5
+    redraws: 4
+    deckCopies: 2
+    content:
+    - id: trailer.employee.1
+      name: "\u5BA2\u670D"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u57FA\u7840\u5206
+        +12\u3002"
+      item: 0
+      price: 4
+      effects:
+      - trigger: 1
+        kind: 0
+        amount: 12
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.employee.2
+      name: "\u7F8E\u672F\u8BBE\u8BA1"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u500D\u7387
+        +2\u3002"
+      item: 0
+      price: 6
+      effects:
+      - trigger: 1
+        kind: 1
+        amount: 2
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.employee.3
+      name: "\u6E38\u620F\u6D4B\u8BD5QA"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6301\u6709\u65F6\uFF0C\u6885\u82B1\u724C\u83B7\u5F97\u91CD\u62BD\u9644\u9B54\uFF1B\u7ED3\u7B97\u8BE5\u724C\u65F6\u91CD\u62BD\u6B21\u6570
+        +1\u3002"
+      item: 0
+      price: 5
+      effects:
+      - trigger: 4
+        kind: 7
+        amount: 1
+        local: 0
+        suitFilter: 2
+        rankFilter: -1
+        enchantment: 4
+    - id: trailer.employee.4
+      name: "\u7A0B\u5E8F"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6301\u6709\u65F6\uFF0C\u6240\u67096\u70B9\u724C\u83B7\u5F97\u590D\u5236\u9644\u9B54\uFF1B\u7ED3\u7B97\u540E\u590D\u5236\u5230\u672C\u6708\u724C\u5E93\u3002"
+      item: 0
+      price: 6
+      effects:
+      - trigger: 4
+        kind: 7
+        amount: 1
+        local: 0
+        suitFilter: -1
+        rankFilter: 6
+        enchantment: 3
+    - id: trailer.employee.5
+      name: "\u7279\u6548\u5E08"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6301\u6709\u65F6\uFF0C\u6240\u67096\u70B9\u724C\u83B7\u5F97\u53CC\u500D\u70B9\u6570\u9644\u9B54\uFF0C\u4E0D\u6539\u53D8\u724C\u578B\u3002"
+      item: 0
+      price: 6
+      effects:
+      - trigger: 4
+        kind: 7
+        amount: 1
+        local: 0
+        suitFilter: -1
+        rankFilter: 6
+        enchantment: 5
+    - id: trailer.employee.6
+      name: "\u97F3\u4E50\u97F3\u6548"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6301\u6709\u65F6\uFF0C\u6885\u82B16\u83B7\u5F97\u53CC\u500D\u989D\u5916\u500D\u7387\u9644\u9B54\uFF1B\u9700\u642D\u914D\u7C89\u4E1D\u7B49\u500D\u7387\u9644\u9B54\u3002"
+      item: 0
+      price: 7
+      effects:
+      - trigger: 4
+        kind: 7
+        amount: 1
+        local: 0
+        suitFilter: 2
+        rankFilter: 6
+        enchantment: 6
+    - id: trailer.employee.7
+      name: "\u6E38\u620F\u8FD0\u8425"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6301\u6709\u65F6\uFF0C\u6885\u82B1\u724C\u83B7\u5F97\u7C89\u4E1D\u9644\u9B54\uFF1A\u989D\u5916\u500D\u7387\u589E\u52A0\u724C\u9762\u70B9\u6570\u3002"
+      item: 0
+      price: 7
+      effects:
+      - trigger: 4
+        kind: 7
+        amount: 1
+        local: 0
+        suitFilter: 2
+        rankFilter: -1
+        enchantment: 1
+    - id: trailer.employee.8
+      name: "\u6587\u6848\u7B56\u5212"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6301\u6709\u65F6\uFF0C\u6885\u82B16\u83B7\u5F97\u540C\u82B1\u52A0\u5206\u9644\u9B54\uFF1A\u989D\u5916\u589E\u52A0\u573A\u4E0A\u6885\u82B1\u70B9\u6570\u603B\u548C\u3002"
+      item: 0
+      price: 6
+      effects:
+      - trigger: 4
+        kind: 7
+        amount: 1
+        local: 0
+        suitFilter: 2
+        rankFilter: 6
+        enchantment: 2
+    - id: trailer.employee.9
+      name: "\u6CD5\u52A1"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u724C\u578B\u5224\u5B9A\u524D\uFF0C\u5C06\u6240\u5728\u5DE5\u4F4D\u5361\u724C\u6539\u4E3A\u9ED1\u6843\u3002"
+      item: 0
+      price: 5
+      effects:
+      - trigger: 0
+        kind: 4
+        amount: 0
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.employee.10
+      name: "\u884C\u653F\u7BA1\u7406"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6BCF\u5468\u7ED3\u675F\uFF1A\u57FA\u7840\u5206
+        +30\u3002"
+      item: 0
+      price: 5
+      effects:
+      - trigger: 2
+        kind: 0
+        amount: 30
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.employee.11
+      name: HR
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u5361\u724C\u8BA1\u5206\uFF1A\u91CD\u62BD\u6B21\u6570
+        +1\u3002"
+      item: 0
+      price: 5
+      effects:
+      - trigger: 1
+        kind: 5
+        amount: 1
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.employee.12
+      name: "\u5546\u52A1"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u5361\u724C\u8BA1\u5206\uFF1A\u7D2F\u8BA1\u500D\u7387
+        \xD72\u3002"
+      item: 0
+      price: 9
+      effects:
+      - trigger: 1
+        kind: 2
+        amount: 2
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.employee.13
+      name: "\u6D3B\u52A8\u7B56\u5212"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6BCF\u5468\u7ED3\u675F\uFF1A\u57FA\u7840\u5206
+        +18\uFF1B\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u500D\u7387 +1\u3002"
+      item: 0
+      price: 6
+      effects:
+      - trigger: 2
+        kind: 0
+        amount: 18
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+      - trigger: 1
+        kind: 1
+        amount: 1
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.employee.14
+      name: "\u91C7\u8D2D"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u57FA\u7840\u5206
+        +10\uFF0C\u500D\u7387 +1\u3002"
+      item: 0
+      price: 5
+      effects:
+      - trigger: 1
+        kind: 0
+        amount: 10
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+      - trigger: 1
+        kind: 1
+        amount: 1
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.employee.15
+      name: "\u8D22\u52A1"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6301\u6709\u65F6\uFF0C\u6240\u67096\u70B9\u724C\u83B7\u5F97\u91D1\u5E01\u9644\u9B54\uFF1A\u7ED3\u7B97\u57FA\u7840\u5206
+        +20\u3002"
+      item: 0
+      price: 6
+      effects:
+      - trigger: 4
+        kind: 7
+        amount: 1
+        local: 0
+        suitFilter: -1
+        rankFilter: 6
+        enchantment: 0
+    - id: trailer.employee.30
+      name: PM
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u5361\u724C\u8BA1\u5206\uFF1A\u57FA\u7840\u5206
+        +8\uFF0C\u91CD\u62BD\u6B21\u6570 +1\u3002"
+      item: 0
+      price: 6
+      effects:
+      - trigger: 1
+        kind: 0
+        amount: 8
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+      - trigger: 1
+        kind: 5
+        amount: 1
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.3men
+      name: "\u4E09\u4EBA\u7EC4"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u500D\u7387
+        +3\u3002"
+      item: 1
+      price: 6
+      effects:
+      - trigger: 1
+        kind: 1
+        amount: 3
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.Angle
+      name: Angle
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6301\u6709\u65F6\uFF0C\u7EA2\u6843\u724C\u83B7\u5F97\u53CC\u500D\u70B9\u6570\u9644\u9B54\u3002"
+      item: 1
+      price: 6
+      effects:
+      - trigger: 4
+        kind: 7
+        amount: 1
+        local: 0
+        suitFilter: 1
+        rankFilter: -1
+        enchantment: 5
+    - id: trailer.item.BenZai
+      name: "\u76C6\u683D"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6BCF\u5468\u7ED3\u675F\uFF1A\u57FA\u7840\u5206
+        +12\u3002"
+      item: 1
+      price: 4
+      effects:
+      - trigger: 2
+        kind: 0
+        amount: 12
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.Bing
+      name: "\u997C"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u57FA\u7840\u5206
+        +16\u3002"
+      item: 1
+      price: 4
+      effects:
+      - trigger: 1
+        kind: 0
+        amount: 16
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.C4
+      name: C4
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u57FA\u7840\u5206
+        +40\u3002"
+      item: 1
+      price: 7
+      effects:
+      - trigger: 1
+        kind: 0
+        amount: 40
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.Candy
+      name: "\u7CD6\u679C"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u500D\u7387
+        +1\u3002"
+      item: 1
+      price: 4
+      effects:
+      - trigger: 1
+        kind: 1
+        amount: 1
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.Clock
+      name: "\u65F6\u949F"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u5361\u724C\u8BA1\u5206\uFF1A\u91CD\u62BD\u6B21\u6570
+        +1\u3002"
+      item: 1
+      price: 5
+      effects:
+      - trigger: 1
+        kind: 5
+        amount: 1
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.CockTail
+      name: "\u9E21\u5C3E\u9152"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u724C\u578B\u5224\u5B9A\u524D\uFF0C\u5C06\u6240\u5728\u5DE5\u4F4D\u5361\u724C\u6539\u4E3A\u7EA2\u6843\u3002"
+      item: 1
+      price: 5
+      effects:
+      - trigger: 0
+        kind: 4
+        amount: 1
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.FangDan
+      name: FangDan
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u57FA\u7840\u5206
+        +15\uFF0C\u500D\u7387 +1\u3002"
+      item: 1
+      price: 5
+      effects:
+      - trigger: 1
+        kind: 0
+        amount: 15
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+      - trigger: 1
+        kind: 1
+        amount: 1
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.FangSi
+      name: FangSi
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u500D\u7387
+        +2\u3002"
+      item: 1
+      price: 5
+      effects:
+      - trigger: 1
+        kind: 1
+        amount: 2
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.Farmer
+      name: Farmer
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6BCF\u5468\u7ED3\u675F\uFF1A\u57FA\u7840\u5206
+        +20\u3002"
+      item: 1
+      price: 5
+      effects:
+      - trigger: 2
+        kind: 0
+        amount: 20
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.FatDragon
+      name: FatDragon
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u57FA\u7840\u5206
+        +25\u3002\uFF08\u590D\u7528\u6807\u8BB0\u5E9F\u5F03\u7684\u56FE\u7247\uFF0C\u4EC5\u5BA3\u4F20\u7247\uFF09"
+      item: 1
+      price: 5
+      effects:
+      - trigger: 1
+        kind: 0
+        amount: 25
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.Fbqb
+      name: Fbqb
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u500D\u7387
+        +2\u3002\uFF08\u590D\u7528\u6807\u8BB0\u5E9F\u5F03\u7684\u56FE\u7247\uFF0C\u4EC5\u5BA3\u4F20\u7247\uFF09"
+      item: 1
+      price: 5
+      effects:
+      - trigger: 1
+        kind: 1
+        amount: 2
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.Fusion
+      name: Fusion
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u7D2F\u8BA1\u500D\u7387
+        \xD72\u3002"
+      item: 1
+      price: 8
+      effects:
+      - trigger: 1
+        kind: 2
+        amount: 2
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.Gun
+      name: Gun
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u57FA\u7840\u5206
+        +24\u3002"
+      item: 1
+      price: 5
+      effects:
+      - trigger: 1
+        kind: 0
+        amount: 24
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.Hat
+      name: "\u5E3D\u5B50"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u724C\u578B\u5224\u5B9A\u524D\uFF0C\u5C06\u6240\u5728\u5DE5\u4F4D\u5361\u724C\u6539\u4E3A\u6885\u82B1\u3002"
+      item: 1
+      price: 5
+      effects:
+      - trigger: 0
+        kind: 4
+        amount: 2
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.HotPot
+      name: "\u706B\u9505"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u57FA\u7840\u5206
+        +10\u3002"
+      item: 1
+      price: 4
+      effects:
+      - trigger: 1
+        kind: 0
+        amount: 10
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.Log
+      name: "\u6728\u5934"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6BCF\u5468\u7ED3\u675F\uFF1A\u57FA\u7840\u5206
+        +15\u3002"
+      item: 1
+      price: 4
+      effects:
+      - trigger: 2
+        kind: 0
+        amount: 15
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.NaiLong
+      name: "\u5976\u9F99"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u57FA\u7840\u5206
+        +30\u3002"
+      item: 1
+      price: 6
+      effects:
+      - trigger: 1
+        kind: 0
+        amount: 30
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.Potato
+      name: "\u571F\u8C46"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u57FA\u7840\u5206
+        +8\uFF0C\u500D\u7387 +1\u3002"
+      item: 1
+      price: 4
+      effects:
+      - trigger: 1
+        kind: 0
+        amount: 8
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+      - trigger: 1
+        kind: 1
+        amount: 1
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.Prince
+      name: Prince
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u500D\u7387
+        +3\u3002"
+      item: 1
+      price: 6
+      effects:
+      - trigger: 1
+        kind: 1
+        amount: 3
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.RIPot
+      name: RIPot
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6301\u6709\u65F6\uFF0C\u65B9\u5757\u724C\u83B7\u5F97\u91D1\u5E01\u9644\u9B54\u3002"
+      item: 1
+      price: 6
+      effects:
+      - trigger: 4
+        kind: 7
+        amount: 1
+        local: 0
+        suitFilter: 3
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.Rail
+      name: Rail
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u724C\u578B\u5224\u5B9A\u524D\uFF0C\u5C06\u6240\u5728\u5DE5\u4F4D\u5361\u724C\u70B9\u6570\u8BBE\u4E3A6\u3002"
+      item: 1
+      price: 6
+      effects:
+      - trigger: 0
+        kind: 3
+        amount: 6
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.Rubbish
+      name: "\u5783\u573E\u6876"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u5361\u724C\u8BA1\u5206\uFF1A\u91CD\u62BD\u6B21\u6570
+        +1\u3002"
+      item: 1
+      price: 5
+      effects:
+      - trigger: 1
+        kind: 5
+        amount: 1
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.Spray
+      name: "\u55B7\u96FE"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u724C\u578B\u5224\u5B9A\u524D\uFF0C\u5C06\u6240\u5728\u5DE5\u4F4D\u5361\u724C\u6539\u4E3A\u65B9\u5757\u3002"
+      item: 1
+      price: 5
+      effects:
+      - trigger: 0
+        kind: 4
+        amount: 3
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.Steam
+      name: Steam
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6301\u6709\u65F6\uFF0C\u9ED1\u6843\u724C\u83B7\u5F97\u7C89\u4E1D\u9644\u9B54\u3002"
+      item: 1
+      price: 7
+      effects:
+      - trigger: 4
+        kind: 7
+        amount: 1
+        local: 0
+        suitFilter: 0
+        rankFilter: -1
+        enchantment: 1
+    - id: trailer.item.TNT
+      name: TNT
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u7D2F\u8BA1\u500D\u7387
+        \xD72\u3002"
+      item: 1
+      price: 8
+      effects:
+      - trigger: 1
+        kind: 2
+        amount: 2
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.Tomato
+      name: "\u756A\u8304"
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6301\u6709\u65F6\uFF0C\u7EA2\u6843\u724C\u83B7\u5F97\u91D1\u5E01\u9644\u9B54\u3002"
+      item: 1
+      price: 6
+      effects:
+      - trigger: 4
+        kind: 7
+        amount: 1
+        local: 0
+        suitFilter: 1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.WSQ
+      name: WSQ
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u5361\u724C\u8BA1\u5206\uFF1A\u91CD\u62BD\u6B21\u6570
+        +1\u3002\uFF08\u590D\u7528\u6807\u8BB0\u5E9F\u5F03\u7684\u56FE\u7247\uFF0C\u4EC5\u5BA3\u4F20\u7247\uFF09"
+      item: 1
+      price: 5
+      effects:
+      - trigger: 1
+        kind: 5
+        amount: 1
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    - id: trailer.item.Zhan
+      name: Zhan
+      description: "\u3010\u5BA3\u4F20\u7247\u4E34\u65F6\u914D\u7F6E\uFF0C\u975E\u6B63\u5F0F\u6570\u503C\u3011\n\u6240\u5728\u5DE5\u4F4D\u8BA1\u5206\uFF1A\u57FA\u7840\u5206
+        +18\uFF0C\u500D\u7387 +1\u3002"
+      item: 1
+      price: 5
+      effects:
+      - trigger: 1
+        kind: 0
+        amount: 18
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+      - trigger: 1
+        kind: 1
+        amount: 1
+        local: 1
+        suitFilter: -1
+        rankFilter: -1
+        enchantment: 0
+    tasks:
+    - id: task.pair
+      name: "\u7ED3\u7B972\u6B21\u4E00\u5BF9"
+      target: 2
+      reward: 1
+      deadlineMonths: 0
+      patternPriorities: 01000000
+    - id: task.bomb
+      name: "\u7ED3\u7B972\u6B21\u70B8\u5F39"
+      target: 2
+      reward: 3
+      deadlineMonths: 0
+      patternPriorities: 0a0000000b000000
+    - id: task.timed_triple
+      name: "2\u4E2A\u6708\u5185\u7ED3\u7B971\u6B21\u4E09\u6761"
+      target: 1
+      reward: 2
+      deadlineMonths: 2
+      patternPriorities: 03000000
+    - id: task.two_pairs
+      name: "\u7ED3\u7B972\u6B21\u4E24\u5BF9"
+      target: 2
+      reward: 2
+      deadlineMonths: 0
+      patternPriorities: 02000000
+    - id: task.flush
+      name: "\u7ED3\u7B972\u6B21\u540C\u82B1"
+      target: 2
+      reward: 2
+      deadlineMonths: 0
+      patternPriorities: 07000000
+    - id: task.straight
+      name: "\u7ED3\u7B972\u6B21\u987A\u5B50"
+      target: 2
+      reward: 1
+      deadlineMonths: 0
+      patternPriorities: 05000000
+    - id: task.full_house
+      name: "\u7ED3\u7B972\u6B21\u846B\u82A6"
+      target: 2
+      reward: 3
+      deadlineMonths: 0
+      patternPriorities: 08000000
