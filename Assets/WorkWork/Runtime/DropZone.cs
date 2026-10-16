@@ -7,7 +7,7 @@ namespace WorkWork
     {
         public GameController controller;
         public int slot = -1, equipmentSlot = -1;
-        public bool hand, shop;
+        public bool hand, shop, developer;
         public void OnDrop(PointerEventData e)
         {
             var token = DragToken.Current;

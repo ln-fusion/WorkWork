@@ -14,6 +14,8 @@ namespace WorkWork.Core
             uint x=s.randomState==0?1u:s.randomState;x^=x<<13;x^=x>>17;x^=x<<5;s.randomState=x;return (int)(x%(uint)max);
         }
         public static Content Definition(Settings config,string id) => string.IsNullOrEmpty(id)?null:config.content.Find(c=>c.id==id);
+        public static bool CanAcquire(GameState s,Content def) => def!=null &&
+            (def.item && !def.unique || !s.employees.Concat(s.items).Contains(def.id));
         public static bool HasRule(GameState s,Settings config,string rule) => s.employees.Concat(s.items).Any(id=>Definition(config,id)?.rule==rule);
         public static void RefreshEnchantments(GameState s,Settings config)
         {

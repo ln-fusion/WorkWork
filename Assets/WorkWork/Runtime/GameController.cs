@@ -56,6 +56,9 @@ namespace WorkWork
         public CardFaceFeedback cardFaceFeedback;
         public CardDeletionFeedback cardDeletionFeedback;
         public ConditionFeedback conditionFeedback;
+        public BangFeedback bangFeedback;
+        public DeveloperPanel developerPanel;
+        public bool DeveloperOpen => developerPanel!=null && developerPanel.panel!=null && developerPanel.panel.activeInHierarchy;
         ConditionFeedback Conditions => conditionFeedback!=null?conditionFeedback:(conditionFeedback=GetComponent<ConditionFeedback>()??gameObject.AddComponent<ConditionFeedback>());
         CardDeletionFeedback DeletionMotion => cardDeletionFeedback!=null?cardDeletionFeedback:(cardDeletionFeedback=GetComponent<CardDeletionFeedback>()??gameObject.AddComponent<CardDeletionFeedback>());
         CardFaceFeedback FaceMotion => cardFaceFeedback!=null?cardFaceFeedback:(cardFaceFeedback=GetComponent<CardFaceFeedback>()??gameObject.AddComponent<CardFaceFeedback>());
@@ -358,6 +361,7 @@ namespace WorkWork
             if(token.kind==TokenKind.Employee && token.value>=0 && token.value<6) id=state.employees[token.value];
             if(token.kind==TokenKind.Item && token.value>=0 && token.value<18) id=state.items[token.value];
             if(token.kind==TokenKind.Offer && token.value>=0 && token.value<state.offers.Count) id=state.offers[token.value];
+            if(token.kind==TokenKind.Developer && DeveloperOpen)id=token.contentId;
             if(string.IsNullOrEmpty(id)) return false;
             var content=catalog.rules.content.Find(c=>c.id==id);if(content==null) return false;
             title=content.name;effects=string.IsNullOrWhiteSpace(content.description)?"暂无效果说明。":content.description;
@@ -373,6 +377,17 @@ namespace WorkWork
         {
             HideDropHints();
             if(IsBusy) return;
+            if(DeveloperOpen && (token.kind==TokenKind.Developer || token.kind==TokenKind.Employee || token.kind==TokenKind.Item))
+            {
+                var before=EnchantmentMotion.Capture(this);bool changed=false;
+                if(zone.developer && token.kind!=TokenKind.Developer)changed=Session.DeveloperRemove(token.value,token.kind==TokenKind.Item);
+                else if(zone.slot>=0 && token.kind==TokenKind.Developer)changed=Session.DeveloperAdd(token.contentId,zone.slot,zone.equipmentSlot);
+                else if(zone.slot>=0 && token.kind==TokenKind.Employee)changed=Session.DeveloperMove(token.value,zone.slot,false);
+                else if(zone.slot>=0 && token.kind==TokenKind.Item)
+                {int gear=zone.equipmentSlot>=0?zone.equipmentSlot:Session.FirstEmptyEquipmentSlot(zone.slot);if(gear>=0)changed=Session.DeveloperMove(token.value,zone.slot*3+gear,true);}
+                message=changed?"开发者操作完成。":"无法放置：请检查唯一限制、空槽；删除员工前请先移走道具。";
+                Render();if(changed)EnchantmentMotion.Transaction(this,before,zone.transform.position);return;
+            }
             int cashBefore=Session.State.cash;
             var beforeEnchantments=EnchantmentMotion.Capture(this);
             int completedBefore=Session.State.tasks.Count(t=>t.rewarded);
@@ -466,6 +481,10 @@ namespace WorkWork
             refreshButton.GetComponentInChildren<TMP_Text>().text = Session.RefreshPrice.ToString();
             refreshButton.interactable = !IsBusy && s.phase==Phase.Shop && s.refreshes < 5 && s.cash >= Session.RefreshPrice;
             GetComponent<GameShell>()?.Refresh(s,p);
+            if(bangFeedback==null)bangFeedback=GetComponent<BangFeedback>();
+            if(bangFeedback==null)bangFeedback=gameObject.AddComponent<BangFeedback>();
+            bangFeedback.Refresh(this);
+            if(developerPanel!=null)developerPanel.Refresh();
             Feedback.ObservePattern(this,p.pattern,s.slots.Any(card=>card!=null));
         }
         void BindContent(string id, TMP_Text text, Image icon, string empty, int slot)

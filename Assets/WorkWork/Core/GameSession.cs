@@ -241,7 +241,7 @@ namespace WorkWork.Core
             foreach (bool item in new[] {false, true})
             {
                 // Only the first shelf of a new game guarantees staff costing at most 5.
-                var candidates = Config.content.Where(c => c.item == item && (item || !State.acquired.Contains(c.id))
+                var candidates = Config.content.Where(c => c.item == item && ContentRules.CanAcquire(State,c)
                     && (item || !openingGuarantee || c.price<=5)).Select(c => c.id).ToList();
                 Shuffle(candidates); for(int i=0;i<3;i++) State.offers.Add(i<candidates.Count?candidates[i]:null);
             }
@@ -264,7 +264,7 @@ namespace WorkWork.Core
             if (State.phase != Phase.Shop || slot < 0 || slot >= 6 || string.IsNullOrEmpty(id) || !State.offers.Contains(id)) return false;
             var def = Config.content.Find(c => c.id == id);
             int cost=PurchasePrice(id);
-            if (def == null || State.cash < cost || (!def.item && State.acquired.Contains(id))) return false;
+            if (!ContentRules.CanAcquire(State,def) || State.cash < cost) return false;
             var dest = def.item ? State.items : State.employees;
             int index=slot;
             if(def.item)

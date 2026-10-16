@@ -32,8 +32,8 @@ namespace WorkWork.Tests
         static void Next(GameSession game){Assert.IsTrue(game.OpenShop());Assert.IsTrue(game.NextMonth());}
         [Test] public void CatalogContainsOnlyFinalContentAndPreciseUtilityGrants()
         {
-            var c=Config();Assert.AreEqual(33,c.content.Count(d=>!d.item));Assert.AreEqual(37,c.content.Count(d=>d.item));Assert.AreEqual(15,c.tasks.Count);
-            Assert.AreEqual(70,c.content.Select(d=>d.id).Distinct().Count());Assert.IsTrue(c.content.All(d=>d.price>0 && !d.name.Contains("测试员工") && !string.IsNullOrEmpty(d.rule)));
+            var c=Config();Assert.AreEqual(33,c.content.Count(d=>!d.item));Assert.AreEqual(38,c.content.Count(d=>d.item));Assert.AreEqual(15,c.tasks.Count);
+            Assert.AreEqual(71,c.content.Select(d=>d.id).Distinct().Count());Assert.IsTrue(c.content.All(d=>d.price>0 && !d.name.Contains("测试员工") && !string.IsNullOrEmpty(d.rule)));
             foreach(var d in c.content)foreach(var e in d.effects.Where(e=>e.enchantment==Enchantment.Copy || e.enchantment==Enchantment.Retry))
             {Assert.GreaterOrEqual(e.rankFilter,0);Assert.GreaterOrEqual(e.suitFilter,0);}
             Assert.AreEqual(4,c.tasks.Count(t=>t.reward==1));Assert.AreEqual(4,c.tasks.Count(t=>t.reward==2));Assert.AreEqual(7,c.tasks.Count(t=>t.reward==3));

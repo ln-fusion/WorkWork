@@ -32,7 +32,10 @@ namespace WorkWork
         public Button restart;
         public GameObject patternHelp;
         public TMP_Text[] patternNames, patternChips, patternMultipliers;
-        public AudioSource menuMusic, gameMusic;
+        public AudioSource menuMusic, gameMusic, bangMusic;
+        public bool IsInGame => board!=null && board.activeSelf && (welcome==null || !welcome.activeSelf);
+        public bool HasBang => game!=null && game.Session!=null && ContentRules.HasRule(game.Session.State,game.catalog.rules,"item.Bang");
+        public void RefreshMusic() {PlayMusic(IsInGame);}
         public TaskPanel taskPanel;
         public TaskChoicePanel taskChoicePanel;
         public void OpenTasks()
@@ -78,9 +81,9 @@ namespace WorkWork
         }
         void PlayMusic(bool inGame)
         {
-            var active=inGame?gameMusic:menuMusic;
-            var other=inGame?menuMusic:gameMusic;
-            if(other!=null) other.Stop();
+            var active=inGame?(HasBang && bangMusic!=null && bangMusic.clip!=null?bangMusic:gameMusic):menuMusic;
+            foreach(var source in new[]{menuMusic,gameMusic,bangMusic})
+                if(source!=null && source!=active && source.isPlaying)source.Stop();
             if(active!=null && active.clip!=null && !active.isPlaying) active.Play();
         }
         public void OpenSettings()

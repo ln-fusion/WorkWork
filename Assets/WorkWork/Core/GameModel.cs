@@ -70,6 +70,8 @@ namespace WorkWork.Core
     {
         public string id, name, description;
         public bool item;
+        // Ordinary equipment can repeat; unique equipment shares the staff ownership limit.
+        public bool unique;
         public int price;
         public List<Effect> effects = new List<Effect>();
         public string rule;

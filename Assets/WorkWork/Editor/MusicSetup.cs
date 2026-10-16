@@ -15,11 +15,14 @@ namespace WorkWork.Editor
             if(shell==null) throw new InvalidOperationException("GameShell not found in the open scene.");
             shell.menuMusic=Source(shell,"Menu Music - Before","Assets/Sound/Music/Before_the_Rush_Menu_Loop.ogg");
             shell.gameMusic=Source(shell,"Game Music - Deadline","Assets/Sound/Music/DeadlineRush.ogg");
+            ConfigureBang(shell);
             EditorUtility.SetDirty(shell);
             EditorSceneManager.MarkSceneDirty(shell.gameObject.scene);
             EditorSceneManager.SaveScene(shell.gameObject.scene);
             Debug.Log("WORKWORK_MUSIC_CONFIGURED: Before on welcome, Deadline during play/shop/results; loop enabled; adjust AudioChannel Base Volume in Inspector.");
         }
+        public static void ConfigureBang(GameShell shell)
+        {shell.bangMusic=Source(shell,"Bang Music - Yesterday","Assets/Sound/Music/Bang.mp3");}
         static AudioSource Source(GameShell shell,string name,string path)
         {
             var clip=AssetDatabase.LoadAssetAtPath<AudioClip>(path);

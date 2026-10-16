@@ -16,7 +16,7 @@ namespace WorkWork
         {
             if(game==null || board==null || token==null || token.controller!=game || game.IsBusy)return;
             bool staff=token.kind==TokenKind.Employee;
-            if(token.kind==TokenKind.Offer)
+            if(token.kind==TokenKind.Offer || token.kind==TokenKind.Developer)
             {
                 var def=game.catalog.rules.content.Find(c=>c.id==token.contentId);
                 staff=def!=null && !def.item;

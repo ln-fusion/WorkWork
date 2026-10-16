@@ -187,7 +187,7 @@ namespace WorkWork.Core
                 case "employee.32":Generate(v.count,6);Add(Math.Min(v.limit,s.weekAddedCards*v.chips));break;
                 case "employee.33":if(c!=null){TurnBlack(c);if(c.suitChangedThisMonth)Grant(c,def,Enchantment.Fans);
                     if(c.enchantments.Contains(Enchantment.Fans) && c.rank>=v.threshold){Link(c);Add(0,v.multiplier);}}break;
-                case "item.BenZai":case "item.Hat":Add(v.chips);break;
+                case "item.BenZai":case "item.Hat":case "item.Bang":Add(v.chips);break;
                 case "item.Farmer":case "item.NaiLong":Add(0,v.multiplier);if(v.count>0)Generate(v.count,0);break;
                 case "item.C4":
                     Step(slot,ScoreSource.Item,def.name,b,bm,equipment);

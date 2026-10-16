@@ -43,7 +43,7 @@ namespace WorkWork.Editor
             var catalog=AssetDatabase.LoadAssetAtPath<GameCatalog>("Assets/WorkWork/Config/GameCatalog.asset");
             var theme=AssetDatabase.LoadAssetAtPath<VisualTheme>("Assets/WorkWork/Config/VisualTheme.asset");
             if(catalog==null || theme==null)throw new InvalidOperationException("缺少目录或视觉主题。");
-            if(source.content.Count!=70 || source.tasks.Count!=15 || source.content.Select(c=>c.id).Distinct().Count()!=70)throw new InvalidDataException("正式内容数量或编号无效。");
+            if(source.content.Count!=71 || source.tasks.Count!=15 || source.content.Select(c=>c.id).Distinct().Count()!=71)throw new InvalidDataException("正式内容数量或编号无效。");
             // Validate every reference before changing either live asset.
             foreach(var image in source.images)if(!File.Exists(image.path))throw new FileNotFoundException("缺少素材",image.path);
             foreach(var def in source.content)foreach(var effect in def.effects)
@@ -64,7 +64,7 @@ namespace WorkWork.Editor
             EditorUtility.SetDirty(catalog);EditorUtility.SetDirty(theme);Undo.FlushUndoRecordObjects();AssetDatabase.SaveAssets();
             AssetDatabase.ImportAsset("Assets/WorkWork/Config/GameCatalog.asset",ImportAssetOptions.ForceUpdate);
             AssetDatabase.ImportAsset("Assets/WorkWork/Config/VisualTheme.asset",ImportAssetOptions.ForceUpdate);
-            Debug.Log("正式内容已配置：33员工、37道具、15任务，首月600，70项图片引用完整；场景和预制体布局未重建。");
+            Debug.Log("正式内容已配置：33员工、38道具、15任务，首月600，71项图片引用完整；场景和预制体布局未重建。");
         }
         public static void BindArt(VisualTheme theme)
         {

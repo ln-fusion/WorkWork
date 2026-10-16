@@ -5,7 +5,7 @@ using WorkWork.Core;
 
 namespace WorkWork
 {
-    public enum TokenKind { HandCard, SlotCard, Employee, Item, Offer }
+    public enum TokenKind { HandCard, SlotCard, Employee, Item, Offer, Developer }
     public class DragToken : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
     {
         public GameController controller;
@@ -25,8 +25,9 @@ namespace WorkWork
             var state=controller.Session.State;
             if(kind==TokenKind.HandCard || kind==TokenKind.SlotCard) return state.phase==Phase.Playing && GetComponent<CardView>()?.BoundCard!=null;
             if(string.IsNullOrEmpty(contentId)) return false;
+            if(kind==TokenKind.Developer)return controller.DeveloperOpen;
             if(kind==TokenKind.Offer) return state.phase==Phase.Shop && state.offers.Contains(contentId);
-            if(kind==TokenKind.Item) return state.phase==Phase.Shop;
+            if(kind==TokenKind.Item) return state.phase==Phase.Shop || controller.DeveloperOpen;
             return state.phase==Phase.Playing || state.phase==Phase.Shop;
         }
         public void OnBeginDrag(PointerEventData e)
@@ -61,6 +62,8 @@ namespace WorkWork
             var rect=(RectTransform)ghost.transform;rect.anchorMin=rect.anchorMax=rect.pivot=new Vector2(.5f,.5f);
             var canvasScale=canvasRect.lossyScale;var scale=sourceRect.lossyScale;
             rect.localScale=new Vector3(scale.x/canvasScale.x,scale.y/canvasScale.y,1);
+            if(sourceCard==null && ContentRules.Definition(controller.catalog.rules,contentId)?.item==false && controller.bangFeedback!=null)
+                controller.bangFeedback.Bind(ghost.GetComponent<Image>());
             rect.SetAsLastSibling();
             var previewGroup=ghost.AddComponent<CanvasGroup>();previewGroup.blocksRaycasts=false;previewGroup.interactable=false;
             Vector2 pointer;RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect,e.position,e.pressEventCamera,out pointer);

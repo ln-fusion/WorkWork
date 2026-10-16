@@ -1,5 +1,9 @@
 # 功能与表现接口归档（2026-10-16）
 
+2026-10-17：DeveloperPanel.Toggle/Hide、GameSession.DeveloperAdd/Remove/Move、TokenKind.Developer与DropZone.developer提供不涉及资金/交易任务的调试拖拽；入口Developer Toggle，见 developer-panel.md。
+
+2026-10-17：Content.unique与ContentRules.CanAcquire统一商店和购买的唯一限制；BangFeedback.Refresh/Bind/Pose与BangPortraitMotion负责工位、商店、拖拽员工图像节奏变形，GameShell.RefreshMusic/bangMusic负责持有切歌，见 yesterday-wine.md。
+
 2026-10-17：ConditionFeedback.Play/Clear读取ScoreStep.linkedCardIds/linkedEmployeeSlots/linkedItemSlots/linkedEmptySlots，按步骤高亮后再显示收益；ScoreFeedback.AnimateSource与Play(game,step,false)分开发来源动作和飘字。接口与覆盖范围见 condition-feedback.md。
 
 2026-10-17：新增CardDeletionFeedback.Play/IsDeleted/Clear与ScoreStep.deletedCards；小夜灯各目标额外计分后发独立删除步骤，末尾收牌过滤已经斩断的实体。参数与规则见 card-deletion-motion.md。

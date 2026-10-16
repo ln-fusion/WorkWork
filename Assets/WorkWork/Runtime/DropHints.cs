@@ -20,7 +20,9 @@ namespace WorkWork
             Hide();
             if(game==null || game.Session==null || token==null || token.controller!=game || game.IsBusy)return;
             var state=game.Session.State;bool item=false;
-            if(token.kind==TokenKind.Offer)
+            if(token.kind==TokenKind.Developer && game.DeveloperOpen)
+            {var def=game.catalog.rules.content.Find(c=>c.id==token.contentId);if(def==null || !ContentRules.CanAcquire(state,def))return;item=def.item;}
+            else if(token.kind==TokenKind.Offer)
             {
                 var def=game.catalog.rules.content.Find(c=>c.id==token.contentId);
                 if(state.phase!=Phase.Shop || def==null || !state.offers.Contains(token.contentId))return;
@@ -29,7 +31,7 @@ namespace WorkWork
             else if(token.kind==TokenKind.Employee)
             {if(state.phase!=Phase.Playing && state.phase!=Phase.Shop)return;}
             else if(token.kind==TokenKind.Item)
-            {if(state.phase!=Phase.Shop)return;item=true;}
+            {if(state.phase!=Phase.Shop && !game.DeveloperOpen)return;item=true;}
             else return;
             if(item)
             {

@@ -6,7 +6,7 @@ const parse=(p,re)=>read(p).split(/\r?\n/).map(line=>line.match(re)).filter(Bool
 const staff=parse('Document/employee-effects-v2.md',/^\| ([^|]+) \| (\d{2}) \| ([^|]+) \| (\d+) \|$/);
 const tools=parse('Document/item-design.md',/^\| ([^|]+) \| ([A-Za-z0-9]+) \| ([^|]+) \| (\d+) \|$/);
 const art=parse('Document/employee-art-mapping.md',/^\| (\d+) \| ([^|]+) \| ([^|]+) \| ([^|]+) \|$/);
-if(staff.length!==33 || tools.length!==37 || art.length!==33)throw Error('Unexpected design row counts');
+if(staff.length!==33 || tools.length!==38 || art.length!==33)throw Error('Unexpected design row counts');
 const values=[null,
 {multiplier:4},{chips:20},{chips:10},{chips:40},{chips:10},{multiplier:4},{count:6,chips:20},{multiplier:3},
 {count:2,multiplier:2,limit:8},{chips:20,bonusChips:30,threshold:4,bonusMultiplier:5},{chips:10,discount:1},{multiplier:3,bonusChips:30},
@@ -19,7 +19,7 @@ const grants={1:[0,-1,1],3:[4,6,0],4:[3,1,0],8:[1,3,-1],15:[0,-1,3],17:[5,2,-1],
 const toolValues={BenZai:{chips:40},Farmer:{multiplier:4},C4:{},Rail:{chips:120},Potato:{count:1},Gun:{count:-1},HotPot:{chips:100},
 Zhan:{chips:90},Spray:{chips:70},Log:{chips:120},Steam:{chips:70,threshold:3},TNT:{multiplier:16},Prince:{multiplier:8},RIPot:{multiplier:2},
 Rubbish:{multiplier:10},'3men':{multiplier:2},Angle:{chips:20},Clock:{chips:80,count:2},NaiLong:{multiplier:8,count:2},FangSi:{},Tomato:{multiplier:10},
-Fusion:{multiplier:2},Fangdan:{chips:20},CockTail:{chips:25},Hat:{chips:200,count:2},Candy:{chips:7},Bing:{multiplier:2}};
+Fusion:{multiplier:2},Fangdan:{chips:20},CockTail:{chips:25},Hat:{chips:200,count:2},Candy:{chips:7},Bing:{multiplier:2},Bang:{chips:50}};
 const files=fs.readdirSync(path.join(root,'Assets/Image/Tools'));
 const content=[],images=[];
 const visibleText=s=>s.replace(/<br>/g,'\n').replace(/≥/g,'不少于').replace(/≤/g,'不超过').replace(/＞/g,'大于').replace(/＜/g,'小于');
@@ -33,7 +33,7 @@ const image=files.find(f=>f.toLowerCase()===(code+'.png').toLowerCase());if(!ima
 let rule=id,v=toolValues[code];if(code.startsWith('Light')){rule='item.Light';v={chips:20,threshold:Number(code.slice(5))};}
 if(code.startsWith('Book')){rule='item.Book';v={multiplier:2,threshold:[1,3,2,0][Number(code.slice(4))-1]};}
 if(!v)throw Error('Missing mechanic: '+code);
-content.push({id,name,description:visibleText(effect),item:true,price:Number(price),rule,values:v,effects:[],
+content.push({id,name,description:visibleText(effect),item:true,...(code==='Bang'?{unique:true}:{}),price:Number(price),rule,values:v,effects:[],
 locksEmployee:['HotPot','Zhan'].includes(code),lifetimeMonths:['Hat','Candy','Bing'].includes(code)?3:0});
 images.push({id,path:'Assets/Image/Tools/'+image});}
 const source=read('Document/task-design.md');
