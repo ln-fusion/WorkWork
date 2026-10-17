@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: GameCatalog
   m_EditorClassIdentifier: 
   rules:
-    firstTarget: 1000
+    firstTarget: 650
     initialCash: 5
     redraws: 4
     deckCopies: 2
-    firstYearGrowth: 1.25
-    secondYearGrowth: 1.4
-    thirdYearGrowth: 1.6
+    firstYearGrowth: 1.3
+    secondYearGrowth: 1.5
+    thirdYearGrowth: 1.7
     laterGrowth: 2
     targetRounding: 10
     content:
