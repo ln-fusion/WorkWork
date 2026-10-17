@@ -131,8 +131,8 @@ namespace WorkWork.Tests
         [Test] public void FreeRefreshAdvancesPriceAndPersistsAcrossSave()
         {
             var c=Config();var g=SessionFixture.Playing(c,19);g.State.phase=Phase.Shop;g.State.cash=100;g.State.employees[0]="employee.29";
-            Assert.AreEqual(0,g.RefreshPrice);Assert.IsTrue(g.RefreshShop());Assert.AreEqual(100,g.State.cash);Assert.AreEqual(4,g.RefreshPrice);
-            g=SessionFixture.Playing(c,1,WorkWork.SaveCodec.Deserialize(WorkWork.SaveCodec.Serialize(g.State)));Assert.AreEqual(4,g.RefreshPrice);
+            Assert.AreEqual(0,g.RefreshPrice);Assert.IsTrue(g.RefreshShop());Assert.AreEqual(100,g.State.cash);Assert.AreEqual(2,g.RefreshPrice);
+            g=SessionFixture.Playing(c,1,WorkWork.SaveCodec.Deserialize(WorkWork.SaveCodec.Serialize(g.State)));Assert.AreEqual(2,g.RefreshPrice);
         }
         [TestCase("task.02",Suit.Hearts,true)] [TestCase("task.02",Suit.Clubs,false)]
         [TestCase("task.03",Suit.Spades,true)] [TestCase("task.03",Suit.Diamonds,false)]

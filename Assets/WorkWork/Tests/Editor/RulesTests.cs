@@ -254,7 +254,7 @@ namespace WorkWork.Tests
             string employee=s.offers[1],gear=s.offers[4];
             Assert.IsTrue(g.Buy(employee,0));Assert.IsTrue(g.Buy(gear,0));
             Assert.IsNull(s.offers[1]);Assert.IsNull(s.offers[4]);
-            int before=s.cash;Assert.IsTrue(g.RefreshShop());Assert.AreEqual(before-3,s.cash);
+            int before=s.cash;Assert.IsTrue(g.RefreshShop());Assert.AreEqual(before-1,s.cash);
             Assert.AreEqual(6,s.offers.Count);Assert.IsTrue(s.offers.All(id=>!string.IsNullOrEmpty(id)));
             CollectionAssert.DoesNotContain(s.offers,employee); // Owned tools remain eligible for restocking.
             for(int i=0;i<6;i++) Assert.AreEqual(i>=3,config.content.Find(c=>c.id==s.offers[i]).item);

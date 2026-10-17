@@ -18,7 +18,7 @@ namespace WorkWork.Core
                 discount=Config.content.First(c=>c.rule=="employee.11").values.discount;
             return Math.Max(def.price==0?0:1,def.price-discount);
         }
-        public int RefreshPrice => HasRule("employee.29") && State.freeRefreshMonth!=EffectiveMonth?0:3+State.refreshes;
+        public int RefreshPrice => HasRule("employee.29") && State.freeRefreshMonth!=EffectiveMonth?0:1+State.refreshes;
         bool EmployeeLocked(int slot)=>State.items.Skip(slot*3).Take(3).Any(id=>ContentRules.Definition(Config,id)?.locksEmployee==true);
         void NormalizeContentState()
         {

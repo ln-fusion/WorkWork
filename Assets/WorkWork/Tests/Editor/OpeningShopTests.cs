@@ -17,6 +17,23 @@ namespace WorkWork.Tests
             return new Settings{firstTarget=400,initialCash=cash,content=source.content,tasks=source.tasks};
         }
         static GameSession Reload(GameSession g) => new GameSession(g.Config,1,WorkWork.SaveCodec.Deserialize(WorkWork.SaveCodec.Serialize(g.State)));
+        [Test] public void RefreshCostsOneThroughFiveAndResetsInNextShop()
+        {
+            var g=new GameSession(Config(15),19);
+            for(int price=1;price<=5;price++)
+            {
+                Assert.AreEqual(price,g.RefreshPrice);
+                int before=g.State.cash;Assert.IsTrue(g.RefreshShop());Assert.AreEqual(before-price,g.State.cash);
+                g=Reload(g);Assert.AreEqual(price,g.State.refreshes);Assert.AreEqual(price+1,g.RefreshPrice);
+            }
+            g.State.cash=100;Assert.IsFalse(g.RefreshShop());Assert.AreEqual(100,g.State.cash);Assert.AreEqual(5,g.State.refreshes);
+            Assert.IsTrue(g.NextMonth());g.State.phase=Phase.MonthResult;Assert.IsTrue(g.OpenShop());
+            Assert.AreEqual(1,g.RefreshPrice);Assert.AreEqual(0,g.State.refreshes);
+            g.State.cash=0;uint rng=g.State.randomState;var shelf=g.State.offers.ToArray();
+            Assert.IsFalse(g.RefreshShop());Assert.AreEqual(0,g.State.refreshes);Assert.AreEqual(rng,g.State.randomState);
+            CollectionAssert.AreEqual(shelf,g.State.offers);
+            g.State.cash=1;Assert.IsTrue(g.RefreshShop());Assert.AreEqual(0,g.State.cash);
+        }
         [Test] public void FirstShelfGuaranteesThreeDistinctStaffAtMostFiveAcrossSeeds()
         {
             var config=Config();
@@ -104,7 +121,7 @@ namespace WorkWork.Tests
             Assert.AreEqual(4,g.PurchasePrice("employee.02"));Assert.IsTrue(g.Buy("employee.02",3));Assert.AreEqual(1,g.State.staffDiscountMonth);
             Assert.AreEqual(2,g.PurchasePrice("item.BenZai"));Assert.IsTrue(g.Buy("item.BenZai",3));Assert.AreEqual(1,g.State.itemDiscountMonth);
             Assert.AreEqual(0,g.RefreshPrice);Assert.IsTrue(g.RefreshShop());Assert.AreEqual(1,g.State.freeRefreshMonth);g=Reload(g);
-            Assert.AreEqual(4,g.RefreshPrice);g.NextMonth();Assert.AreEqual(5,g.PurchasePrice("employee.02"));Assert.AreEqual(3,g.PurchasePrice("item.BenZai"));
+            Assert.AreEqual(2,g.RefreshPrice);g.NextMonth();Assert.AreEqual(5,g.PurchasePrice("employee.02"));Assert.AreEqual(3,g.PurchasePrice("item.BenZai"));
             g.State.phase=Phase.MonthResult;g.OpenShop();Assert.AreEqual(4,g.PurchasePrice("employee.02"));Assert.AreEqual(0,g.RefreshPrice);
         }
         [Test] public void OpeningLimitedToolPurchaseCountsFirstMonthAsItsFirstAgeMonth()
