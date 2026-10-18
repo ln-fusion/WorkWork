@@ -1,5 +1,7 @@
 # 功能与表现接口归档（2026-10-16）
 
+2026-10-18：SoundFeedback.Play/BeginSettlement/Score/Observe和ScoreStep.cardSettlement接入13条SFX；参数WorkWork MVP → Sound Feedback/Audio Channel，见 sound-effects.md。
+
 2026-10-17：DeveloperPanel.Toggle/Hide、GameSession.DeveloperAdd/Remove/Move、TokenKind.Developer与DropZone.developer提供不涉及资金/交易任务的调试拖拽；入口Developer Toggle，见 developer-panel.md。
 
 2026-10-17：Content.unique与ContentRules.CanAcquire统一商店和购买的唯一限制；BangFeedback.Refresh/Bind/Pose与BangPortraitMotion负责工位、商店、拖拽员工图像节奏变形，GameShell.RefreshMusic/bangMusic负责持有切歌，见 yesterday-wine.md。

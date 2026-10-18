@@ -78,6 +78,7 @@ namespace WorkWork.Core
             }
             if(es.Contains(Enchantment.Wild) && Board.Where(c=>c.suit==card.suit).Sum(c=>(long)c.rank)>0)Link(Board.Where(c=>c.suit==card.suit));
             Step(slot,ScoreSource.Card,onlyWild?"“同花加分”额外结算":"卡牌与附魔",before,bm);
+            result.steps[result.steps.Count-1].cardSettlement=true;
             var manager=Def(s.employees[slot]);
             if(!onlyWild && es.Contains(Enchantment.Coin) && manager?.rule=="employee.32")
             {long cb=chips,mb=mult;Link(card);Add(manager.values.bonusChips);Step(slot,ScoreSource.Employee,manager.name,cb,mb);}

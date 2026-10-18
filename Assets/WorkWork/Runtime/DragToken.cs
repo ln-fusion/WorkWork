@@ -36,6 +36,7 @@ namespace WorkWork
             controller.detailsTooltip?.Hide();
             if(Current!=null) Current.FinishDrag();
             Current=this;e.eligibleForClick=false;
+            if((kind==TokenKind.HandCard || kind==TokenKind.SlotCard) && controller.sounds!=null)controller.sounds.Play(controller.sounds.select);
             var canvasRect=(RectTransform)controller.canvas.transform;
             var sourceCard=GetComponent<CardView>();
             RectTransform sourceRect;

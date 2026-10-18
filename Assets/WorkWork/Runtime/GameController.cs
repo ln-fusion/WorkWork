@@ -35,6 +35,9 @@ namespace WorkWork
         public Image[] employeeIcons, itemIcons, offerIcons;
         public GameObject shopPanel, resultPanel;
         public Button redrawButton, scoreButton, refreshButton, nextMonthButton, resultButton;
+        TMP_Text refreshPriceLabel;
+        float normalRefreshFontSize;
+        bool normalRefreshAutoSizing;
         public Image officeBackground;
         public GameSession Session { get; private set; }
         int selectedSlot, selectedEmployee = -1;
@@ -58,6 +61,7 @@ namespace WorkWork
         public ConditionFeedback conditionFeedback;
         public BangFeedback bangFeedback;
         public DeveloperPanel developerPanel;
+        public SoundFeedback sounds;
         public bool DeveloperOpen => developerPanel!=null && developerPanel.panel!=null && developerPanel.panel.activeInHierarchy;
         ConditionFeedback Conditions => conditionFeedback!=null?conditionFeedback:(conditionFeedback=GetComponent<ConditionFeedback>()??gameObject.AddComponent<ConditionFeedback>());
         CardDeletionFeedback DeletionMotion => cardDeletionFeedback!=null?cardDeletionFeedback:(cardDeletionFeedback=GetComponent<CardDeletionFeedback>()??gameObject.AddComponent<CardDeletionFeedback>());
@@ -183,8 +187,10 @@ namespace WorkWork
             IsScoring=true;Render();
             if(cardDeletionFeedback!=null)cardDeletionFeedback.Clear();
             int shownRedraws=Session.State.redraws;
+            if(sounds!=null)sounds.BeginSettlement();
             foreach(var step in result.steps)
             {
+                if(sounds!=null)sounds.Score(step);
                 bool linked=ConditionFeedback.HasTargets(step),deletionPlayed=false;
                 if(linked)scoreFeedback.AnimateSource(this,step);else scoreFeedback.Play(this,step);
                 if(step.faceChanges!=null && step.faceChanges.Count>0)yield return FaceMotion.Play(this,step.faceChanges);
@@ -328,10 +334,11 @@ namespace WorkWork
         void ClickHandCard(int cardId)
         {
             if(IsBusy) return;
+            if(sounds!=null)sounds.Play(sounds.select);
             int slot=Array.FindIndex(Session.State.slots,card=>card==null);
             if(slot<0) {message="工位已满，可拖拽换牌或点击场上卡牌收回。";Render();Feedback.Failure(this,slotRoots[selectedSlot],"工位已满");return;}
             bool placed=Session.Place(cardId,slot);Act(placed,"已自动放入空工位。");
-            if(placed)PulseCards(cardId);
+            if(placed){PulseCards(cardId);if(sounds!=null)sounds.Play(sounds.place);}
         }
         void ClickSlot(int slot)
         {
@@ -339,7 +346,7 @@ namespace WorkWork
             selectedSlot = slot;
             int cardId=Session.State.slots[slot]?.id??-1;
             bool returned=Session.ReturnCard(slot);Act(returned, "已将卡牌收回手牌。");
-            if(returned)PulseCards(cardId);
+            if(returned){PulseCards(cardId);if(sounds!=null)sounds.Play(sounds.place);}
         }
         void ClickEmployee(int slot)
         {
@@ -429,6 +436,11 @@ namespace WorkWork
             Act(ok, "操作完成。");
             if(ok)
             {
+                if(sounds!=null)
+                {
+                    if(token.kind==TokenKind.Offer || (zone.shop && (token.kind==TokenKind.Employee || token.kind==TokenKind.Item)))sounds.Play(sounds.trade);
+                    else if(token.kind==TokenKind.HandCard || token.kind==TokenKind.SlotCard)sounds.Play(sounds.place);
+                }
                 if(Session.State.tasks.Count(t=>t.rewarded)>completedBefore)Feedback.VibratePhone();
                 Feedback.Spend(this,token.kind==TokenKind.Offer?purchaseCost:cashBefore-Session.State.cash);
                 if(token.kind==TokenKind.HandCard || token.kind==TokenKind.SlotCard)PulseCards(movedCard,exchangedCard);
@@ -471,21 +483,38 @@ namespace WorkWork
                 }
             }
             for(int i=0;i<18;i++) { BindContent(s.items[i],itemTexts[i],itemIcons[i],"",-1); SetToken(itemButtons[i],TokenKind.Item,i,s.items[i]); }
-            redrawButton.interactable = !IsBusy && s.phase == Phase.Playing && s.redraws > 0 && s.hand.Count > 0;
-            scoreButton.interactable = !IsBusy && s.phase == Phase.Playing && s.slots.Any(c => c != null);
             shopPanel.SetActive(s.phase == Phase.Shop);
             resultPanel.SetActive(s.phase == Phase.MonthResult || s.phase == Phase.Failed);
             if(resultText!=null) resultText.text = $"{(s.phase == Phase.Failed ? "月度验收未通过" : "月度验收通过")}\n\n{s.monthScore:N0} / {s.target:N0}\n\n{s.monthSummary}";
             resultButton.gameObject.SetActive(s.phase == Phase.MonthResult);
             if(shopTitle!=null) shopTitle.text = $"{(s.openingShop?"开局商店":"月末商店")}   ·   {VisualTheme.CurrencyIcon}{s.cash}   ·   目标工位 {selectedSlot + 1}   ·   拖入工位购入 / 拖入商店出售";
-            refreshButton.GetComponentInChildren<TMP_Text>().text = Session.RefreshPrice.ToString();
-            refreshButton.interactable = !IsBusy && s.phase==Phase.Shop && s.refreshes < 5 && s.cash >= Session.RefreshPrice;
+            if(refreshPriceLabel==null)
+            {
+                refreshPriceLabel=refreshButton.GetComponentInChildren<TMP_Text>();
+                normalRefreshFontSize=refreshPriceLabel.fontSize;normalRefreshAutoSizing=refreshPriceLabel.enableAutoSizing;
+            }
+            bool refreshExhausted=s.refreshes>=5;
+            refreshPriceLabel.text=refreshExhausted?"无机会":Session.RefreshPrice.ToString();
+            refreshPriceLabel.enableAutoSizing=refreshExhausted?false:normalRefreshAutoSizing;
+            refreshPriceLabel.fontSize=refreshExhausted?20:normalRefreshFontSize;
+            RefreshInteractionState();
             GetComponent<GameShell>()?.Refresh(s,p);
+            if(sounds!=null && (GetComponent<GameShell>()==null || GetComponent<GameShell>().IsInGame))sounds.Observe(s.phase);
             if(bangFeedback==null)bangFeedback=GetComponent<BangFeedback>();
             if(bangFeedback==null)bangFeedback=gameObject.AddComponent<BangFeedback>();
             bangFeedback.Refresh(this);
             if(developerPanel!=null)developerPanel.Refresh();
             Feedback.ObservePattern(this,p.pattern,s.slots.Any(card=>card!=null));
+        }
+        // Animations can finish without a full Render; release their button locks each frame.
+        void LateUpdate() {RefreshInteractionState();}
+        void RefreshInteractionState()
+        {
+            if(Session==null)return;
+            var s=Session.State;bool ready=!IsBusy;
+            if(redrawButton!=null)redrawButton.interactable=ready && s.phase==Phase.Playing && s.redraws>0 && s.hand.Count>0;
+            if(scoreButton!=null)scoreButton.interactable=ready && s.phase==Phase.Playing && s.slots.Any(c=>c!=null);
+            if(refreshButton!=null)refreshButton.interactable=ready && s.phase==Phase.Shop && s.refreshes<5 && s.cash>=Session.RefreshPrice;
         }
         void BindContent(string id, TMP_Text text, Image icon, string empty, int slot)
         {

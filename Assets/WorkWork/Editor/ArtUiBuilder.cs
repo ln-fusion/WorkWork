@@ -87,7 +87,7 @@ namespace WorkWork.Editor
             ConfigureAllButtons(g);
             EditorUtility.SetDirty(g); EditorUtility.SetDirty(shell); if(g.theme!=null) EditorUtility.SetDirty(g.theme);
             AssetDatabase.SaveAssets(); EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
-            MusicSetup.Configure();BangSetup.Configure();DeveloperPanelSetup.Configure();CurrencyIconSetup.Configure();TaskPanelBuilder.Configure();TaskChoiceBuilder.Configure();
+            MusicSetup.Configure();BangSetup.Configure();DeveloperPanelSetup.Configure();SoundFeedbackSetup.Configure();CurrencyIconSetup.Configure();TaskPanelBuilder.Configure();TaskChoiceBuilder.Configure();
             ScoreFeedbackSetup.Configure();ConditionFeedbackSetup.Configure();EnchantmentFeedbackSetup.Configure();CardFaceFeedbackSetup.Configure();CardDeletionFeedbackSetup.Configure();CardMotionSetup.Configure();ShopRevealSetup.Configure();
             FailureRevealSetup.Configure();VictoryRevealSetup.Configure();PhonePickupSetup.Configure();
             ActionFeedbackSetup.Configure();DropHintsSetup.Configure();DeploymentTiltSetup.Configure();LoadingTransitionSetup.Configure();

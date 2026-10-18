@@ -198,6 +198,7 @@ namespace WorkWork.Core
         public bool multipliesMultiplier;
         public int extraRedrawDelta;
         public Card copiedCard;
+        public bool cardSettlement;
         public List<EnchantmentChange> enchantmentChanges=new List<EnchantmentChange>();
         public List<CardFaceChange> faceChanges=new List<CardFaceChange>();
         public List<Card> generatedCards=new List<Card>();

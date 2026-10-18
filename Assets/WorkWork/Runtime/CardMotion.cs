@@ -18,6 +18,7 @@ namespace WorkWork
             public Vector3 home;
             public Quaternion rotation;
             public float bottom;
+            public bool sounded;
         }
         readonly List<Flight> flights=new List<Flight>();
         GameObject layer;
@@ -75,6 +76,7 @@ namespace WorkWork
                 {
                     var f=flights[i];if(f.ghost==null)continue;
                     float time=elapsed-i*spacing,sign=i%2==0?1:-1;
+                    if(drawing && time>=0 && !f.sounded){f.sounded=true;if(game.sounds!=null)game.sounds.Play(game.sounds.deal);}
                     if(!drawing){f.ghost.GetComponent<CanvasGroup>().alpha=time<0?0:1;if(time<0)continue;}
                     float t=Mathf.Clamp01(time/flightTime),ease=drawing?1-Mathf.Pow(1-t,3):t*t;
                     float lift=Mathf.Max(0,landingLift);
